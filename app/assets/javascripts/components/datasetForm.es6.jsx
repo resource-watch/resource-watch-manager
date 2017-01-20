@@ -2,11 +2,11 @@ class DatasetForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      step: 2,
+      step: 1,
       form: {
         // STEP 1
         name: '',
-        provider: 'csv',
+        provider: '',
         subtitle: '',
         tags: '',
         application: [props.application],
