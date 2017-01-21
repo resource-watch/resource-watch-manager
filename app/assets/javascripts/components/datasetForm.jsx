@@ -38,15 +38,23 @@ class DatasetForm extends React.Component {
   */
   onSubmit(event) {
     event.preventDefault();
+
+    // Validate the form
     this.step.validate();
-    // if (this.state.step === this.state.stepLength) {
-    //   console.log(this.state);
-    // } else {
-    //   this.setState({
-    //     step: this.state.step + 1
-    //   }, () => console.log(this.state));
-    //
-    // }
+
+    // Set a timeout due to the setState function of react
+    setTimeout(() => {
+      const valid = this.step.isValid();
+      if (valid) {
+        if (this.state.step === this.state.stepLength) {
+          console.log(this.state);
+        } else {
+          this.setState({
+            step: this.state.step + 1
+          }, () => console.log(this.state));
+        }
+      }
+    }, 0)
   }
 
   onChange(obj) {

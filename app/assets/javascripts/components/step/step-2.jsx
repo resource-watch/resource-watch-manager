@@ -2,11 +2,34 @@ class Step2 extends React.Component {
   constructor(props) {
     super(props);
 
+    this.children = [];
+    
     this.state = {
       form: props.form
     };
 
     this.onLegendChange = this.onLegendChange.bind(this);
+  }
+
+  validate() {
+    this.children.forEach((c) => {
+      c.triggerValidate();
+    });
+  }
+
+  isValid() {
+    const valid = this.children.map(c => {
+      return c.isValid()
+    }).filter(v => {
+      return v !== null
+    }).every(element => element);
+
+    return valid;
+  }
+
+  shouldComponentUpdate(){
+    this.children = [];
+    return true
   }
 
   /**
@@ -38,6 +61,7 @@ class Step2 extends React.Component {
 
       <fieldset className={`c-field-container ${activeClass}`}>
         <Input
+          ref={(c) => { c && this.children.push(c) }}
           onChange={value => this.props.onChange({ connectorUrl: value })}
           validations={['required']}
           hint={hint}
@@ -45,7 +69,7 @@ class Step2 extends React.Component {
             name: "connectorUrl",
             label: "Url data endpoint",
             type: 'text',
-            defaultValue: this.state.form.connectorUrl,
+            default: this.state.form.connectorUrl,
             required: true
           }}
         />
@@ -53,49 +77,53 @@ class Step2 extends React.Component {
         {/* CSV additional fields */}
         {(this.state.form.provider) === 'csv' &&
           <Input
+            ref={(c) => { c && this.children.push(c) }}
             onChange={value => this.onLegendChange({ lat: value })}
             hint="Name of column with latitude value"
             properties={{
               name: "lat",
               label: "Latitude",
               type: 'text',
-              defaultValue: this.state.form.legend.lat
+              default: this.state.form.legend.lat
             }}
           />
         }
         {(this.state.form.provider) === 'csv' &&
           <Input
+            ref={(c) => { c && this.children.push(c) }}
             onChange={value => this.onLegendChange({ long: value })}
             hint="Name of column with longitude value"
             properties={{
               name: "long",
               label: "Longitude",
               type: 'text',
-              defaultValue: this.state.form.legend.long
+              default: this.state.form.legend.long
             }}
           />
         }
         {(this.state.form.provider) === 'csv' &&
           <Input
+            ref={(c) => { c && this.children.push(c) }}
             onChange={value => this.onLegendChange({ date: value })}
             hint="Name of columns with date value (ISO Format)"
             properties={{
               name: "date",
               label: "Date",
               type: 'text',
-              defaultValue: this.state.form.legend.date
+              default: this.state.form.legend.date
             }}
           />
         }
         {(this.state.form.provider) === 'csv' &&
           <Input
+            ref={(c) => { c && this.children.push(c) }}
             onChange={value => this.onLegendChange({ country: value })}
             hint="Name of columns with country value (ISO3 code)"
             properties={{
               name: "country",
               label: "Country",
               type: 'text',
-              defaultValue: this.state.form.legend.country
+              default: this.state.form.legend.country
             }}
           />
         }

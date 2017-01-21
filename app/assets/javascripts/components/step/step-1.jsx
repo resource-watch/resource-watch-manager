@@ -13,6 +13,16 @@ class Step1 extends React.Component {
     });
   }
 
+  isValid() {
+    const valid = this.children.map(c => {
+      return c.isValid()
+    }).filter(v => {
+      return v !== null
+    }).every(element => element);
+
+    return valid;
+  }
+
   shouldComponentUpdate(){
     this.children = [];
     return true

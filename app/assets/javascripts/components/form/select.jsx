@@ -12,15 +12,15 @@ class Select extends React.Component {
     this.validator = new Validator();
 
     // BINDINGS
-    this.onChange = this.onChange.bind(this);
+    this.triggerChange = this.triggerChange.bind(this);
     this.triggerValidate = this.triggerValidate.bind(this);
   }
 
   /**
    * UI EVENTS
-   * - onChange
+   * - triggerChange
   */
-  onChange(e) {
+  triggerChange(e) {
     this.setState({ value: e.currentTarget.value }, () => {
       // Trigger validation
       this.triggerValidate();
@@ -41,10 +41,11 @@ class Select extends React.Component {
       // VALIDATE
       const validateArr = this.validator.validate(validations, value);
       const valid = validateArr.every(element => element.valid);
+      const error = (!valid) ? validateArr.map(element => element.error) : [];
 
       this.setState({
         valid,
-        error: (!valid) ? validateArr.map(element => element.error) : []
+        error
       });
     } else {
       this.setState({
@@ -52,6 +53,10 @@ class Select extends React.Component {
         error: []
       });
     }
+  }
+
+  isValid() {
+    return this.state.valid;
   }
 
   render() {
@@ -80,7 +85,7 @@ class Select extends React.Component {
           {...properties}
           id={`select-${properties.name}`}
           value={value}
-          onChange={this.onChange}
+          onChange={this.triggerChange}
         >
           {blank && <option value=""></option>}
           {options.map((o, i) => {
