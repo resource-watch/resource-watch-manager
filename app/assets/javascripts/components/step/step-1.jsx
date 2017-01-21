@@ -1,10 +1,21 @@
 class Step1 extends React.Component {
   constructor(props) {
     super(props);
-
+    this.children = [];
     this.state = {
       form: props.form
     };
+  }
+
+  validate() {
+    this.children.forEach((c) => {
+      c.triggerValidate();
+    });
+  }
+
+  shouldComponentUpdate(){
+    this.children = [];
+    return true
   }
 
   render() {
@@ -15,6 +26,7 @@ class Step1 extends React.Component {
     return (
       <fieldset className={`c-field-container ${activeClass}`}>
         <Input
+          ref={(c) => { c && this.children.push(c) }}
           onChange={value => this.props.onChange({ name: value })}
           validations={['required']}
           properties={{
@@ -22,17 +34,18 @@ class Step1 extends React.Component {
             label: "Title",
             type: 'text',
             required: true,
-            defaultValue: this.state.form.name
+            default: this.state.form.name
           }}
         />
 
         <Input
+          ref={(c) => { c && this.children.push(c) }}
           onChange={value => this.props.onChange({ subtitle: value })}
           properties={{
             name: "subtitle",
             label: "Subtitle",
             type: 'text',
-            defaultValue: this.state.form.subtitle
+            default: this.state.form.subtitle
           }}
         />
 
@@ -50,12 +63,13 @@ class Step1 extends React.Component {
           name="application"
           properties={{
             label: "Application",
-            defaultValue: this.state.form.application,
+            default: this.state.form.application,
             required: true
           }}
         /> */}
 
         <Select
+          ref={(c) => { c && this.children.push(c) }}
           onChange={value => this.props.onChange({ topics: [value] })}
           validations={['required']}
           blank={true}
@@ -73,12 +87,13 @@ class Step1 extends React.Component {
           properties={{
             name: "topics",
             label: "Topics",
-            defaultValue: this.state.form.subtitle,
+            default: this.state.form.subtitle,
             required: true
           }}
         />
 
         <Input
+          ref={(c) => { c && this.children.push(c) }}
           onChange={value => this.props.onChange({ tags: value })}
           validations={['required']}
           hint="This will cover different vocabularies that represent this dataset. please write them comma separated: water,food"
@@ -86,12 +101,13 @@ class Step1 extends React.Component {
             name: "tags",
             label: "Tags",
             type: 'text',
-            defaultValue: this.state.form.tags,
+            default: this.state.form.tags,
             required: true
           }}
         />
 
         <Select
+          ref={(c) => { c && this.children.push(c) }}
           onChange={value => this.props.onChange({ ...PROVIDERDICTIONARY[value] })}
           validations={['required']}
           blank={true}
@@ -105,7 +121,7 @@ class Step1 extends React.Component {
           properties={{
             name: "provider",
             label: "Provider",
-            defaultValue: this.state.form.provider,
+            default: this.state.form.provider,
             required: true
           }}
         />

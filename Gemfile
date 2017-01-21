@@ -25,6 +25,10 @@ gem 'sass-rails', '~> 5.0'
 gem 'autoprefixer-rails'
 gem 'react-rails'
 
+source 'https://rails-assets.org' do
+  gem 'rails-assets-react-select'
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri

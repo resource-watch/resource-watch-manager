@@ -4,13 +4,17 @@ class Input extends React.Component {
     super(props);
 
     this.state = {
+      value: this.props.properties.default,
       valid: null,
-      error: null
+      error: []
     }
+
+    // VALIDATOR
+    this.validator = new Validator();
 
     // BINDINGS
     this.onChange = this.onChange.bind(this);
-    this.onValidate = this.onValidate.bind(this);
+    this.triggerValidate = this.triggerValidate.bind(this);
   }
 
   /**
@@ -18,60 +22,42 @@ class Input extends React.Component {
    * - onChange
   */
   onChange(e) {
-    // Valid input
-    this.onValidate(e.currentTarget.value);
-    // Publish the new value to the form
-    this.props.onChange && this.props.onChange(e.currentTarget.value);
+    this.setState({ value: e.currentTarget.value }, () => {
+      // Trigger validation
+      this.triggerValidate();
+      // Publish the new value to the form
+      this.props.onChange && this.props.onChange(this.state.value);
+    });
   }
 
   /**
    * VALIDATIONS
-   * - onValidate (value)
-   * - validate (value, validation)
+   * - triggerValidate (value)
   */
-  onValidate(value) {
+  triggerValidate() {
     const { validations } = this.props;
+    const { value } = this.state;
+
     if (validations) {
-      const errors = validations.map((validation) => {
-        return this.validate(value, validation);
-      });
+      // VALIDATE
+      const validateArr = this.validator.validate(validations, value);
+      const valid = validateArr.every(element => element.valid);
 
       this.setState({
-        valid: errors.every(element => element)
+        valid,
+        error: (!valid) ? validateArr.map(element => element.error) : []
       });
     } else {
       this.setState({
-        valid: (value) ? true : null
+        valid: (value) ? true : null,
+        error: []
       });
     }
   }
-
-  validate(value, validation) {
-    switch (validation) {
-      case 'required':
-        return !!value
-        break;
-      default:
-        console.info('The validation you passed doesn\'t exist');
-    }
-  }
-
-  setError(value) {
-    const { properties } = this.props;
-
-    // Required?
-    if (properties.required && !value) {
-    } else {
-    }
-
-    // Publish the new error to the form
-    this.props.onError && this.props.onError(value);
-  }
-
 
   render() {
     const { properties, hint } = this.props;
-    const { valid } = this.state;
+    const { valid, error, value } = this.state;
 
     // Set classes
     const validClass = valid === true ? '-valid' : '';
@@ -93,11 +79,23 @@ class Input extends React.Component {
 
         <input
           {...properties}
+          value={this.state.value}
           id={`input-${properties.name}`}
-          value={properties.value}
-          defaultValue={properties.defaultValue}
           onChange={this.onChange}
         />
+
+        {error &&
+          error.map((err, i) => {
+            if (err) {
+              return (
+                <p key={i} className="error">
+                  {err.message}
+                </p>
+              )
+            }
+          })
+        }
+
       </div>
     );
   }

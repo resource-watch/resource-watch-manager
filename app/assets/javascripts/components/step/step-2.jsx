@@ -54,52 +54,48 @@ class Step2 extends React.Component {
         {(this.state.form.provider) === 'csv' &&
           <Input
             onChange={value => this.onLegendChange({ lat: value })}
-            validations={['required']}
+            hint="Name of column with latitude value"
             properties={{
               name: "lat",
               label: "Latitude",
               type: 'text',
-              defaultValue: this.state.form.legend.lat,
-              required: true
+              defaultValue: this.state.form.legend.lat
             }}
           />
         }
         {(this.state.form.provider) === 'csv' &&
           <Input
             onChange={value => this.onLegendChange({ long: value })}
-            validations={['required']}
+            hint="Name of column with longitude value"
             properties={{
               name: "long",
               label: "Longitude",
               type: 'text',
-              defaultValue: this.state.form.legend.long,
-              required: true
+              defaultValue: this.state.form.legend.long
             }}
           />
         }
         {(this.state.form.provider) === 'csv' &&
           <Input
             onChange={value => this.onLegendChange({ date: value })}
-            validations={['required']}
+            hint="Name of columns with date value (ISO Format)"
             properties={{
               name: "date",
               label: "Date",
               type: 'text',
-              defaultValue: this.state.form.legend.date,
-              required: true
+              defaultValue: this.state.form.legend.date
             }}
           />
         }
         {(this.state.form.provider) === 'csv' &&
           <Input
             onChange={value => this.onLegendChange({ country: value })}
-            validations={['required']}
+            hint="Name of columns with country value (ISO3 code)"
             properties={{
               name: "country",
               label: "Country",
               type: 'text',
-              defaultValue: this.state.form.legend.country,
-              required: true
+              defaultValue: this.state.form.legend.country
             }}
           />
         }
@@ -111,6 +107,5 @@ class Step2 extends React.Component {
 
 Step2.propTypes = {
   step: React.PropTypes.number,
-  form: React.PropTypes.object,
-  providerDictionay: React.PropTypes.object
+  form: React.PropTypes.object
 };
