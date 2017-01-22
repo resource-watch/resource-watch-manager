@@ -4,6 +4,7 @@ class Select extends React.Component {
     super(props);
 
     this.state = {
+      value: this.props.properties.default || '',
       valid: null,
       error: []
     }

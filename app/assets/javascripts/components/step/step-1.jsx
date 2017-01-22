@@ -97,7 +97,7 @@ class Step1 extends React.Component {
           properties={{
             name: "topics",
             label: "Topics",
-            default: this.state.form.subtitle,
+            default: this.state.form.topics[0],
             required: true
           }}
         />

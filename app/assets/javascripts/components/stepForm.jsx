@@ -1,4 +1,4 @@
-class DatasetForm extends React.Component {
+class StepForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,7 +11,7 @@ class DatasetForm extends React.Component {
         application: [props.application],
         topics: [],
         tags: [],
-        provider: 'csv',
+        provider: '',
         connectorProvider: '',
         connectorType: '',
         connectorUrlHint: '',
@@ -62,6 +62,10 @@ class DatasetForm extends React.Component {
     this.setState({ form }, () => console.log(this.state.form));
   }
 
+  onBack(step) {
+    this.setState({ step });
+  }
+
   render() {
     return (
       <form className="c-form" onSubmit={this.onSubmit} noValidate>
@@ -89,36 +93,16 @@ class DatasetForm extends React.Component {
           />
         }
 
-        <fieldset className="actions">
-          <ol>
-            {this.state.step !== 1 &&
-              <li className="action input_action">
-                <button type="button" name="commit">
-                  Back
-                </button>
-              </li>
-            }
-            {this.state.step !== this.state.stepLength &&
-              <li className="action input_action">
-                <button type="submit" name="commit">
-                  Next
-                </button>
-              </li>
-            }
-            {this.state.step === this.state.stepLength &&
-              <li className="action input_action">
-                <button type="submit" name="commit">
-                  Submit
-                </button>
-              </li>
-            }
-          </ol>
-        </fieldset>
+        <StepNavigation
+          step={this.state.step}
+          stepLength={this.state.stepLength}
+          onBack={step => this.onBack(step)}
+        />
       </form>
     );
   }
 }
 
-DatasetForm.propTypes = {
+StepForm.propTypes = {
   application: React.PropTypes.string
 };

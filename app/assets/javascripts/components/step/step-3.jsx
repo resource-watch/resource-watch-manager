@@ -134,8 +134,7 @@ class Step3 extends React.Component {
         <Input
           ref={(c) => { c && this.children.push(c) }}
           onChange={value => this.props.onChange({ 'sdg-indicator': value })}
-          validations={['url']}
-          hint="Please enter codes separated with commas. Codes here http://unstats.un.org/sdgs/indicators/Official%20List%20of%20Proposed%20SDG%20Indicators.pdf"
+          hint="Please enter codes separated with commas. Codes <a href='http://unstats.un.org/sdgs/indicators/Official%20List%20of%20Proposed%20SDG%20Indicators.pdf' target='_blank'>here</a>"
           properties={{
             name: "sdg-indicator",
             label: "SDG-indicator",
