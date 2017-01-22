@@ -37,7 +37,9 @@ class Select extends React.Component {
     const { validations } = this.props;
     const { value } = this.state;
 
-    if (validations) {
+    // Check if it has validations &&
+    // if a value is defined or if required validation is present
+    if (validations && (value || validations.indexOf('required') !== -1)) {
       // VALIDATE
       const validateArr = this.validator.validate(validations, value);
       const valid = validateArr.every(element => element.valid);

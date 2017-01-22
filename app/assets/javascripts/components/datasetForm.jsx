@@ -11,7 +11,7 @@ class DatasetForm extends React.Component {
         application: [props.application],
         topics: [],
         tags: [],
-        provider: '',
+        provider: 'csv',
         connectorProvider: '',
         connectorType: '',
         connectorUrlHint: '',
@@ -91,14 +91,27 @@ class DatasetForm extends React.Component {
 
         <fieldset className="actions">
           <ol>
-            <li className="action input_action">
-              <button type="submit" name="commit">
-                Next Step
-              </button>
-            </li>
-            <li className="cancel">
-              <a href="/admin/datasets">Cancel</a>
-            </li>
+            {this.state.step !== 1 &&
+              <li className="action input_action">
+                <button type="button" name="commit">
+                  Back
+                </button>
+              </li>
+            }
+            {this.state.step !== this.state.stepLength &&
+              <li className="action input_action">
+                <button type="submit" name="commit">
+                  Next
+                </button>
+              </li>
+            }
+            {this.state.step === this.state.stepLength &&
+              <li className="action input_action">
+                <button type="submit" name="commit">
+                  Submit
+                </button>
+              </li>
+            }
           </ol>
         </fieldset>
       </form>

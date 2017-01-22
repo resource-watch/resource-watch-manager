@@ -30,15 +30,13 @@
     border: 1px solid black;
     box-shadow: none;
     outline: none;
-    font-size: 14px;
-    padding: 5px;
+    font-size: 16px;
+    padding: 8px;
+    width: 100%;
+    max-width: 400px;
 
     &:hover {
       border-color: gray;
-    }
-
-    &:focus {
-      border-color: blue;
     }
   }
 

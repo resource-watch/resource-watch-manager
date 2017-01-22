@@ -3,7 +3,7 @@ class Step2 extends React.Component {
     super(props);
 
     this.children = [];
-    
+
     this.state = {
       form: props.form
     };
@@ -63,7 +63,7 @@ class Step2 extends React.Component {
         <Input
           ref={(c) => { c && this.children.push(c) }}
           onChange={value => this.props.onChange({ connectorUrl: value })}
-          validations={['required']}
+          validations={['required', 'url']}
           hint={hint}
           properties={{
             name: "connectorUrl",
