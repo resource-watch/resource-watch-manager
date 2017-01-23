@@ -38,9 +38,12 @@ class Input extends React.Component {
     const { validations } = this.props;
     const { value } = this.state;
 
+    // Check if a value is present
+    const isValuePresent = (Array.isArray(value)) ? value.length > 0 : value;
+
     // Check if it has validations &&
     // if a value is defined or if required validation is present
-    if (validations && (value || validations.indexOf('required') !== -1)) {
+    if (validations && (isValuePresent || validations.indexOf('required') !== -1)) {
       // VALIDATE
       const validateArr = this.validator.validate(validations, value);
       const valid = validateArr.every(element => element.valid);
@@ -52,7 +55,7 @@ class Input extends React.Component {
       });
     } else {
       this.setState({
-        valid: (value) ? true : null,
+        valid: (isValuePresent) ? true : null,
         error: []
       });
     }
