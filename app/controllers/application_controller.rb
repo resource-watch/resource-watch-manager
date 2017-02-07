@@ -11,21 +11,19 @@ class ApplicationController < ActionController::Base
 
   def current_user
     unless session.key?('current_user')
-      connect = Faraday.new(url: "#{ENV['APIGATEWAY_URL']}") do |faraday|
-        faraday.request  :url_encoded             # form-encode POST params
-        faraday.response :logger                  # log requests to STDOUT
-        faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
-      end
-
+      connect = connect_gateway
       connect.authorization :Bearer, session[:user_token]
-      response = connect.get('/auth/checkLogged');
-
+      response = connect.get('/auth/checkLogged')
       session[:current_user] = response.body
     end
   end
 
   def redirect_to_apigateway
     redirect_to "#{ENV['APIGATEWAY_URL']}/auth?callbackUrl=#{auth_login_url}&token=true"
+  end
+
+  def logout_apigateway
+    redirect_to "#{ENV['APIGATEWAY_URL']}/auth/logout?callbackUrl=#{auth_login_url}&token=true"
   end
 
   private
@@ -38,5 +36,13 @@ class ApplicationController < ActionController::Base
 
     def set_current_user
       @current_user = session[:current_user] || nil
+    end
+
+    def connect_gateway
+      Faraday.new(url: "#{ENV['APIGATEWAY_URL']}") do |faraday|
+        faraday.request  :url_encoded             # form-encode POST params
+        faraday.response :logger                  # log requests to STDOUT
+        faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+      end
     end
 end
