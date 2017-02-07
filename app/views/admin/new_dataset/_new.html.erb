@@ -1,3 +1,4 @@
-<div>
-  <%= react_component('StepForm', application: 'rw') %>
-</div>
+<%= react_component('FormDataset.FormDataset', {
+  application: ['rw'],
+  authorization: session[:user_token]
+}) %>
