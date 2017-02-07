@@ -9,7 +9,7 @@ services:
   web:
     build: .
     ports:
-      - "3000:3000"
+      - "6000:3000"
     env_file: .env
     environment:
       - POSTGRES_HOST=db
