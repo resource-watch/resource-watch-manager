@@ -24,11 +24,18 @@ RUN mkdir -p $APP_PATH
 WORKDIR $APP_PATH
 COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
-RUN bundle install --jobs 20 --retry 5
+RUN bundle install --jobs 20 --retry 5 --without development test
 ADD . $APP_PATH
+
+# Set Rails to run in production
+ENV RAILS_ENV production
+ENV RACK_ENV production
+
+# Precompile Rails assets
+RUN bundle exec rake assets:precompile
 
 # Setting port
 EXPOSE 3000
 
-# Run application
-CMD ["bin/rails", "s", "-b", "0.0.0.0"]
+# Start puma
+CMD bundle exec puma -C config/puma.rb

@@ -21,4 +21,4 @@ services:
     depends_on:
       - db
     volumes:
-      - ".:/usr/src/resourcewatch-manager"
+      - "./publics/uploads:/usr/src/resourcewatch-manager/uploads"
