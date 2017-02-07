@@ -1,5 +1,5 @@
 ActiveAdmin.register_page "Dataset Edit" do
-  menu :label => 'Edit Dataset'
+  menu false
   content do
     render partial: 'edit'
   end
