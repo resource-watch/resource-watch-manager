@@ -3,4 +3,4 @@
 //= require validator
 //= require react
 //= require react_ujs
-//= require formdataset
+//= require vizzcomponents

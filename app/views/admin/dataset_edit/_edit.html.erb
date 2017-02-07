@@ -1,0 +1,5 @@
+<%= react_component('VizzComponents.DatasetForm', {
+  application: ['rw'],
+  authorization: session[:user_token],
+  dataset: params['id']
+}) %>
