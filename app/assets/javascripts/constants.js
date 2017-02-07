@@ -1,4 +1,4 @@
-const PROVIDERDICTIONARY = {
+var PROVIDERDICTIONARY = {
   csv: {
     provider: 'csv',
   	connectorProvider: 'csv',
