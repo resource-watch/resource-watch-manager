@@ -1,12 +1,11 @@
 class AuthController < ApplicationController
 
   def login
-    token = params[:token]
-    if token.nil?
-      redirect_to_apigateway
+    if params.key?('token')
+      session[:user_token] = params[:token]
+      redirect_to root_path if current_user
     else
-      session[:user_token] = token
-      redirect_to root_path
+      redirect_to_apigateway
     end
   end
 

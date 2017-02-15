@@ -1,5 +1,10 @@
 source 'https://rubygems.org'
 
+git_source(:github) do |repo_name|
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  "https://github.com/#{repo_name}.git"
+end
+
 ruby '2.3.3'
 
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
@@ -9,9 +14,7 @@ gem 'puma', '~> 3.0'
 gem 'dotenv-rails', '~> 2.2.0'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'faraday', '~> 0.11.0'
-gem 'activeadmin', github: 'activeadmin'
-gem 'inherited_resources', github: 'activeadmin/inherited_resources'
-gem 'devise', github: 'plataformatec/devise'
+gem 'slim-rails'
 
 # Active record
 gem 'pg', '~> 0.18'
@@ -22,6 +25,8 @@ gem 'jquery-rails'
 gem 'sass-rails', '~> 5.0'
 gem 'autoprefixer-rails'
 gem 'react-rails'
+gem 'turbolinks', '~> 5.x'
+gem 'foundation-rails'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-react-select'
