@@ -12,6 +12,12 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require react
-//= require react_ujs
-//= require validator
+//= require turbolinks
+// require react
+// require react_ujs
+// require react_ujs_turbolinks
+// require validator
+//= require foundation
+//= require_self
+
+$(function(){ $(document).foundation(); });

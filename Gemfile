@@ -14,6 +14,7 @@ gem 'puma', '~> 3.0'
 gem 'dotenv-rails', '~> 2.2.0'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'faraday', '~> 0.11.0'
+gem 'slim-rails'
 
 # Active record
 gem 'pg', '~> 0.18'
@@ -24,6 +25,8 @@ gem 'jquery-rails'
 gem 'sass-rails', '~> 5.0'
 gem 'autoprefixer-rails'
 gem 'react-rails'
+gem 'turbolinks', '~> 5.x'
+gem 'foundation-rails'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-react-select'
