@@ -1,21 +1,10 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  helper_method :current_user
+  helper_method :connect_gateway
 
-  before_action :set_current_user
-
-  def jwt_authentication
-    unless session.key?('user_token')
-      redirect_to_apigateway
-    end
-  end
-
-  def current_user
-    unless session.key?('current_user')
-      connect = connect_gateway
-      connect.authorization :Bearer, session[:user_token]
-      response = connect.get('/auth/checkLogged')
-      session[:current_user] = response.body
-    end
+  def check_user_authentication
+    redirect_to_apigateway unless current_user
   end
 
   def redirect_to_apigateway
@@ -28,14 +17,15 @@ class ApplicationController < ActionController::Base
 
   private
 
-    def http_basic_authenticate
-      authenticate_or_request_with_http_basic do |name, password|
-        name == ENV['AUTH_USERNAME'] && password == ENV['AUTH_PASSWORD']
-      end
+    def current_user
+      @current_user ||= get_current_user if session[:user_token]
     end
 
-    def set_current_user
-      @current_user = session[:current_user] || nil
+    def get_current_user
+      connect = connect_gateway
+      connect.authorization :Bearer, session[:user_token]
+      response = connect.get('/auth/check-logged')
+      session[:current_user] = response.body
     end
 
     def connect_gateway
@@ -45,4 +35,5 @@ class ApplicationController < ActionController::Base
         faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
       end
     end
+
 end

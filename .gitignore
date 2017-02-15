@@ -28,3 +28,6 @@
 /db_backups
 # Ignore environment variables
 /.env
+
+# Ignore docker volumes
+/.data
