@@ -29,5 +29,5 @@
 # Ignore environment variables
 /.env
 
-# Ignore docker volumes
-/.data
+# Ignore node modules
+/node_modules
