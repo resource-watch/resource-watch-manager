@@ -15,6 +15,7 @@ gem 'dotenv-rails', '~> 2.2.0'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'faraday', '~> 0.11.0'
 gem 'slim-rails'
+gem 'paperclip'
 
 # Active record
 gem 'pg', '~> 0.18'
@@ -27,9 +28,9 @@ gem 'autoprefixer-rails'
 gem 'react-rails'
 gem 'turbolinks', '~> 5.x'
 gem 'foundation-rails'
+gem 'browserify-rails'
 
 source 'https://rails-assets.org' do
-  gem 'rails-assets-react-select'
 end
 
 group :development, :test do
