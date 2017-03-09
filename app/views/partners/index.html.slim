@@ -1,0 +1,20 @@
+.row
+  .column.small-12
+    h1 Partners
+
+    table
+      thead
+        tr
+          th Name
+          th Slug
+          th Published
+          th Created
+          th Updated
+      tbody
+        - for partner in @partners
+          tr
+            td= link_to partner.name, edit_partner_path(partner)
+            td= partner.slug
+            td= partner.published
+            td= partner.created_at
+            td= partner.updated_at

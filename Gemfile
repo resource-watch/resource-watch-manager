@@ -16,6 +16,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'faraday', '~> 0.11.0'
 gem 'slim-rails'
 gem 'paperclip'
+gem 'simple_form'
 
 # Active record
 gem 'pg', '~> 0.18'

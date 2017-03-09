@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root to: "dashboard#index"
 
   resources :datasets, only: [:index, :edit]
+  resources :partners, only: [:index, :new, :create, :edit, :update]
 
   # Auth
   get 'auth/login', to: 'auth#login'
