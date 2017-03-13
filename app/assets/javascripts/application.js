@@ -18,5 +18,6 @@
 //= require react_ujs_turbolinks
 //= require foundation
 //= require_self
+//= require components
 
 $(function(){ $(document).foundation(); });
