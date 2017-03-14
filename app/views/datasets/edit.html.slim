@@ -1,0 +1,4 @@
+.row
+  .column.small-12
+    h2 Edit Dataset
+    = react_component "DatasetForm", { application: ['rw'], dataset: @dataset_id, api: 'https://api.resourcewatch.org' }

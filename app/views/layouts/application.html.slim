@@ -1,0 +1,21 @@
+doctype html
+html lang=I18n.locale
+  head
+    meta charset="utf-8"
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+
+    title == content_for?(:title) ? yield(:title) : "Resource Watch Manager"
+
+    = stylesheet_link_tag "application"
+    = javascript_include_tag "application", "data-turbolinks-track" => true
+    = csrf_meta_tag
+
+  body
+    = render 'shared/header'
+
+    - unless notice.nil?
+      .notice = notice
+    - unless alert.nil?
+      .alert = alert
+
+    == yield

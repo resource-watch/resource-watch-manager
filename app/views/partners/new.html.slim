@@ -1,0 +1,14 @@
+.row
+  .columns.small-12.medium-6
+    h1 Create new partner
+
+    = simple_form_for @partner do |f|
+      = f.input :name
+      = f.input :slug
+      = f.input :summary
+      = f.input :body
+      = f.input :contact_name
+      = f.input :contact_email
+      = f.input :featured
+      = f.input :published
+      = f.button :submit
