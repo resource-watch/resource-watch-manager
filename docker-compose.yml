@@ -1,24 +1,20 @@
 version: '2'
 services:
-  db:
+  database:
     image: postgres
-    ports:
-      - "5432:5432"
     volumes:
       - "./data/db:/var/lib/postgresql/data"
   web:
     build: .
+    command: 'bash -c ''bundle exec puma -C config/puma.rb'''
     ports:
       - "6000:3000"
     env_file: .env
     environment:
-      - POSTGRES_HOST=db
-      - POSTGRES_PORT=5432
+      - POSTGRES_HOST=database
       - POSTGRES_USER=postgres
     container_name: resourcewatch-manager
     links:
-      - db
-    depends_on:
-      - db
+      - database
     volumes:
       - "./public/system:/usr/src/resourcewatch-manager/public/system"
