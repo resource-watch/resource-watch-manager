@@ -15,9 +15,13 @@ RUN apk update && \
       libxml2-dev \
       libxslt-dev \
       postgresql-dev \
+      libjpeg-turbo-dev \
+      imagemagick-dev \
+      cairo-dev \
     && rm -rf /var/cache/apk/*
 RUN bundle config build.nokogiri --use-system-libraries
 RUN gem install bundler --no-ri --no-rdoc
+RUN npm install -g node-gyp
 
 # Create app directory
 ENV APP_PATH /usr/src/$NAME
@@ -27,6 +31,8 @@ COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
 RUN bundle install --jobs 20 --retry 5 --without development test
 ADD . $APP_PATH
+
+USER root
 
 # Set Rails to run in production
 ENV RAILS_ENV production
