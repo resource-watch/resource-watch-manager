@@ -1,1 +1,1 @@
-window.DatasetList = require('rw-components/dist/Dataset/List');
+window.DatasetTable = require('rw-components/dist/components/Dataset/Table');
