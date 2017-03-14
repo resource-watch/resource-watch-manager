@@ -42,6 +42,9 @@ ENV RACK_ENV production
 # Install node modules
 RUN npm install
 
+# Migrations
+RUN bundle exec rake db:migrate
+
 # Precompile Rails assets
 RUN bundle exec rake assets:precompile
 
