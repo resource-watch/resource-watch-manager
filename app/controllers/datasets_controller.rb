@@ -5,7 +5,11 @@ class DatasetsController < ApplicationController
   def index
   end
 
+  def new
+  end
+
   def edit
+    @dataset_id = params[:id]
   end
 
 end
