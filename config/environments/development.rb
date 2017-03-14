@@ -53,4 +53,5 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   config.react.variant = :development
+  config.browserify_rails.source_map_environments << "development"
 end
