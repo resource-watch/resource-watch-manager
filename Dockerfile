@@ -30,7 +30,11 @@ ADD . $APP_PATH
 
 # Set Rails to run in production
 ENV RAILS_ENV production
+ENV NODE_ENV production
 ENV RACK_ENV production
+
+# Install node modules
+RUN npm install
 
 # Precompile Rails assets
 RUN bundle exec rake assets:precompile
