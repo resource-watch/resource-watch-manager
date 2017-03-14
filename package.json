@@ -3,7 +3,7 @@
   "dependencies": {
     "browserify": "^14.1.0",
     "browserify-incremental": "^3.1.1",
-    "rw-components": "https://github.com/resource-watch/rw-components"
+    "rw-components": "https://github.com/resource-watch/rw-components/tree/develop"
   },
   "license": "MIT"
 }
