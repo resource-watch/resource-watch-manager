@@ -34,6 +34,9 @@ COPY package.json package.json
 RUN bundle install --jobs 20 --retry 5 --without development test && npm install
 ADD . $APP_PATH
 
+# Precompile assets
+RUN bundle exec rake assets:precompile
+
 # Setting port
 EXPOSE 3000
 
