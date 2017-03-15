@@ -1,4 +1,4 @@
-= simple_form_for @partner do |f|
+= simple_form_for @partner, { html: { multipart: true } } do |f|
   = f.input :name
   = f.input :slug
   = f.input :summary
