@@ -1,10 +1,8 @@
 FROM ruby:2.3.3-alpine
 MAINTAINER David Inga <david.inga@vizzuality.com>
 
-ENV NAME resourcewatch-manager
-ENV APP_PATH /usr/src/$NAME
+ENV APP_PATH /usr/src/resourcewatch-manager
 ENV RAILS_ENV production
-ENV NODE_ENV production
 ENV RACK_ENV production
 
 # Install dependencies
@@ -40,4 +38,4 @@ ADD . $APP_PATH
 EXPOSE 3000
 
 # Start puma
-CMD bundle exec puma -C config/puma.rb
+CMD bundle exec rails server -b 0.0.0.0
