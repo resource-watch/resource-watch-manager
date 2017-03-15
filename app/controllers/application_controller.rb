@@ -4,7 +4,9 @@ class ApplicationController < ActionController::Base
   helper_method :connect_gateway
 
   def check_user_authentication
-    redirect_to_apigateway unless current_user
+    unless session[:user_token]
+      redirect_to_apigateway unless current_user
+    end
   end
 
   def redirect_to_apigateway
