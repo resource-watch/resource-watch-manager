@@ -1,9 +1,9 @@
 version: '2'
 services:
-  database:
+  postgres:
     image: postgres
     volumes:
-      - "./data/db:/var/lib/postgresql/data"
+      - "./.data/db:/var/lib/postgresql/data"
   web:
     build: .
     command: 'bash -c ''bundle exec puma -C config/puma.rb'''
@@ -11,10 +11,11 @@ services:
       - "6000:3000"
     env_file: .env
     environment:
-      - POSTGRES_HOST=database
-      - POSTGRES_USER=postgres
+      - RAILS_ENV=production
+      - RACK_ENV=production
+      - DATABASE_URL=postgres://postgres@postgres/rw_manager_prod
     container_name: resourcewatch-manager
     links:
-      - database
+      - postgres
     volumes:
       - "./public/system:/usr/src/resourcewatch-manager/public/system"

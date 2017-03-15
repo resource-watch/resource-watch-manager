@@ -31,3 +31,6 @@
 
 # Ignore node modules
 /node_modules
+
+# Ignore docker volumes
+/.data

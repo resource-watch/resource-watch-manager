@@ -2,6 +2,10 @@ FROM ruby:2.3.3-alpine
 MAINTAINER David Inga <david.inga@vizzuality.com>
 
 ENV NAME resourcewatch-manager
+ENV APP_PATH /usr/src/$NAME
+ENV RAILS_ENV production
+ENV NODE_ENV production
+ENV RACK_ENV production
 
 # Install dependencies
 RUN apk update && \
@@ -18,32 +22,19 @@ RUN apk update && \
       libjpeg-turbo-dev \
       imagemagick-dev \
       cairo-dev \
-    && rm -rf /var/cache/apk/*
-RUN bundle config build.nokogiri --use-system-libraries
-RUN gem install bundler --no-ri --no-rdoc
-RUN npm install -g node-gyp
+    && rm -rf /var/cache/apk/* \
+    && bundle config build.nokogiri --use-system-libraries \
+    && gem install bundler --no-ri --no-rdoc \
+    && npm install -g node-gyp
 
 # Create app directory
-ENV APP_PATH /usr/src/$NAME
 RUN mkdir -p $APP_PATH
 WORKDIR $APP_PATH
 COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
-RUN bundle install --jobs 20 --retry 5 --without development test
+COPY package.json package.json
+RUN bundle install --jobs 20 --retry 5 --without development test && npm install
 ADD . $APP_PATH
-
-USER root
-
-# Set Rails to run in production
-ENV RAILS_ENV production
-ENV NODE_ENV production
-ENV RACK_ENV production
-
-# Install node modules
-RUN npm install
-
-# Precompile Rails assets
-RUN bundle exec rake assets:precompile
 
 # Setting port
 EXPOSE 3000
