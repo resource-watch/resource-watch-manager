@@ -15,4 +15,5 @@
  *= require_self
  *= require foundation_and_overrides
  *= require_tree ./components
+ *= require rw-components/dist/style.css
  */
