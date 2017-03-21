@@ -117,6 +117,7 @@ GEM
     public_suffix (2.0.5)
     puma (3.7.0)
     rack (2.0.1)
+    rack-cors (0.4.1)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.0.1)
@@ -222,6 +223,7 @@ DEPENDENCIES
   paperclip
   pg (~> 0.18)
   puma (~> 3.0)
+  rack-cors
   rails (~> 5.0.0, >= 5.0.0.1)
   react-rails
   sass-rails (~> 5.0)
