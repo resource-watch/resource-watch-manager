@@ -54,4 +54,5 @@ Rails.application.configure do
 
   config.react.variant = :development
   config.browserify_rails.source_map_environments << "development"
+  config.browserify_rails.evaluate_node_modules = true
 end
