@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   # API
   namespace :api do
-    get 'partners', to: 'partners#index'
+    resources :partners, only: [:index, :show]
   end
 
   # Auth
