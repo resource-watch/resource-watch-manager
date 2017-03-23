@@ -12,10 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require react
 //= require react_ujs
-//= require react_ujs_turbolinks
 //= require foundation
 //= require_self
 //= require components
