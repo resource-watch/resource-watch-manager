@@ -1,4 +1,4 @@
 .row
   .column.small-12
     h2 Datasets
-    = react_component "DatasetTable", { application: ['rw'], mode: 'table' }
+    = react_component "DatasetTable", { application: ['rw'], mode: 'table', columns: [ { label: 'name', 'value': 'name' }, {  label: 'provider', value: 'provider' },  { label: 'status', value: 'status'} ]}
