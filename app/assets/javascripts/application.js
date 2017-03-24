@@ -12,9 +12,5 @@
 //
 //= require jquery
 //= require jquery_ujs
-// require foundation
-//= require react
-//= require react_ujs
 //= require_self
 
-// $(function(){ $(document).foundation(); });

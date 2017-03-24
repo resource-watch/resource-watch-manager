@@ -29,7 +29,6 @@ gem 'jquery-rails'
 gem 'sass-rails', github: 'rails/sass-rails'
 gem 'autoprefixer-rails'
 gem 'foundation-rails'
-gem 'react-rails'
 
 source 'https://rails-assets.org' do
 end
