@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import DatasetForm from 'rw-components/dist/components/Dataset/Form';
 
-console.log('<%= @dataset_id %>');
-
 const DatasetEdit = () => (
   <div className="row">
     <div className="column small-12">
