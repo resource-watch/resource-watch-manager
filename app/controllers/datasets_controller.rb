@@ -9,7 +9,9 @@ class DatasetsController < ApplicationController
   end
 
   def edit
-    @dataset_id = params[:id]
+    gon.dataset = {
+      id: params[:id]
+    }
   end
 
 end
