@@ -9,7 +9,8 @@ class DatasetsController < ApplicationController
   end
 
   def edit
-    gon.dataset = {
+    gon.edit = {
+      authorization: session[:user_token],
       id: params[:id]
     }
   end

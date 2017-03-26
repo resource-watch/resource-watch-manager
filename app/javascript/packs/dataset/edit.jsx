@@ -8,7 +8,8 @@ const DatasetEdit = () => (
       <h2>Edit Dataset</h2>
       <DatasetForm
         application={['rw']}
-        dataset={gon.dataset.id}
+        authorization={gon.edit.authorization}
+        dataset={gon.edit.id}
       />
     </div>
   </div>
