@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root to: "dashboard#index"
 
   # Admin models
-  resources :datasets, only: [:index, :edit]
+  resources :datasets, only: [:index, :new, :edit]
   resources :partners, only: [:index, :new, :create, :edit, :update]
 
   # API
