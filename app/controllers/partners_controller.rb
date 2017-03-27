@@ -1,6 +1,6 @@
 class PartnersController < ApplicationController
 
-  before_filter :check_user_authentication
+  before_action :check_user_authentication if Rails.env === 'production'
 
   def index
     @partners = Partner.all

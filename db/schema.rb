@@ -15,34 +15,34 @@ ActiveRecord::Schema.define(version: 20170315151221) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "partners", force: :cascade do |t|
-    t.string   "name"
-    t.string   "slug"
-    t.string   "summary"
-    t.string   "contact_name"
-    t.string   "contact_email"
-    t.text     "body"
-    t.string   "logo_file_name"
-    t.string   "logo_content_type"
-    t.integer  "logo_file_size"
+  create_table "partners", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.string "summary"
+    t.string "contact_name"
+    t.string "contact_email"
+    t.text "body"
+    t.string "logo_file_name"
+    t.string "logo_content_type"
+    t.integer "logo_file_size"
     t.datetime "logo_updated_at"
-    t.string   "white_logo_file_name"
-    t.string   "white_logo_content_type"
-    t.integer  "white_logo_file_size"
+    t.string "white_logo_file_name"
+    t.string "white_logo_content_type"
+    t.integer "white_logo_file_size"
     t.datetime "white_logo_updated_at"
-    t.string   "icon_file_name"
-    t.string   "icon_content_type"
-    t.integer  "icon_file_size"
+    t.string "icon_file_name"
+    t.string "icon_content_type"
+    t.integer "icon_file_size"
     t.datetime "icon_updated_at"
-    t.boolean  "published"
-    t.boolean  "featured"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.string   "cover_file_name"
-    t.string   "cover_content_type"
-    t.integer  "cover_file_size"
+    t.boolean "published"
+    t.boolean "featured"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "cover_file_name"
+    t.string "cover_content_type"
+    t.integer "cover_file_size"
     t.datetime "cover_updated_at"
-    t.string   "website"
+    t.string "website"
   end
 
 end

@@ -1,6 +1,6 @@
 class DatasetsController < ApplicationController
 
-  before_filter :check_user_authentication
+  before_action :check_user_authentication if Rails.env === 'production'
 
   def index
   end
