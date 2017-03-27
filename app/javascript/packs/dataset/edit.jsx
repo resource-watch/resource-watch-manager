@@ -6,7 +6,11 @@ const DatasetEdit = () => (
   <div className="row">
     <div className="column small-12">
       <h2>Edit Dataset</h2>
-      <DatasetForm application={['rw']} />
+      <DatasetForm
+        application={['rw']}
+        authorization={gon.data.authorization}
+        dataset={gon.data.id}
+      />
     </div>
   </div>
 );

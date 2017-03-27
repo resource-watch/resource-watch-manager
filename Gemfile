@@ -16,6 +16,7 @@ gem 'faraday', '~> 0.11.0'
 gem 'slim-rails'
 gem 'paperclip'
 gem 'rack-cors'
+gem 'gon'
 
 # Active record
 gem 'pg', '~> 0.18'
