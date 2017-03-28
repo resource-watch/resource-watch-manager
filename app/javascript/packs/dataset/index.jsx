@@ -4,7 +4,7 @@ import DatasetTable from 'rw-components/dist/components/Dataset/Table';
 
 const classesDic = {
   status: {
-    succsess: '-succsess',
+    success: '-success',
     failed: '-failed',
     saved: '-saved',
     deleted: '-deleted',
@@ -14,8 +14,9 @@ const classesDic = {
 
 class DatasetIndex extends React.Component {
 
-  getValueClass(type, value) {
-    return classesDic[type][value];
+  getStatusTd(value, i) {
+    const className = `status ${classesDic.status[value]}`;
+    return <td key={i} className={className}>{value}</td>;
   }
 
   render() {
@@ -28,10 +29,9 @@ class DatasetIndex extends React.Component {
             mode='table'
             columns={[
               { label: 'name', value: 'name' }, 
-              { label: 'status', value: 'status', type: 'status' },
+              { label: 'status', value: 'status', td: this.getStatusTd },
               { label: 'provider', value: 'provider' }
             ]}
-            getValueClass={this.getValueClass}
             actions={{
               show: true,
               list: [

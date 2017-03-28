@@ -1,4 +1,3 @@
-@import '../config';
 
 .c-table {
   .table {
@@ -16,7 +15,7 @@
       margin-bottom: 1px;
     }
 
-    &.-succsess, 
+    &.-success, 
     &.-saved,
     &.-completed {
       color: $color-green;
