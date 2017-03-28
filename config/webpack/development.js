@@ -48,11 +48,12 @@ config = {
   ],
 
   resolve: {
-    extensions: [ '.js', '.coffee' ],
+    extensions: [ '.js', '.jsx', '.coffee' ],
     modules: [
       path.resolve('app/javascript'),
-      path.resolve('node_modules')
-    ]
+      path.resolve('node_modules'),
+      path.resolve('node_modules', 'rw-components', 'node_modules')
+    ],
   },
 
   resolveLoader: {
