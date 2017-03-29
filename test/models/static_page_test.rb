@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class AdminUserTest < ActiveSupport::TestCase
+class StaticPageTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

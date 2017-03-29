@@ -1,6 +1,8 @@
-class PartnersController < ApplicationController
+# frozen_string_literal: true
 
-  before_action :check_user_authentication if Rails.env === 'production'
+# Controller for Partners
+class PartnersController < ApplicationController
+  before_action :check_user_authentication if Rails.env.production?
 
   def index
     @partners = Partner.all
@@ -27,8 +29,11 @@ class PartnersController < ApplicationController
   end
 
   private
-    def partner_params
-      params.require(:partner).permit(:name, :slug, :summary, :body, :contact_name, :contact_email, :website, :logo, :white_logo, :cover, :icon, :featured, :published)
-    end
 
+  def partner_params
+    params.require(:partner).permit(:name, :slug, :summary,
+                                    :body, :contact_name, :contact_email,
+                                    :website, :logo, :white_logo,
+                                    :cover, :icon, :featured, :published)
+  end
 end

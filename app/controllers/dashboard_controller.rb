@@ -1,8 +1,8 @@
+# frozen_string_literal: true
+
+# Dashboard controllerß
 class DashboardController < ApplicationController
+  before_action :check_user_authentication if Rails.env.production?
 
-  before_action :check_user_authentication if Rails.env === 'production'
-
-  def index
-  end
-
+  def index; end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Use this setup block to configure all options available in SimpleForm.
 SimpleForm.setup do |config|
   # Don't forget to edit this file to adapt it to your needs (specially
@@ -46,7 +48,7 @@ SimpleForm.setup do |config|
     b.optional :readonly
 
     b.wrapper :container_wrapper, tag: 'div', class: 'small-offset-3 small-9 columns' do |ba|
-      ba.wrapper :tag => 'label', :class => 'checkbox' do |bb|
+      ba.wrapper tag: 'label', class: 'checkbox' do |bb|
         bb.use :input
         bb.use :label_text
       end

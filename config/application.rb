@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'boot'
 
 require 'rails'
@@ -17,6 +19,7 @@ require 'rails/test_unit/railtie'
 Bundler.require(*Rails.groups)
 
 module ResourceWatchManager
+  # Application class
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -34,7 +37,7 @@ module ResourceWatchManager
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
-        resource '*', :headers => :any, :methods => [:get, :post, :options]
+        resource '*', headers: :any, methods: %i(get post options)
       end
     end
   end

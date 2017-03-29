@@ -1,13 +1,16 @@
-class Api::PartnersController < ApiController
+# frozen_string_literal: true
 
-  def index
-    partners = Partner.all.published
-    partners = partners.featured(params[:featured]) if params.has_key?(:featured)
-    render json: partners
+module Api
+  # API class for the Partners Resource
+  class PartnersController < ApiController
+    def index
+      partners = Partner.all.published
+      partners = partners.featured(params[:featured]) if params.key?(:featured)
+      render json: partners
+    end
+
+    def show
+      render json: Partner.find(params[:id])
+    end
   end
-
-  def show
-    render json: Partner.find(params[:id])
-  end
-
 end
