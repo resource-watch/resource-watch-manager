@@ -7,15 +7,23 @@ class DatasetsController < ApplicationController
 
   def new
     gon.data = {
-      authorization: 'Bearer ' + session[:user_token]
+      authorization: 'Bearer ' + user_token
     }
   end
 
   def edit
     gon.data = {
-      authorization: 'Bearer ' + session[:user_token],
+      authorization: 'Bearer ' + user_token,
       id: params[:id]
     }
   end
 
+  private
+    def user_token
+      if session.has_key?(:user_token)
+        session[:user_token]
+      else
+        ''
+      end
+    end
 end
