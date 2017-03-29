@@ -1,21 +1,22 @@
-.row
-  .column.small-12
-    h1 Partners
+#pageContent.c-page
+  .row
+    .column.small-12
+      h1.c-title.-huge Partners
 
-    table
-      thead
-        tr
-          th Name
-          th Featured
-          th Published
-          th Actions
-      tbody
-        - for partner in @partners
+      table
+        thead
           tr
-            td= partner.name
-            td= partner.featured
-            td= partner.published
-            td
-              ul.menu.simple
-                li= link_to "Edit", edit_partner_path(partner)
-                li= link_to "Remove", edit_partner_path(partner)
+            th Name
+            th Featured
+            th Published
+            th Actions
+        tbody
+          - for partner in @partners
+            tr
+              td= partner.name
+              td= partner.featured
+              td= partner.published
+              td
+                ul.menu.simple
+                  li= link_to "Edit", edit_partner_path(partner)
+                  li= link_to "Remove", edit_partner_path(partner)

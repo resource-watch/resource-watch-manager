@@ -13,6 +13,7 @@
 /log/*
 !/log/.keep
 /tmp
+*.log
 
 # Ignore history files
 /.byebug_history
@@ -26,11 +27,16 @@
 /private
 !/private/.keep
 /db_backups
+
 # Ignore environment variables
 /.env
 
 # Ignore node modules
+/yarn-error.log
 /node_modules
+/public/packs
 
 # Ignore docker volumes
 /.data
+/public/packs
+/node_modules

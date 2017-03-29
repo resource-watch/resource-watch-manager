@@ -1,15 +1,21 @@
 class DatasetsController < ApplicationController
 
-  before_filter :check_user_authentication
+  before_action :check_user_authentication if Rails.env === 'production'
 
   def index
   end
 
   def new
+    gon.data = {
+      authorization: 'Bearer ' + session[:user_token]
+    }
   end
 
   def edit
-    @dataset_id = params[:id]
+    gon.data = {
+      authorization: 'Bearer ' + session[:user_token],
+      id: params[:id]
+    }
   end
 
 end

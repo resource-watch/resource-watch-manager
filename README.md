@@ -1,24 +1,34 @@
-# README
+# Resource Watch Manager
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+TODO: Write a description
 
-Things you may want to cover:
 
-* Ruby version
+## How to install
 
-* System dependencies
+Requirements:
 
-* Configuration
+* [Node JS](https://nodejs.org/download/)
+* [Ruby 2.3.3](https://gorails.com/setup/osx/10.12-sierra)
+* [Yarn](https://yarnpkg.com/lang/en/docs/install/)
 
-* Database creation
+Installation command:
 
-* Database initialization
+```bash
+bundle install
+yarn install
+```
 
-* How to run the test suite
+To start application run:
 
-* Services (job queues, cache servers, search engines, etc.)
+```bash
+bundle exec rails server
+```
 
-* Deployment instructions
+In another terminal window run:
 
-* ...
+```bash
+./bin/webpack-watcher
+```
+
+
+

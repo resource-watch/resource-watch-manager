@@ -5,13 +5,14 @@ html lang=I18n.locale
     meta name="viewport" content="width=device-width, initial-scale=1.0"
 
     title == content_for?(:title) ? yield(:title) : "Resource Watch Manager"
-
+    = Gon::Base.render_data
     = stylesheet_link_tag "application"
     = javascript_include_tag "application"
     = csrf_meta_tag
 
   body
     = render 'shared/header'
+    = render 'shared/icons'
 
     - unless notice.nil?
       .notice = notice
