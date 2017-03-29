@@ -4,6 +4,7 @@ MAINTAINER David Inga <david.inga@vizzuality.com>
 ENV APP_PATH /usr/src/resourcewatch-manager
 ENV RAILS_ENV production
 ENV RACK_ENV production
+ENV NODE_ENV production
 
 # Install dependencies
 RUN apk update && \
@@ -31,6 +32,7 @@ WORKDIR $APP_PATH
 COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
 COPY package.json package.json
+RUN yarn install
 RUN bundle install --jobs 20 --retry 5 --without development test && npm install
 ADD . $APP_PATH
 
