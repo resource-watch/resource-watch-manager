@@ -24,7 +24,7 @@ RUN apk update && \
     && rm -rf /var/cache/apk/* \
     && bundle config build.nokogiri --use-system-libraries \
     && gem install bundler --no-ri --no-rdoc \
-    && npm install -g node-gyp
+    && npm install -g node-gyp yarn
 
 # Create app directory
 RUN mkdir -p $APP_PATH
@@ -32,8 +32,7 @@ WORKDIR $APP_PATH
 COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
 COPY package.json package.json
-RUN yarn install
-RUN bundle install --jobs 20 --retry 5 --without development test && npm install
+RUN bundle install --jobs 20 --retry 5 --without development test && yarn install --peer
 ADD . $APP_PATH
 
 # Precompile assets
