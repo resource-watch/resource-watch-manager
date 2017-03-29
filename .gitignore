@@ -13,6 +13,7 @@
 /log/*
 !/log/.keep
 /tmp
+*.log
 
 # Ignore history files
 /.byebug_history
