@@ -32,7 +32,7 @@ WORKDIR $APP_PATH
 COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
 COPY package.json package.json
-RUN bundle install --jobs 20 --retry 5 --without development test && yarn install --peer
+RUN bundle install --jobs 20 --retry 5 --without development test
 ADD . $APP_PATH
 
 # Precompile assets

@@ -11,14 +11,25 @@ if(distDir === undefined) {
   distDir = 'packs'
 }
 
+var entriesPaths = glob.sync(path.join('app', 'javascript', 'packs', '*.js*')).reduce(
+  function(map, entry) {
+    var basename = path.basename(entry, extname(entry))
+    map[basename] = path.resolve(entry)
+    return map
+  }, {}
+);
+
+var datasetsPaths = glob.sync(path.join('app', 'javascript', 'packs', 'dataset', '*.js*')).reduce(
+  function(map, entry) {
+    var basename = path.basename(entry, extname(entry))
+    map['dataset/' + basename] = path.resolve(entry)
+    return map
+  }, {}
+);
+
 config = {
-  entry: glob.sync(path.join('app', 'javascript', 'packs', '*.js*')).reduce(
-    function(map, entry) {
-      var basename = path.basename(entry, extname(entry))
-      map[basename] = path.resolve(entry)
-      return map
-    }, {}
-  ),
+
+  entry: Object.assign({}, entriesPaths, datasetsPaths),
 
   output: { filename: '[name].js', path: path.resolve('public', distDir) },
 
