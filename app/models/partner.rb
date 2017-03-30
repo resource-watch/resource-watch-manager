@@ -52,7 +52,7 @@ class Partner < ApplicationRecord
   validates_attachment_content_type :logo, content_type: %r(/\Aimage\/.*\z/)
   validates_attachment_content_type :white_logo, content_type: %r(/\Aimage\/.*\z/)
   validates_attachment_content_type :cover, content_type: %r(/\Aimage\/.*\z/)
-  validates_attachment_content_type :icon, content_type: %r(/\Aimage\/.*\z/)ß
+  validates_attachment_content_type :icon, content_type: %r(/\Aimage\/.*\z/)
 
   def self.published
     where(published: true)

@@ -8,7 +8,9 @@ class CreateStaticPages < ActiveRecord::Migration[5.1]
       t.text         :description
       t.text         :content
       t.attachment   :photo
+      t.string       :slug
 
+      t.index :slug
       t.timestamps
     end
   end
