@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170315151221) do
+ActiveRecord::Schema.define(version: 20170329162559) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,21 @@ ActiveRecord::Schema.define(version: 20170315151221) do
     t.integer "cover_file_size"
     t.datetime "cover_updated_at"
     t.string "website"
+  end
+
+  create_table "static_pages", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "summary"
+    t.text "description"
+    t.text "content"
+    t.string "photo_file_name"
+    t.string "photo_content_type"
+    t.integer "photo_file_size"
+    t.datetime "photo_updated_at"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_static_pages_on_slug"
   end
 
 end

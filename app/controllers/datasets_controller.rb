@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
+# Controller of the Datasets
 class DatasetsController < ApplicationController
+  before_action :check_user_authentication if Rails.env.production?
 
-  before_action :check_user_authentication if Rails.env === 'production'
-
-  def index
-  end
+  def index; end
 
   def new
     gon.data = {
