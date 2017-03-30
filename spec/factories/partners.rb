@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: partners
@@ -32,20 +34,15 @@
 #  website                 :string
 #
 
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  name: MyString
-  slug: MyString
-  summary: MyString
-  body: MyText
-  published: false
-  featured: false
-
-two:
-  name: MyString
-  slug: MyString
-  summary: MyString
-  body: MyText
-  published: false
-  featured: false
+FactoryGirl.define do
+  factory :partner do
+    name FFaker::Name.name
+    summary FFaker::Lorem.paragraph
+    contact_name FFaker::Name.name
+    contact_email FFaker::Internet.email
+    body FFaker::HTMLIpsum.body
+    published true
+    featured true
+    website FFaker::Internet.http_url
+  end
+end

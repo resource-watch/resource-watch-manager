@@ -11,7 +11,6 @@ end
 
 gem 'rails', '~> 5.1.0.rc1'
 
-# Rails plugins
 gem 'dotenv-rails'
 gem 'faraday', '~> 0.11.0'
 gem 'gon'
@@ -20,7 +19,6 @@ gem 'puma', '~> 3.7'
 gem 'rack-cors'
 gem 'slim-rails'
 
-# Active record
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'pg', '~> 0.18'
 gem 'simple_form'
@@ -46,12 +44,22 @@ group :development, :test do
 end
 
 group :development do
-  # Access an IRB console on exception pages ...
-  # or by using <%= console %> anywhere in the code.
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console', '>= 3.3.0'
+end
+
+group :test do
+  gem 'database_cleaner'
+  gem 'rspec-rails'
+  gem 'shoulda-matchers'
+  gem 'simplecov'
+end
+
+group :test, :development do
+  gem 'factory_girl_rails'
+  gem 'ffaker'
 end
 
 gem 'tzinfo-data', platforms: %i(mingw mswin x64_mingw jruby)

@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-# == Schema Information
-#
 # Table name: static_pages
 #
 #  id                 :integer          not null, primary key
@@ -19,10 +17,11 @@
 
 # frozen_string_literal: true
 
-require 'test_helper'
-
-class StaticPageTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+FactoryGirl.define do
+  factory :static_page do
+    title FFaker::CheesyLingo.title
+    summary FFaker::HealthcareIpsum.paragraph
+    description FFaker::HealthcareIpsum.paragraph(2)
+    content FFaker::HTMLIpsum.body
+  end
 end
