@@ -29,6 +29,13 @@ AllCops:
     - '**/*Fastfile'
   Exclude:
     - 'vendor/**/*'
+    - 'bin/*'
+    - 'config/initializers/simple_form_foundation.rb'
+    - 'db/migrate/*'
+    - 'db/*.rb'
+    - 'node_modules/*/**'
+
+
   # Default formatter will be used if no `-f/--format` option is given.
   DefaultFormatter: progress
   # Cop names are not displayed in offense messages by default. Change behavior

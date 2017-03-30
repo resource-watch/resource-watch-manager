@@ -14,12 +14,16 @@ class StaticPagesController < ApplicationController
     @static_page = StaticPage.friendly.find(params[:id])
   end
 
+  def edit
+    @static_page = StaticPage.friendly.find(params[:id])
+  end
+
   def update
     @static_page = StaticPage.friendly.find(params[:id])
     if @static_page.update(static_pages_params)
       redirect_to static_pages_path, notice: 'Page updated successfully'
     else
-      render
+      render :edit
     end
   end
 
@@ -28,7 +32,7 @@ class StaticPagesController < ApplicationController
     if @static_page.save
       redirect_to static_pages_path, notice: 'Page created successfully'
     else
-      render
+      render :new
     end
   end
 
@@ -40,8 +44,6 @@ class StaticPagesController < ApplicationController
       redirect_to static_pages_path, notice: 'Error on destroying page'
     end
   end
-
-
 
   private
 

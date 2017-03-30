@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: static_pages
@@ -21,15 +22,14 @@
 # Static Page Model
 class StaticPage < ApplicationRecord
   extend FriendlyId
-  friendly_id :title, use: %i(slugged simple_i18n)
+  friendly_id :title, use: %i(slugged)
 
   validates_presence_of :title
 
   has_attached_file :photo,
-                    styles: { medium: '320x180>', thumb: '110x60>' },
-                    default_url: '/images/:style/missing.png'
+                    styles: { medium: '320x180>', thumb: '110x60>' }
 
-  validates_attachment_content_type :photo, content_type: %r(/\Aimage\/.*\z/)
+  validates_attachment_content_type :photo, content_type: %r{^image\/.*}
 
   def should_generate_new_friendly_id?
     new_record?

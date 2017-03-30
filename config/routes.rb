@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   # Admin models
   resources :datasets, only: %i(index new edit)
   resources :partners, only: %i(index new create edit update)
-  resources :static_pages, only: %i(index new create edit update)
+  resources :static_pages, only: %i(index new create edit update destroy)
 
   # API
   namespace :api do

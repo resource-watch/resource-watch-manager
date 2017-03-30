@@ -19,4 +19,5 @@
               td
                 ul.menu.simple
                   li= link_to 'Edit', edit_static_page_path(page)
-                  li= link_to 'Remove', edit_static_page_pasth(page)
+                  li= link_to 'Remove', static_page_path(page), method: :delete,
+                          data: { confirm: 'Are you certain you want to delete this page?' }

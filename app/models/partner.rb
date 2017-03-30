@@ -49,10 +49,10 @@ class Partner < ApplicationRecord
                     styles: { thumb: '25x25>' },
                     default_url: '/images/:style/missing.png'
 
-  validates_attachment_content_type :logo, content_type: %r(/\Aimage\/.*\z/)
-  validates_attachment_content_type :white_logo, content_type: %r(/\Aimage\/.*\z/)
-  validates_attachment_content_type :cover, content_type: %r(/\Aimage\/.*\z/)
-  validates_attachment_content_type :icon, content_type: %r(/\Aimage\/.*\z/)
+  validates_attachment_content_type :logo, content_type: %r{^image\/.*}
+  validates_attachment_content_type :white_logo, content_type: %r{^image\/.*}
+  validates_attachment_content_type :cover, content_type: %r{^image\/.*}
+  validates_attachment_content_type :icon, content_type: %r{^image\/.*}
 
   def self.published
     where(published: true)
