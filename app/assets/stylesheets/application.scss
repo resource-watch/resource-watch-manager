@@ -15,8 +15,9 @@
  *= require rw-components/dist/style.css
  */
 
-@import 
+@import
   "config",
   "settings",
+  "base",
   "components/*",
   "layout/*";;
