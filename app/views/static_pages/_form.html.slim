@@ -1,0 +1,15 @@
+= simple_form_for @static_page, { html: { multipart: true } } do |f|
+  = f.input :title
+  - if f.object.slug
+    = f.input :slug, disabled: :true
+  = f.input :summary
+  = f.input :description
+  = f.input :content
+
+  - if f.object.photo.file?
+    .input
+      label Current photo
+      = image_tag f.object.photo.url(:thumb)
+  = f.input :photo, as: :file, label: 'Upload photo'
+
+  = f.button :submit
