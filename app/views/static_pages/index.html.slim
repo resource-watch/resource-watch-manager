@@ -1,0 +1,22 @@
+#pageContent.c-page
+  .row
+    .column.small-12
+      h1.c-title.-huge Static Pages
+
+      div
+        = link_to 'Add', new_static_page_path
+      table
+        thead
+          tr
+            th Title
+            th Summary
+            th Actions
+        tbody
+          - for page in @static_pages
+            tr
+              td= page.title
+              td= page.summary
+              td
+                ul.menu.simple
+                  li= link_to 'Edit', edit_static_page_path(page)
+                  li= link_to 'Remove', edit_static_page_pasth(page)

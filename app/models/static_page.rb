@@ -25,6 +25,12 @@ class StaticPage < ApplicationRecord
 
   validates_presence_of :title
 
+  has_attached_file :photo,
+                    styles: { medium: '320x180>', thumb: '110x60>' },
+                    default_url: '/images/:style/missing.png'
+
+  validates_attachment_content_type :photo, content_type: %r(/\Aimage\/.*\z/)
+
   def should_generate_new_friendly_id?
     new_record?
   end
