@@ -20,6 +20,10 @@ class DatasetIndex extends React.Component {
     return <td key={i} className={className}>{value}</td>;
   }
 
+  getEditMetadataAction(value) {
+    return value.status === 'saved';
+  }
+
   render() {
     return (
       <div className="row">
@@ -27,11 +31,11 @@ class DatasetIndex extends React.Component {
           <Title className="-huge">
             Datasets
           </Title>
-          <DatasetTable 
-            application={['rw']} 
+          <DatasetTable
+            application={['rw']}
             mode='table'
             columns={[
-              { label: 'name', value: 'name' }, 
+              { label: 'name', value: 'name' },
               { label: 'status', value: 'status', td: this.getStatusTd },
               { label: 'provider', value: 'provider' }
             ]}
@@ -39,7 +43,8 @@ class DatasetIndex extends React.Component {
               show: true,
               list: [
                 { name: 'Edit', path: 'datasets/:id/edit', show: true },
-                { name: 'Remove', path: 'datasets/:id/remove', show: true }
+                { name: 'Remove', path: 'datasets/:id/remove', show: true },
+                { name: 'Edit Metadata', path: 'datasets/:id/metadata', show: this.getEditMetadataAction }
               ]
             }}
           />
