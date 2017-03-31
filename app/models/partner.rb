@@ -36,6 +36,11 @@
 
 # Model for Partner
 class Partner < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name, use: %i(slugged)
+
+  validates_presence_of :name
+
   has_attached_file :logo,
                     styles: { medium: '320x180>', thumb: '110x60>' },
                     default_url: '/images/:style/missing.png'
