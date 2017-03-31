@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   root to: "datasets#index"
 
   # Admin models
-  resources :datasets, only: [:index, :new, :edit]
+  resources :datasets, only: [:index, :new, :edit] do
+    resources :metadata, only: [:index, :new, :edit]
+  end
   resources :partners, only: [:index, :new, :create, :edit, :update]
 
   # API
