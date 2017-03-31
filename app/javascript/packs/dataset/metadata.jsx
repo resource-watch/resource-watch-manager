@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import MetadataForm from 'rw-components/dist/components/metadata/form/MetadataForm';
 import Title from 'rw-components/dist/components/UI/Title';
 
 class DatasetMetadata extends React.Component {
@@ -11,6 +12,11 @@ class DatasetMetadata extends React.Component {
           <Title className="-huge">
             Dataset metadata
           </Title>
+          <MetadataForm
+            application={['rw']}
+            authorization={gon.data.authorization}
+            dataset={gon.data.id}
+            />
         </div>
       </div>
     );

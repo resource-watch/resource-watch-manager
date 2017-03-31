@@ -3,10 +3,9 @@ class MetadataController < ApplicationController
   before_action :check_user_authentication if Rails.env === 'production'
 
   def index
-    puts 'asdfaskdfkahjgdsf gjhasdff ghjkfadsgjk fsadgjkfsadk f jghkfds kfghjkf ghjd adfjk fghjkf jgkjkgh adfsjkgh adfsjhk gadfs'
     gon.data = {
       authorization: 'Bearer ' + user_token,
-      id: params[:id]
+      id: params[:dataset_id]
     }
   end
 
@@ -19,7 +18,7 @@ class MetadataController < ApplicationController
   def edit
     gon.data = {
       authorization: 'Bearer ' + user_token,
-      id: params[:id]
+      id: params[:dataset_id]
     }
   end
 
