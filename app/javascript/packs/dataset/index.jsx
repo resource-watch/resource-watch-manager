@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import DatasetTable from 'rw-components/dist/components/Dataset/Table';
 import Title from 'rw-components/dist/components/UI/Title';
+import MetadataTD from 'rw-components/dist/components/metadata/MetadataTD';
 
 const classesDic = {
   status: {
@@ -21,7 +22,7 @@ class DatasetIndex extends React.Component {
   }
 
   getEditMetadataAction(value) {
-    return value.status === 'saved';
+    return value.status === 'saved' || value.status === 'failed';
   }
 
   render() {
@@ -44,7 +45,7 @@ class DatasetIndex extends React.Component {
               list: [
                 { name: 'Edit', path: 'datasets/:id/edit', show: true },
                 { name: 'Remove', path: 'datasets/:id/remove', show: true },
-                { name: 'Edit Metadata', path: 'datasets/:id/metadata', show: this.getEditMetadataAction }
+                { name: 'Metadata', path: 'datasets/:id/metadata', component: MetadataTD }
               ]
             }}
           />

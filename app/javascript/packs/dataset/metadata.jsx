@@ -15,6 +15,7 @@ class DatasetMetadata extends React.Component {
           <MetadataForm
             application={['rw']}
             authorization={gon.data.authorization}
+            language="en"
             dataset={gon.data.id}
             />
         </div>
