@@ -5,7 +5,7 @@ class MetadataController < ApplicationController
   def index
     gon.data = {
       authorization: 'Bearer ' + user_token,
-      id: params[:dataset_id]
+      dataset_id: params[:dataset_id]
     }
   end
 
@@ -18,7 +18,7 @@ class MetadataController < ApplicationController
   def edit
     gon.data = {
       authorization: 'Bearer ' + user_token,
-      id: params[:dataset_id]
+      dataset_id: params[:dataset_id]
     }
   end
 

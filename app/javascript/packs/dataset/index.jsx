@@ -1,9 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import DatasetTable from 'rw-components/dist/components/Dataset/Table';
-import Title from 'rw-components/dist/components/UI/Title';
-import MetadataTD from 'rw-components/dist/components/metadata/MetadataTD';
-import StatusTD from 'rw-components/dist/components/Dataset/StatusTD';
+import { DatasetTable, Title, MetadataAction, StatusTD } from 'rw-components';
 
 class DatasetIndex extends React.Component {
 
@@ -27,7 +24,7 @@ class DatasetIndex extends React.Component {
               list: [
                 { name: 'Edit', path: 'datasets/:id/edit', show: true },
                 { name: 'Remove', path: 'datasets/:id/remove', show: true },
-                { name: 'Metadata', path: 'datasets/:id/metadata', component: MetadataTD }
+                { name: 'Metadata', path: 'datasets/:id/metadata', component: MetadataAction }
               ]
             }}
           />
