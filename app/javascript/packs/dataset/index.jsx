@@ -13,6 +13,7 @@ class DatasetIndex extends React.Component {
           </Title>
           <DatasetTable
             application={['rw']}
+            authorization={gon.data.authorization}
           />
         </div>
       </div>

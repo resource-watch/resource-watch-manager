@@ -4,7 +4,11 @@
 class DatasetsController < ApplicationController
   before_action :check_user_authentication if Rails.env.production?
 
-  def index; end
+  def index
+    gon.data = {
+      authorization: 'Bearer ' + user_token
+    }
+  end
 
   def new
     gon.data = {
