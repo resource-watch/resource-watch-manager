@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
+# Partner serializer
 class PartnerSerializer < ActiveModel::Serializer
   attributes :id, :name, :slug, :summary, :body,
-    :contact_email, :contact_name, :website, :featured,
-    :logo, :white_logo, :cover, :icon
+             :contact_email, :contact_name, :website, :featured,
+             :logo, :white_logo, :cover, :icon
 
   def logo
     {

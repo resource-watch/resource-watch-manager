@@ -1,5 +1,7 @@
-class AuthController < ApplicationController
+# frozen_string_literal: true
 
+# Class for the authentication controller
+class AuthController < ApplicationController
   def login
     if params.key?('token')
       session[:user_token] = params[:token]
@@ -14,5 +16,4 @@ class AuthController < ApplicationController
     session.delete(:current_user)
     logout_apigateway
   end
-
 end
