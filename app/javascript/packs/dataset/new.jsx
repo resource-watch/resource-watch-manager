@@ -6,7 +6,7 @@ import Title from 'rw-components/dist/components/UI/Title';
 const DatasetNew = () => (
   <div className="row">
     <div className="column small-12">
-      <Title className="-huge">
+      <Title className="-huge -p-primary">
         New Dataset
       </Title>
       <DatasetForm
