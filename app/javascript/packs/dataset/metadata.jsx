@@ -9,9 +9,6 @@ class DatasetMetadata extends React.Component {
     return (
       <div className="row">
         <div className="column small-12">
-          <Title className="-huge">
-            Dataset metadata
-          </Title>
           <MetadataForm
             application={['rw']}
             authorization={gon.data.authorization}
