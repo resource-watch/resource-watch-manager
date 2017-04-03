@@ -10,7 +10,7 @@ class DatasetMetadata extends React.Component {
       <div className="row">
         <div className="column small-12">
           <MetadataForm
-            application={['rw']}
+            application={'rw'}
             authorization={gon.data.authorization}
             language="en"
             dataset={gon.data.dataset_id}
