@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { DatasetTable, Title, MetadataAction, StatusTD } from 'rw-components';
+import { DatasetTable, Title } from 'rw-components';
 
 class DatasetIndex extends React.Component {
 
@@ -13,20 +13,6 @@ class DatasetIndex extends React.Component {
           </Title>
           <DatasetTable
             application={['rw']}
-            mode='table'
-            columns={[
-              { label: 'name', value: 'name' },
-              { label: 'status', value: 'status', td: StatusTD },
-              { label: 'provider', value: 'provider' }
-            ]}
-            actions={{
-              show: true,
-              list: [
-                { name: 'Edit', path: 'datasets/:id/edit', show: true },
-                { name: 'Remove', path: 'datasets/:id/remove', show: true },
-                { name: 'Metadata', path: 'datasets/:id/metadata', component: MetadataAction }
-              ]
-            }}
           />
         </div>
       </div>
