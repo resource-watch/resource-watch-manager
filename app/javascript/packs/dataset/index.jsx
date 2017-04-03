@@ -3,27 +3,9 @@ import ReactDOM from 'react-dom';
 import DatasetTable from 'rw-components/dist/components/Dataset/Table';
 import Title from 'rw-components/dist/components/UI/Title';
 import MetadataTD from 'rw-components/dist/components/metadata/MetadataTD';
-
-const classesDic = {
-  status: {
-    success: '-success',
-    failed: '-failed',
-    saved: '-saved',
-    deleted: '-deleted',
-    pending: '-pending'
-  }
-};
+import StatusTD from 'rw-components/dist/components/Dataset/StatusTD';
 
 class DatasetIndex extends React.Component {
-
-  getStatusTd(value, i) {
-    const className = `status ${classesDic.status[value]}`;
-    return <td key={i} className={className}>{value}</td>;
-  }
-
-  getEditMetadataAction(value) {
-    return value.status === 'saved' || value.status === 'failed';
-  }
 
   render() {
     return (
@@ -37,7 +19,7 @@ class DatasetIndex extends React.Component {
             mode='table'
             columns={[
               { label: 'name', value: 'name' },
-              { label: 'status', value: 'status', td: this.getStatusTd },
+              { label: 'status', value: 'status', td: StatusTD },
               { label: 'provider', value: 'provider' }
             ]}
             actions={{
