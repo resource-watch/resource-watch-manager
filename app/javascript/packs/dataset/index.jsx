@@ -1,24 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import DatasetTable from 'rw-components/dist/components/Dataset/Table';
-import Title from 'rw-components/dist/components/UI/Title';
-
-const classesDic = {
-  status: {
-    success: '-success',
-    failed: '-failed',
-    saved: '-saved',
-    deleted: '-deleted',
-    pending: '-pending'
-  }
-};
+import { DatasetTable, Title, MetadataAction, StatusTD } from 'rw-components';
 
 class DatasetIndex extends React.Component {
-
-  getStatusTd(value, i) {
-    const className = `status ${classesDic.status[value]}`;
-    return <td key={i} className={className}>{value}</td>;
-  }
 
   render() {
     return (
@@ -27,19 +11,20 @@ class DatasetIndex extends React.Component {
           <Title className="-huge">
             Datasets
           </Title>
-          <DatasetTable 
-            application={['rw']} 
+          <DatasetTable
+            application={['rw']}
             mode='table'
             columns={[
-              { label: 'name', value: 'name' }, 
-              { label: 'status', value: 'status', td: this.getStatusTd },
+              { label: 'name', value: 'name' },
+              { label: 'status', value: 'status', td: StatusTD },
               { label: 'provider', value: 'provider' }
             ]}
             actions={{
               show: true,
               list: [
                 { name: 'Edit', path: 'datasets/:id/edit', show: true },
-                { name: 'Remove', path: 'datasets/:id/remove', show: true }
+                { name: 'Remove', path: 'datasets/:id/remove', show: true },
+                { name: 'Metadata', path: 'datasets/:id/metadata', component: MetadataAction }
               ]
             }}
           />
