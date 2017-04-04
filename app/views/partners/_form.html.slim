@@ -1,6 +1,7 @@
 = simple_form_for @partner, { html: { multipart: true } } do |f|
   = f.input :name
-  = f.input :slug
+  - if f.object.slug
+    = f.input :slug, disabled: true
   = f.input :summary
   = f.input :body
   = f.input :contact_name
