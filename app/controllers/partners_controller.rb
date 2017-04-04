@@ -9,7 +9,7 @@ class PartnersController < ApplicationController
   end
 
   def edit
-    @partner = Partner.find(params[:id])
+    @partner = Partner.friendly.find(params[:id])
   end
 
   def new
@@ -23,7 +23,7 @@ class PartnersController < ApplicationController
   end
 
   def update
-    @partner = Partner.find(params[:id])
+    @partner = Partner.friendly.find(params[:id])
     @partner.update(partner_params)
     redirect_to partners_path
   end
@@ -31,7 +31,7 @@ class PartnersController < ApplicationController
   private
 
   def partner_params
-    params.require(:partner).permit(:name, :slug, :summary,
+    params.require(:partner).permit(:name, :summary,
                                     :body, :contact_name, :contact_email,
                                     :website, :logo, :white_logo,
                                     :cover, :icon, :featured, :published)
