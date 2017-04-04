@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { DatasetTable, Title } from 'rw-components';
+import { DatasetTable, ButtonContainer, Title } from 'rw-components';
 
 class DatasetIndex extends React.Component {
+
 
   render() {
     return (
@@ -11,6 +12,16 @@ class DatasetIndex extends React.Component {
           <Title className="-huge -p-primary">
             Datasets
           </Title>
+
+          <ButtonContainer
+            className="-end"
+            buttons={[{
+              label: 'New +',
+              path: '/datasets/new',
+              className: ''
+            }]}
+          />
+
           <DatasetTable
             application={['rw']}
             authorization={gon.data.authorization}
