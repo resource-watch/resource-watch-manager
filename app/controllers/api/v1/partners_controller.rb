@@ -11,7 +11,7 @@ module Api
       end
 
       def show
-        render json: Partner.find(params[:id])
+        render json: Partner.friendly.find(params[:id])
       end
     end
   end

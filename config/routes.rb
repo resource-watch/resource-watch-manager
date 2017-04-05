@@ -7,9 +7,12 @@ Rails.application.routes.draw do
   root to: "datasets#index"
 
   # Admin models
-  resources :datasets, only: %i(index new edit)
+  resources :datasets, only: %i(index new edit) do
+    resources :metadata, only: %i(index new edit)
+  end
   resources :partners, only: %i(index new create edit update)
   resources :static_pages, only: %i(index new create edit update destroy)
+
 
   # API
   namespace :api, defaults: { format: :json } do

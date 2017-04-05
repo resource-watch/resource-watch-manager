@@ -1,12 +1,11 @@
-# frozen_string_literal: true
+class MetadataController < ApplicationController
 
-# Controller of the Datasets
-class DatasetsController < ApplicationController
-  before_action :check_user_authentication if Rails.env.production?
+  before_action :check_user_authentication if Rails.env === 'production'
 
   def index
     gon.data = {
-      authorization: 'Bearer ' + user_token
+      authorization: 'Bearer ' + user_token,
+      dataset_id: params[:dataset_id]
     }
   end
 
@@ -19,7 +18,7 @@ class DatasetsController < ApplicationController
   def edit
     gon.data = {
       authorization: 'Bearer ' + user_token,
-      id: params[:id]
+      dataset_id: params[:dataset_id]
     }
   end
 

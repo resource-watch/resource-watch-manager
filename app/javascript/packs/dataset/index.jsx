@@ -1,47 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import DatasetTable from 'rw-components/dist/components/Dataset/Table';
-import Title from 'rw-components/dist/components/UI/Title';
-
-const classesDic = {
-  status: {
-    success: '-success',
-    failed: '-failed',
-    saved: '-saved',
-    deleted: '-deleted',
-    pending: '-pending'
-  }
-};
+import { DatasetTable, ButtonContainer, Title } from 'rw-components';
 
 class DatasetIndex extends React.Component {
 
-  getStatusTd(value, i) {
-    const className = `status ${classesDic.status[value]}`;
-    return <td key={i} className={className}>{value}</td>;
-  }
 
   render() {
     return (
       <div className="row">
         <div className="column small-12">
-          <Title className="-huge">
+          <Title className="-huge -p-primary">
             Datasets
           </Title>
-          <DatasetTable 
-            application={['rw']} 
-            mode='table'
-            columns={[
-              { label: 'name', value: 'name' }, 
-              { label: 'status', value: 'status', td: this.getStatusTd },
-              { label: 'provider', value: 'provider' }
-            ]}
-            actions={{
-              show: true,
-              list: [
-                { name: 'Edit', path: 'datasets/:id/edit', show: true },
-                { name: 'Remove', path: 'datasets/:id/remove', show: true }
-              ]
-            }}
+
+          <ButtonContainer
+            className="-end"
+            buttons={[{
+              label: 'New +',
+              path: '/datasets/new',
+              className: ''
+            }]}
+          />
+
+          <DatasetTable
+            application={['rw']}
+            authorization={gon.data.authorization}
           />
         </div>
       </div>
