@@ -17,7 +17,7 @@
 class Subcategory < ApplicationRecord
   extend FriendlyId
 
-  friendly_id :name, use: %i(slugged)
+  friendly_id :name, use: :scoped, scope: :category
 
   belongs_to :category
   has_many :dataset_subcategories

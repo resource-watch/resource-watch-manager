@@ -14,7 +14,7 @@
             tbody
               - for category in @categories
                 tr
-                  td= category.name
+                  td= link_to category.name, category_subcategories_path(category.slug)
                   td= category.description
                   td= category.updated_at
                   td

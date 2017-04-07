@@ -1,0 +1,24 @@
+#pageContent.c-page
+  .row
+    .column.small-12
+      h1.c-title.-huge Subcategories for #{ @category.name }
+      div = link_to 'Add', new_category_subcategory_path(@category)
+      .c-table
+        table.table
+          thead
+            tr
+              th Name
+              th Description
+              th Updated At
+              th Actions
+            tbody
+              - for subcategory in @subcategories
+                tr
+                  td= link_to subcategory.name, category_subcategory_dataset_subcategories_path(@category, subcategory.slug)
+                  td= subcategory.description
+                  td= subcategory.updated_at
+                  td
+                    ul.menu.simple
+                      li= link_to 'Edit', edit_category_subcategory_path(@category, subcategory)
+                      li= link_to 'Remove', category_subcategory_path(@category, subcategory), method: :delete,
+                              data: { confirm: 'Are you certain you want to delete this subcategory?' }
