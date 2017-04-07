@@ -24,11 +24,12 @@ class DatasetsController < ApplicationController
   end
 
   private
-    def user_token
-      if session.has_key?(:user_token)
-        session[:user_token]
-      else
-        ''
-      end
+
+  def user_token
+    if session.key?(:user_token)
+      session[:user_token]
+    else
+      ''
     end
+  end
 end

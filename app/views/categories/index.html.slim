@@ -1,0 +1,24 @@
+#pageContent.c-page
+  .row
+    .column.small-12
+      h1.c-title.-huge Categories
+      div = link_to 'Add', new_category_path
+      .c-table
+        table.table
+          thead
+            tr
+              th Name
+              th Description
+              th Updated At
+              th Actions
+            tbody
+              - for category in @categories
+                tr
+                  td= category.name
+                  td= category.description
+                  td= category.updated_at
+                  td
+                    ul.menu.simple
+                      li= link_to 'Edit', edit_category_path(category)
+                      li= link_to 'Remove', category_path(category), method: :delete,
+                              data: { confirm: 'Are you certain you want to delete this category?' }
