@@ -1,9 +1,6 @@
 {
   "name": "resource-watch-manager",
   "dependencies": {
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
-    "rw-components": "git://github.com/resource-watch/rw-components.git#master",
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",
     "babel-preset-env": "^1.2.2",
@@ -15,6 +12,9 @@
     "glob": "^7.1.1",
     "path-complete-extname": "^0.1.0",
     "rails-erb-loader": "^3.2.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "rw-components": "git://github.com/resource-watch/rw-components.git#master",
     "webpack": "^2.3.1",
     "webpack-dev-server": "^2.4.2",
     "webpack-merge": "^4.1.0"
