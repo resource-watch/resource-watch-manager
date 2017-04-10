@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import DatasetForm from 'rw-components/dist/components/Dataset/Form';
-import Title from 'rw-components/dist/components/UI/Title';
+import { DatasetForm, Title } from 'rw-components';
 
 const DatasetNew = () => (
   <div className="row">

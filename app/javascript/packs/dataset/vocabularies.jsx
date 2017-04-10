@@ -8,9 +8,6 @@ class DatasetVocabularies extends React.Component {
     return (
       <div className="row">
         <div className="column small-12">
-          <Title className="-huge -p-primary">
-            Vocabularies
-          </Title>
           <VocabulariesForm
             application={'rw'}
             authorization={gon.data.authorization}
