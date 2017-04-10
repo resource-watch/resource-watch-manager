@@ -2,7 +2,10 @@
   .row
     .column.small-12
       h1.c-title.-huge Partners
-      div = link_to 'Add', new_partner_path
+      .c-button-container.-end
+        ul
+          li
+            = link_to 'New +', new_partner_path, class: 'c-button'
       .c-table
         table.table
           thead
@@ -14,18 +17,11 @@
           tbody
             - for partner in @partners
               tr
-                th Name
-                th Featured
-                th Published
-                th Actions
-            tbody
-              - for partner in @partners
-                tr
-                  td= partner.name
-                  td= partner.featured
-                  td= partner.published
-                  td
-                    ul.menu.simple
-                      li= link_to "Edit", edit_partner_path(partner)
-                      li= link_to "Remove", partner_path(partner), method: :delete,
-                              data: { confirm: 'Are you certain you want to delete this partner?' }
+                td= partner.name
+                td= partner.featured
+                td= partner.published
+                td
+                  ul.menu.simple
+                    li= link_to "Edit", edit_partner_path(partner)
+                    li= link_to "Remove", partner_path(partner), method: :delete,
+                            data: { confirm: 'Are you certain you want to delete this partner?' }
