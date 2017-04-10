@@ -20,8 +20,8 @@
                 td= partner.name
                 td= partner.featured
                 td= partner.published
-                td
-                  ul.menu.simple
+                td.individual-actions
+                  ul
                     li= link_to "Edit", edit_partner_path(partner)
                     li= link_to "Remove", partner_path(partner), method: :delete,
                             data: { confirm: 'Are you certain you want to delete this partner?' }
