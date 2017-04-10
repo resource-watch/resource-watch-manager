@@ -2,7 +2,10 @@
   .row
     .column.small-12
       h1.c-title.-huge Partners
-      div = link_to 'Add', new_partner_path
+      .c-button-container.-end
+        ul
+          li
+            = link_to 'New +', new_partner_path, class: 'c-button'
       .c-table
         table.table
           thead
