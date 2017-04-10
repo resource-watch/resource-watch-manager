@@ -17,6 +17,6 @@ class Category < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: %i(slugged)
 
-  has_many :subcategories
+  has_many :subcategories, inverse_of: :category
   validates_presence_of :name
 end

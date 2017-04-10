@@ -3,5 +3,14 @@
   - if f.object.slug
     = f.input :slug, disabled: true
   = f.input :description
+  - for dataset in @datasets
+    .div
+      = f.label dataset.name
+      = check_box_tag 'subcategory[dataset_subcategories][]', "#{dataset.id}", \
+        @subcategory.dataset_subcategories.any?{|d| d.dataset_id == dataset.id}, id: "dataset-#{dataset.id }"
+
+      /= check_box_tag 'subcategory[dataset_ids][]', "#{dataset.id}", \
+              @subcategory.dataset_subcategories.any?{|d| d.dataset_id == dataset.id}, id: "dataset-#{dataset.id }"
+
 
   = f.button :submit

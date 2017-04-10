@@ -14,7 +14,7 @@
             tbody
               - for subcategory in @subcategories
                 tr
-                  td= link_to subcategory.name, category_subcategory_dataset_subcategories_path(@category, subcategory.slug)
+                  td= subcategory.name
                   td= subcategory.description
                   td= subcategory.updated_at
                   td

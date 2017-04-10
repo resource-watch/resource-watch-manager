@@ -19,7 +19,8 @@ gem 'puma', '~> 3.7'
 gem 'rack-cors'
 gem 'slim-rails'
 
-gem 'active_model_serializers', '~> 0.10.0'
+gem 'active_model_serializers'
+#gem 'activemodel-associations'
 gem 'pg', '~> 0.18'
 gem 'simple_form'
 
