@@ -28,6 +28,15 @@ class PartnersController < ApplicationController
     redirect_to partners_path
   end
 
+  def destroy
+    @partner = Partner.friendly.find(params[:id])
+    if @partner.destroy
+      redirect_to partners_path, notice: 'Partner successfully deleted'
+    else
+      redirect_to partners_path, notice: 'There was an error on deleting the partner'
+    end
+  end
+
   private
 
   def partner_params

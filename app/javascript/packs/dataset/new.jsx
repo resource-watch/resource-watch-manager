@@ -11,6 +11,7 @@ const DatasetNew = () => (
       <DatasetForm
         application={['rw']}
         authorization={gon.data.authorization}
+        onSubmit={() => window.location = "/datasets"}
       />
     </div>
   </div>

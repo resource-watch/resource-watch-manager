@@ -10,7 +10,8 @@ module.exports = merge(sharedConfig.config, {
 
   plugins: [
     new webpack.LoaderOptionsPlugin({
-      minimize: true
+      minimize: true,
+      debug: false
     })
   ]
 })
