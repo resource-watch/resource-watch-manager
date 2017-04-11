@@ -13,12 +13,14 @@
             tr
               th Title
               th Summary
+              th Published
               th Actions
           tbody
             - for page in @static_pages
               tr
                 td= page.title
                 td= page.summary
+                td= page.published
                 td.individual-actions
                   ul
                     li= link_to 'Edit', edit_static_page_path(page)

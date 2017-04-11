@@ -48,6 +48,6 @@ class StaticPagesController < ApplicationController
   private
 
   def static_pages_params
-    params.require(:static_page).permit(:title, :summary, :description, :content, :photo)
+    params.require(:static_page).permit(:title, :summary, :description, :content, :photo, :published)
   end
 end
