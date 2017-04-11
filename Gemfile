@@ -19,7 +19,8 @@ gem 'puma', '~> 3.7'
 gem 'rack-cors'
 gem 'slim-rails'
 
-gem 'active_model_serializers', '~> 0.10.0'
+gem 'active_model_serializers'
+#gem 'activemodel-associations'
 gem 'pg', '~> 0.18'
 gem 'simple_form'
 
@@ -29,7 +30,7 @@ gem 'foundation-rails'
 gem 'jquery-rails'
 gem 'sass-rails', github: 'rails/sass-rails'
 gem 'uglifier', '>= 1.3.0'
-gem 'webpacker'
+gem 'webpacker', '= 1.0'
 
 # Friendly id
 gem 'friendly_id', '~> 5.1.0'

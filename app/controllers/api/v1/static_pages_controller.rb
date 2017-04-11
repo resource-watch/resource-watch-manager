@@ -5,7 +5,7 @@ module Api
     # API class for the Static Pages Resource
     class StaticPagesController < ApiController
       def index
-        static_pages = StaticPage.all
+        static_pages = StaticPage.where(published: true)
         render json: static_pages
       end
 

@@ -1,12 +1,12 @@
 #pageContent.c-page
   .row
     .column.small-12
-      .c-title.-huge.-p-primary Static Pages
+      .c-title.-huge.-p-primary Insights
 
       .c-button-container.-end
         ul
           li
-            = link_to 'New +', new_static_page_path, class: 'c-button'
+            = link_to 'New +', new_insight_path, class: 'c-button'
       .c-table
         table.table
           thead
@@ -16,13 +16,13 @@
               th Published
               th Actions
           tbody
-            - for page in @static_pages
+            - for page in @insights
               tr
                 td= page.title
                 td= page.summary
                 td= page.published
                 td.individual-actions
                   ul
-                    li= link_to 'Edit', edit_static_page_path(page)
-                    li= link_to 'Remove', static_page_path(page), method: :delete,
+                    li= link_to 'Edit', edit_insight_path(page)
+                    li= link_to 'Remove', insight_path(page), method: :delete,
                             data: { confirm: 'Are you certain you want to delete this page?' }

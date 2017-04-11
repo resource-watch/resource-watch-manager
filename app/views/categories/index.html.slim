@@ -1,0 +1,30 @@
+#pageContent.c-page
+  .row
+    .column.small-12
+      .c-title.-huge.-p-primary Categories
+
+      .c-button-container.-end
+        ul
+          li
+            = link_to 'New +', new_category_path, class: 'c-button'
+
+      .c-table
+        table.table
+          thead
+            tr
+              th Name
+              th Description
+              th Updated At
+              th Actions
+            tbody
+              - for category in @categories
+                tr
+                  td= link_to category.name, category_subcategories_path(category.slug)
+                  td= category.description
+                  td= category.updated_at
+                  td.individual-actions
+                    ul
+                      li= link_to 'Sub Categories', category_subcategories_path(category.slug)
+                      li= link_to 'Edit', edit_category_path(category)
+                      li= link_to 'Remove', category_path(category), method: :delete,
+                              data: { confirm: 'Are you certain you want to delete this category?' }

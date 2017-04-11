@@ -1,8 +1,6 @@
-# frozen_string_literal: true
+class VocabulariesController < ApplicationController
 
-# Class to deal with Dataset's metadata
-class MetadataController < ApplicationController
-  before_action :check_user_authentication if Rails.env.production?
+  before_action :check_user_authentication if Rails.env === 'production'
 
   def index
     gon.data = {
@@ -25,12 +23,11 @@ class MetadataController < ApplicationController
   end
 
   private
-
-  def user_token
-    if session.key?(:user_token)
-      session[:user_token]
-    else
-      ''
+    def user_token
+      if session.has_key?(:user_token)
+        session[:user_token]
+      else
+        ''
+      end
     end
-  end
 end
