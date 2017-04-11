@@ -19,6 +19,7 @@
                   td= category.updated_at
                   td
                     ul.menu.simple
+                      li= link_to 'Sub Categories', category_subcategories_path(category.slug)
                       li= link_to 'Edit', edit_category_path(category)
                       li= link_to 'Remove', category_path(category), method: :delete,
                               data: { confirm: 'Are you certain you want to delete this category?' }
