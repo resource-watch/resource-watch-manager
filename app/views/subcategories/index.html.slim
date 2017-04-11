@@ -1,7 +1,7 @@
 #pageContent.c-page
   .row
     .column.small-12
-      h1.c-title.-huge Subcategories for #{ @category.name }
+      .c-title.-huge.-p-primary Subcategories for #{ @category.name }
       div = link_to 'Add', new_category_subcategory_path(@category)
       .c-table
         table.table

@@ -1,7 +1,12 @@
-= simple_form_for @category, { html: { multipart: true } } do |f|
-  = f.input :name
-  - if f.object.slug
-    = f.input :slug, disabled: true
-  = f.input :description
+= simple_form_for @category, { html: { multipart: true, class: 'c-form' } } do |f|
+  .c-field-container
+    .c-field
+      = f.input :name
+    - if f.object.slug
+      .c-field
+        = f.input :slug, disabled: true
+    .c-field
+      = f.input :description
 
-  = f.button :submit
+  .c-field-buttons
+    = f.button :submit, class: 'c-button -primary'

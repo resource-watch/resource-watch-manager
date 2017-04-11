@@ -1,8 +1,13 @@
 #pageContent.c-page
   .row
     .column.small-12
-      h1.c-title.-huge Categories
-      div = link_to 'Add', new_category_path
+      .c-title.-huge.-p-primary Categories
+
+      .c-button-container.-end
+        ul
+          li
+            = link_to 'New +', new_category_path, class: 'c-button'
+
       .c-table
         table.table
           thead
@@ -17,8 +22,8 @@
                   td= link_to category.name, category_subcategories_path(category.slug)
                   td= category.description
                   td= category.updated_at
-                  td
-                    ul.menu.simple
+                  td.individual-actions
+                    ul
                       li= link_to 'Sub Categories', category_subcategories_path(category.slug)
                       li= link_to 'Edit', edit_category_path(category)
                       li= link_to 'Remove', category_path(category), method: :delete,
