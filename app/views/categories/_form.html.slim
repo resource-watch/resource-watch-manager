@@ -1,5 +1,5 @@
 = simple_form_for @category, { html: { multipart: true, class: 'c-form' } } do |f|
-  .c-field-container
+  fieldset.c-field-container
     .c-field
       = f.input :name
     - if f.object.slug

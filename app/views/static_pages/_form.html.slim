@@ -1,6 +1,6 @@
 
 = simple_form_for @static_page, { html: { multipart: true, class: 'c-form' } } do |f|
-  .c-field-container
+  fieldset.c-field-container
     .c-field
       = f.input :title
     .c-field
@@ -21,5 +21,5 @@
           = image_tag f.object.photo.url(:thumb)
       = f.input :photo, as: :file, label: 'Upload photo'
 
-  .c-button-container
+  .c-field-buttons
     = f.button :submit, class: 'c-button -primary'

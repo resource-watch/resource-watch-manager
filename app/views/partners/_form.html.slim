@@ -1,5 +1,5 @@
 = simple_form_for @partner, { html: { multipart: true, class: 'c-form' } } do |f|
-  .c-field-container
+  fieldset.c-field-container
     .c-field
       = f.input :name
     .c-field
@@ -15,7 +15,7 @@
       = f.input :contact_email
     .c-field
       = f.input :website
-  .c-field-container
+  fieldset.c-field-container
     - if f.object.logo.file?
       .input
         label Current logo
