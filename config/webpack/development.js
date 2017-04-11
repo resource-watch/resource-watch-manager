@@ -4,7 +4,7 @@ var merge   = require('webpack-merge')
 var sharedConfig = require('./shared.js')
 
 module.exports = merge(sharedConfig.config, {
-  devtool: 'cheap-module-source-map',
+  devtool: 'eval-source-map',
 
   stats: {
     errorDetails: true
