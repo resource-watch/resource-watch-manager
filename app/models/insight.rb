@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 # == Schema Information
 #
-# Table name: static_pages
+# Table name: insights
 #
 #  id                 :integer          not null, primary key
-#  title              :string           not null
+#  title              :string
 #  summary            :text
 #  description        :text
 #  content            :text
@@ -12,18 +12,18 @@
 #  photo_content_type :string
 #  photo_file_size    :integer
 #  photo_updated_at   :datetime
+#  published          :boolean
 #  slug               :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  published          :boolean
 #
 
 # frozen_string_literal: true
 
-# Static Page Model
-class StaticPage < ApplicationRecord
+# Insight Model
+class Insight < ApplicationRecord
   extend FriendlyId
-  friendly_id :title, use: %i(slugged)
+  friendly_id :title, use: %i[slugged]
 
   validates_presence_of :title
 

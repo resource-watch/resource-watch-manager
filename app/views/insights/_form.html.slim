@@ -1,4 +1,4 @@
-= simple_form_for @static_page, { html: { multipart: true } } do |f|
+= simple_form_for @insight, { html: { multipart: true } } do |f|
   = f.input :title
   - if f.object.slug
     = f.input :slug, disabled: true
