@@ -8,7 +8,8 @@ Rails.application.routes.draw do
 
   # Admin models
   resources :datasets, only: %i(index new edit) do
-    resources :metadata, only: %i(index new edit)
+    resources :metadata, only: %i(index)
+    resources :vocabularies, only: %i(index)
   end
   resources :partners, only: %i(index new create edit update destroy)
   resources :static_pages, only: %i(index new create edit update destroy)
