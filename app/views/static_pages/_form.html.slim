@@ -1,10 +1,16 @@
-= simple_form_for @static_page, { html: { multipart: true } } do |f|
-  = f.input :title
-  - if f.object.slug
-    = f.input :slug, disabled: true
-  = f.input :summary
-  = f.input :description
-  = f.input :content
+= simple_form_for @static_page, { html: { multipart: true, class: 'c-form' } } do |f|
+  .c-field-container
+    .c-field
+      = f.input :title
+    .c-field
+      - if f.object.slug
+        = f.input :slug, disabled: true
+    .c-field
+      = f.input :summary, input_html: { rows: '6'}
+    .c-field
+      = f.input :description, input_html: { rows: '6'}
+    .c-field
+      = f.input :content, input_html: { rows: '6'}
 
   - if f.object.photo.file?
     .input
@@ -12,4 +18,5 @@
       = image_tag f.object.photo.url(:thumb)
   = f.input :photo, as: :file, label: 'Upload photo'
 
-  = f.button :submit
+  .c-button-container
+    = f.button :submit, class: 'c-button -primary'
