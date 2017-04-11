@@ -1,37 +1,45 @@
-= simple_form_for @partner, { html: { multipart: true } } do |f|
-  = f.input :name
-  - if f.object.slug
-    = f.input :slug, disabled: true
-  = f.input :summary
-  = f.input :body
-  = f.input :contact_name
-  = f.input :contact_email
-  = f.input :website
+= simple_form_for @partner, { html: { multipart: true, class: 'c-form' } } do |f|
+  .c-field-container
+    .c-field
+      = f.input :name
+    .c-field
+      - if f.object.slug
+        = f.input :slug, disabled: true
+    .c-field
+      = f.input :summary
+    .c-field
+      = f.input :body, input_html: { rows: '6'}
+    .c-field
+      = f.input :contact_name
+    .c-field
+      = f.input :contact_email
+    .c-field
+      = f.input :website
+  .c-field-container
+    - if f.object.logo.file?
+      .input
+        label Current logo
+        = image_tag f.object.logo.url(:thumb)
+    = f.input :logo, as: :file, label: 'Upload logo'
 
-  - if f.object.logo.file?
-    .input
-      label Current logo
-      = image_tag f.object.logo.url(:thumb)
-  = f.input :logo, as: :file, label: 'Upload logo'
+    - if f.object.white_logo.file?
+      .input
+        label Current white logo
+        = image_tag f.object.white_logo.url(:thumb)
+    = f.input :white_logo, as: :file, label: 'Upload white logo'
 
-  - if f.object.white_logo.file?
-    .input
-      label Current white logo
-      = image_tag f.object.white_logo.url(:thumb)
-  = f.input :white_logo, as: :file, label: 'Upload white logo'
+    - if f.object.cover.file?
+      .input
+        label Current cover
+        = image_tag f.object.cover.url(:medium)
+    = f.input :cover, as: :file, label: 'Upload cover'
 
-  - if f.object.cover.file?
-    .input
-      label Current cover
-      = image_tag f.object.cover.url(:medium)
-  = f.input :cover, as: :file, label: 'Upload cover'
-
-  - if f.object.icon.file?
-    .input
-      label Current icon
-      = image_tag f.object.icon.url(:thumb)
-  = f.input :icon, as: :file, label: 'Upload icon'
-
-  = f.input :featured
-  = f.input :published
-  = f.button :submit
+    - if f.object.icon.file?
+      .input
+        label Current icon
+        = image_tag f.object.icon.url(:thumb)
+    = f.input :icon, as: :file, label: 'Upload icon'
+    = f.input :featured
+    = f.input :published
+  .c-field-buttons
+    = f.button :submit, class: 'c-button -primary'
