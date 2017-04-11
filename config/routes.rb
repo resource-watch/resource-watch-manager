@@ -3,8 +3,7 @@
 require 'api_constraints'
 
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root to: "datasets#index"
+  root to: 'datasets#index'
 
   # Admin models
   resources :datasets, only: %i(index new edit) do
@@ -13,7 +12,9 @@ Rails.application.routes.draw do
   end
   resources :partners, only: %i(index new create edit update destroy)
   resources :static_pages, only: %i(index new create edit update destroy)
-
+  resources :categories do
+    resources :subcategories
+  end
 
   # API
   namespace :api, defaults: { format: :json } do

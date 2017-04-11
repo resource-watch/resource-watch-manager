@@ -30,5 +30,4 @@ describe Api::V1::PartnersController, type: :controller do
 
     it { should respond_with 200 }
   end
-
 end

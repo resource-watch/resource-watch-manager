@@ -1,0 +1,7 @@
+= simple_form_for @category, { html: { multipart: true } } do |f|
+  = f.input :name
+  - if f.object.slug
+    = f.input :slug, disabled: true
+  = f.input :description
+
+  = f.button :submit
