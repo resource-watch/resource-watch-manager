@@ -14,7 +14,7 @@ class DatasetService
   # ++status++ the status of the dataset
   def self.datasets(status = 'saved')
     dataset_request = @conn.get '/dataset',  'page[number]' => '1', 'page[size]' => '10000', \
-      'status' => status, 'app' => 'forest-atlas,gfw', '_' => Time.now.to_f
+      'status' => status, 'app' => 'rw,prep', '_' => Time.now.to_f
     datasets_json = JSON.parse dataset_request.body
     datasets = []
 
