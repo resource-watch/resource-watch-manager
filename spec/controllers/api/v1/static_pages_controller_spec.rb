@@ -11,7 +11,7 @@ describe Api::V1::StaticPagesController, type: :controller do
 
     it 'returns the information about a static page on a hash' do
       static_page_response = json_response
-      expect(static_page_response.dig(:data, :attributes, :title)).to eql @static_page.title
+      expect(static_page_response.dig(:data, :attributes, :name)).to eql @category.name
     end
 
     it { should respond_with 200 }
