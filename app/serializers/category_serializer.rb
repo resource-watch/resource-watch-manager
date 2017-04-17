@@ -12,12 +12,12 @@
 
 # Serializer for Category
 class CategorySerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :subcategories
+  attributes :id, :name, :slug, :description#, :subcategories
 
-  #has_many :subcategories
+  has_many :subcategories
 
   # Serializer for the Category's Subcategories
   class SubcategorySerializer < ActiveModel::Serializer
-    attributes :id, :name, :description
+    attributes :id, :name, :description, :slug
   end
 end

@@ -10,7 +10,8 @@ module Api
       end
 
       def show
-        render json: Category.friendly.find(categories_params)
+        category = Category.friendly.find(categories_params[:id])
+        render json: category, include: ['subcategories']
       end
 
       private
