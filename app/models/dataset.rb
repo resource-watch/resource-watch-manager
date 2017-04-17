@@ -12,7 +12,7 @@ class Dataset
 
   attr_accessor :id, :application, :name, :subtitle, :metadata, :data_path,
                 :attributes_path, :provider, :format, :layers, :connector_url, :table_name,
-                :tags, :data_overwrite, :connector, :provider, :type, :legend, :status
+                :tags, :data_overwrite, :connector, :provider, :type, :legend, :status, :layers
 
   def initialize(data= {})
     self.attributes = data unless data == {}
@@ -37,7 +37,8 @@ class Dataset
         connector: @connector,
         type: @type,
         legend: @legend,
-        status: @status
+        status: @status,
+        layers: @layers
     }
   end
 
@@ -63,6 +64,19 @@ class Dataset
     @type = data[:attributes][:type]
     @legend = data[:attributes][:legend]
     @status = data[:attributes][:status]
+    @layers = []
+    if data[:attributes][:layer].is_a? Array
+      data[:attributes][:layer].each do |v|
+        @layers << Layer.new(v)
+      end
+    end
+  end
+
+  def layers=(value)
+    @layers = []
+    value.each do |v|
+      @layers << Layer.new(v)
+    end
   end
 
   def self.datasets
