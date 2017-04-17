@@ -11,6 +11,10 @@
 #  category_id :integer
 #
 
+# Serializer for subcategory
 class SubcategorySerializer < ActiveModel::Serializer
-  attributes :id, :name, :description
+  attributes :id, :name, :description, :datasets
+
+  belongs_to :category
+  #has_many :datasets
 end

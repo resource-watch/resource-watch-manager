@@ -10,7 +10,17 @@ module Api
       end
 
       def show
-        render json: Category.friendly.find(params[:id])
+        render json: Category.friendly.find(categories_params)
+      end
+
+      private
+
+      def include_datasets?
+        categories_params[:datasets] == 'true'
+      end
+
+      def categories_params
+        params.permit(:datasets, :id)
       end
     end
   end
