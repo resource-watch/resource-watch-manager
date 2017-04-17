@@ -38,7 +38,7 @@
 class PartnerSerializer < ActiveModel::Serializer
   attributes :id, :name, :slug, :summary, :body,
              :contact_email, :contact_name, :website, :featured,
-             :logo, :white_logo, :cover, :icon
+             :logo, :white_logo, :cover, :icon, :partner_type
 
   def logo
     {

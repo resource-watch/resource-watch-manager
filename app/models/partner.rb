@@ -66,4 +66,8 @@ class Partner < ApplicationRecord
   def self.featured(is_featured)
     where(featured: is_featured)
   end
+
+  def self.filtered_by_type(partner_type)
+    where(partner_type: partner_type)
+  end
 end
