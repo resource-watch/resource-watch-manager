@@ -15,6 +15,8 @@
       = f.input :contact_email
     .c-field
       = f.input :website
+    .c-field
+      = f.input :partner_type, collection: [['Founding partners', 'founding_partners'], ['Funders', 'funders']]
   fieldset.c-field-container
     - if f.object.logo.file?
       .input
