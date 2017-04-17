@@ -21,11 +21,23 @@ class Subcategory < ApplicationRecord
 
   belongs_to :category, inverse_of: :subcategories
   has_many :dataset_subcategories
-  #has_many :datasets, through: :dataset_subcategories
+
+  # has_many :datasets, through: :dataset_subcategories
+  attr_accessor :datasets
 
   accepts_nested_attributes_for :dataset_subcategories
 
   validates_presence_of :name
+
+  # Gets the datasets from the API and saves them in @datasets
+  def build_datasets
+    return unless dataset_subcategories.any?
+    datasets = DatasetService.datasets('ids' => dataset_subcategories.map(&:dataset_id).join(','))
+    @datasets = []
+    datasets.each do |ds|
+      @datasets << Dataset.new(ds)
+    end
+  end
 
   # Creates the datasets subcategories
   # This hack is needed while ActiveModelAssociations isn't supported in Rails 5.1
