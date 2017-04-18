@@ -27,9 +27,17 @@ var datasetsPaths = glob.sync(path.join('app', 'javascript', 'packs', 'dataset',
   }, {}
 );
 
+var widgetsPaths = glob.sync(path.join('app', 'javascript', 'packs', 'widget', '*.js*')).reduce(
+  function(map, entry) {
+    var basename = path.basename(entry, extname(entry))
+    map['widget/' + basename] = path.resolve(entry)
+    return map
+  }, {}
+);
+
 config = {
 
-  entry: Object.assign({}, entriesPaths, datasetsPaths),
+  entry: Object.assign({}, entriesPaths, datasetsPaths, widgetsPaths),
 
   output: { filename: '[name].js', path: path.resolve('public', distDir) },
 
