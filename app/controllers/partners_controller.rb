@@ -42,7 +42,7 @@ class PartnersController < ApplicationController
   def partner_params
     params.require(:partner).permit(:name, :summary,
                                     :body, :contact_name, :contact_email,
-                                    :website, :logo, :white_logo,
+                                    :website, :logo, :white_logo, :partner_type,
                                     :cover, :icon, :featured, :published)
   end
 end

@@ -25,6 +25,8 @@ Rails.application.routes.draw do
       resources :partners, only: %i[index show]
       resources :static_pages, only: %i[index show]
       resources :insights, only: %i[index show]
+      resources :categories, only: %i[index show]
+      resources :subcategories, only: %i[index show]
     end
   end
 

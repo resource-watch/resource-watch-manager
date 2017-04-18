@@ -7,7 +7,8 @@ module Api
       def index
         partners = Partner.all.published
         partners = partners.featured(params[:featured]) if params.key?(:featured)
-        render json: partners
+        partners = partners.filtered_by_type(params[:type]) if params.key?(:type)
+        render json: partners.order('name ASC')
       end
 
       def show
