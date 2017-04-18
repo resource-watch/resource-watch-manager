@@ -36,7 +36,7 @@ RUN bundle install --jobs 20 --retry 5 --without development test
 ADD . $APP_PATH
 
 # Precompile assets
-RUN bundle exec rake assets:precompile
+RUN rm -rf node_modules && yarn cache clean && bundle exec rake assets:precompile
 
 # Setting port
 EXPOSE 3000
