@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :datasets, only: %i[index new edit] do
     resources :metadata, only: %i[index]
     resources :vocabularies, only: %i[index]
+    resources :widgets, only: %i[index new edit]
   end
   resources :partners, only: %i[index new create edit update destroy]
   resources :static_pages, only: %i[index new create edit update destroy]
