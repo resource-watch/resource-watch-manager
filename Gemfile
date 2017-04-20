@@ -20,9 +20,18 @@ gem 'rack-cors'
 gem 'slim-rails'
 
 gem 'active_model_serializers'
-#gem 'activemodel-associations'
+# Use this gem when supported by Rails 5.1
+# gem 'activemodel-associations'
 gem 'pg', '~> 0.18'
 gem 'simple_form'
+
+# Pagination
+gem 'api-pagination'
+gem 'will_paginate'
+
+# Authentication and Authorization
+gem 'jwt'
+
 
 # Assets management
 gem 'autoprefixer-rails'

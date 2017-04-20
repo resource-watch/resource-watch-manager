@@ -57,6 +57,7 @@ GEM
     annotate (2.7.1)
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 12.0)
+    api-pagination (4.5.2)
     arel (8.0.0)
     ast (2.3.0)
     autoprefixer-rails (6.7.7.1)
@@ -112,6 +113,7 @@ GEM
       thor (>= 0.14, < 2.0)
     json (2.0.3)
     jsonapi-renderer (0.1.2)
+    jwt (1.5.6)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -256,6 +258,7 @@ GEM
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
+    will_paginate (3.1.5)
 
 PLATFORMS
   ruby
@@ -263,6 +266,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   annotate
+  api-pagination
   autoprefixer-rails
   byebug
   database_cleaner
@@ -274,6 +278,7 @@ DEPENDENCIES
   friendly_id (~> 5.1.0)
   gon
   jquery-rails
+  jwt
   listen (>= 3.0.5, < 3.2)
   paperclip
   pg (~> 0.18)
@@ -293,6 +298,7 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   web-console (>= 3.3.0)
   webpacker (= 1.0)
+  will_paginate
 
 RUBY VERSION
    ruby 2.3.3p222
