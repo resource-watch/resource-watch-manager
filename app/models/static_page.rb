@@ -28,7 +28,7 @@ class StaticPage < ApplicationRecord
   validates_presence_of :title
 
   has_attached_file :photo,
-                    styles: { medium: '320x180>', thumb: '110x60>' }
+                    styles: { large: '1280x800>', medium: '320x180>', thumb: '110x60>' }
 
   validates_attachment_content_type :photo, content_type: %r{^image\/.*}
 
