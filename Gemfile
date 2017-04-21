@@ -68,6 +68,7 @@ group :test do
 end
 
 group :test, :development do
+  gem 'bullet' # Testing query performance
   gem 'factory_girl_rails'
   gem 'ffaker'
 end

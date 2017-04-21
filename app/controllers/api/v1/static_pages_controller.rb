@@ -4,10 +4,12 @@ module Api
   module V1
     # API class for the Static Pages Resource
     class StaticPagesController < ApiController
+      include Orderable
+
       before_action :set_static_page, only: %w[show destroy update]
 
       def index
-        static_pages = StaticPage.published
+        static_pages = StaticPage.published.order(ordering_params(params))
         paginate json: static_pages, each_serializer: StaticPageSerializer
       end
 
