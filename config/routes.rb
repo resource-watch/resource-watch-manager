@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
       resources :partners, only: %i[index show]
-      resources :static_pages, only: %i[index show create delete update]
+      resources :static_pages, only: %i[index show create destroy update]
       resources :insights, only: %i[index show]
       resources :categories, only: %i[index show]
       resources :subcategories, only: %i[index show]
