@@ -19,6 +19,8 @@ gem 'puma', '~> 3.7'
 gem 'rack-cors'
 gem 'slim-rails'
 
+gem "rack-reverse-proxy", require: "rack/reverse_proxy"
+
 gem 'active_model_serializers'
 # Use this gem when supported by Rails 5.1
 # gem 'activemodel-associations'

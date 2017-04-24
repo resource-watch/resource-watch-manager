@@ -3,7 +3,6 @@
 require 'api_constraints'
 
 Rails.application.routes.draw do
-  resources :insights
   root to: 'datasets#index'
 
   # Admin models
