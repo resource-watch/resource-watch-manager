@@ -13,7 +13,7 @@ module Api
       def show
         subcategory = Subcategory.friendly.find(params[:id])
         subcategory.build_datasets if include_datasets?
-        render json: subcategory
+        render json: subcategory, include: ['datasets']
       end
 
       private
