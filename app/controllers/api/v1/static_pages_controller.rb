@@ -9,8 +9,8 @@ module Api
       before_action :set_static_page, only: %w[show destroy update]
 
       def index
-        static_pages = StaticPage.published.order(ordering_params(params))
-        paginate json: static_pages, each_serializer: StaticPageSerializer
+        @static_pages = StaticPage.published.order(ordering_params(params))
+        paginate json: @static_pages, each_serializer: StaticPageSerializer
       end
 
       def show
@@ -52,7 +52,7 @@ module Api
       end
 
       def static_page_params
-        params.require(:static_page).permit(:title, :summary, :description, :content)
+        params.require(:static_page).permit(:title, :summary, :description, :content, :published)
       end
     end
   end

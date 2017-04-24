@@ -25,9 +25,10 @@ Rails.application.routes.draw do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
       resources :partners, only: %i[index show]
       resources :static_pages, only: %i[index show create destroy update]
-      resources :insights, only: %i[index show]
-      resources :categories, only: %i[index show]
-      resources :subcategories, only: %i[index show]
+      resources :insights, only: %i[index show create destroy update]
+      # TODO Check if we're going to be using the categories again
+      # resources :categories, only: %i[index show]
+      # resources :subcategories, only: %i[index show]
     end
   end
 

@@ -35,4 +35,6 @@ class Insight < ApplicationRecord
   def should_generate_new_friendly_id?
     new_record?
   end
+
+  scope :published, -> { where(published: true) }
 end

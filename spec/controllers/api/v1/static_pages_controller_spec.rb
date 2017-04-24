@@ -21,20 +21,21 @@ describe Api::V1::StaticPagesController, type: :controller do
   describe 'GET #index' do
     before(:each) do
       @static_pages = FactoryGirl.create_list(:static_page, 4)
+      @static_pages << FactoryGirl.create(:static_page, title: 'ZZZZ')
     end
 
     it 'Gets all the static pages' do
       get :index
       static_page_response = json_response
-      expect(static_page_response.dig(:data).size).to eql(4)
+      expect(static_page_response.dig(:data).size).to eql(5)
     end
 
     it 'Shows a list of static pages for the first page' do
-      get :index, params: { page: {number: 2, size: 2 }}
+      get :index, params: { page: { number: 2, size: 4 } }
       static_page_response = json_response
-      expect(static_page_response.dig(:data).size).to eql(2)
-      # TODO -> Check this problem
-      expect(static_page_response.dig(:data)[0][:attributes][:title]).to start_with('3')
+      expect(static_page_response.dig(:data).size).to eql(1)
+      # TODO: Check this problem
+      expect(static_page_response.dig(:data)[0][:attributes][:title]).to eql(@static_pages.last.title)
     end
 
 
@@ -48,7 +49,6 @@ describe Api::V1::StaticPagesController, type: :controller do
     it 'Edits a static page' do
       title = 'new title'
       put :update, params: {'id' => @static_page.id, 'static_page' => {'title' => title} }
-      static_page_response = json_response
       expect(response.status).to eql(200)
     end
 
