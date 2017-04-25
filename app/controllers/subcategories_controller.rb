@@ -3,6 +3,7 @@
 # Controller for Subcategories
 class SubcategoriesController < ApplicationController
   before_action :check_user_authentication if Rails.env.production?
+  before_action :check_permissions if Rails.env.production?
   before_action :set_category
 
   def index

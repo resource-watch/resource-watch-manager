@@ -6,8 +6,12 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
   helper_method :connect_gateway
 
+  def check_permissions
+    logout_apigateway unless current_user && %w[ADMIN MANAGER].include?(current_user['role'])
+  end
+
   def check_user_authentication
-    redirect_to_apigateway unless session[:user_token] && current_user
+    logout_apigateway unless session[:user_token] && current_user
   end
 
   def redirect_to_apigateway
@@ -21,14 +25,22 @@ class ApplicationController < ActionController::Base
   private
 
   def current_user
-    @current_user ||= get_current_user if session[:user_token]
+    return nil unless session[:user_token]
+    return session[:current_user] if session[:current_user]
+    get_current_user
   end
 
   def get_current_user
     connect = connect_gateway
     connect.authorization :Bearer, session[:user_token]
     response = connect.get('/auth/check-logged')
-    session[:current_user] = response.body
+    if response.success?
+      user_data = JSON.parse response.body
+      session[:current_user] = user_data
+      return session[:current_user]
+    else
+      return false
+    end
   end
 
   def connect_gateway
