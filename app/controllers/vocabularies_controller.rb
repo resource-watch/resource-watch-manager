@@ -1,6 +1,6 @@
 class VocabulariesController < ApplicationController
-
-  before_action :check_user_authentication if Rails.env === 'production'
+  before_action :check_user_authentication if Rails.env.production?
+  before_action :check_permissions if Rails.env.production?
 
   def index
     gon.data = {

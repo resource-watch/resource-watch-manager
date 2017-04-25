@@ -5,7 +5,11 @@ class AuthController < ApplicationController
   def login
     if params.key?('token')
       session[:user_token] = params[:token]
-      redirect_to root_path if current_user
+      if current_user && %w[ADMIN MANAGER].include?(current_user['role'])
+        redirect_to root_path
+      else
+        logout
+      end
     else
       redirect_to_apigateway
     end
