@@ -41,12 +41,14 @@ module ResourceWatchManager
       end
     end
 
-    config.middleware.insert(0, Rack::ReverseProxy) do
-      reverse_proxy_options preserve_host: false
-      reverse_proxy '/dataset', "#{ENV.fetch('APIGATEWAY_URL')}/dataset"
-      reverse_proxy '/widget', "#{ENV.fetch('APIGATEWAY_URL')}/widget"
-      reverse_proxy '/layer', "#{ENV.fetch('APIGATEWAY_URL')}/layer"
+    unless Rails.env.production?
+      config.middleware.insert(0, Rack::ReverseProxy) do
+        reverse_proxy_options preserve_host: false
+        reverse_proxy '/dataset', "#{ENV.fetch('APIGATEWAY_URL')}/dataset"
+        reverse_proxy '/widget', "#{ENV.fetch('APIGATEWAY_URL')}/widget"
+        reverse_proxy '/layer', "#{ENV.fetch('APIGATEWAY_URL')}/layer"
 
+      end
     end
   end
 end

@@ -19,7 +19,6 @@ gem 'puma', '~> 3.7'
 gem 'rack-cors'
 gem 'slim-rails'
 
-gem "rack-reverse-proxy", require: "rack/reverse_proxy"
 
 gem 'active_model_serializers'
 # Use this gem when supported by Rails 5.1
@@ -73,6 +72,7 @@ group :test, :development do
   gem 'bullet' # Testing query performance
   gem 'factory_girl_rails'
   gem 'ffaker'
+  gem 'rack-reverse-proxy', require: 'rack/reverse_proxy'
 end
 
 gem 'tzinfo-data', platforms: %i(mingw mswin x64_mingw jruby)

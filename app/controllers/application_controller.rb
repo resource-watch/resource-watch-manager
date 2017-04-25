@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
   helper_method :connect_gateway
 
+  before_action :authenticate
+
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+
   def check_permissions
     logout_apigateway unless current_user && %w[ADMIN MANAGER].include?(current_user['role'])
   end
@@ -22,7 +26,11 @@ class ApplicationController < ActionController::Base
     redirect_to "#{ENV['APIGATEWAY_URL']}/auth/logout?callbackUrl=#{auth_login_url}&token=true"
   end
 
-  private
+  protected
+
+  def logged_in?
+    !!current_user
+  end
 
   def current_user
     return nil unless session[:user_token]
@@ -49,5 +57,13 @@ class ApplicationController < ActionController::Base
       faraday.response :logger, Rails.logger    # log requests to STDOUT
       faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
     end
+  end
+
+  def authenticate
+    render json: { errors: [{ status: '401', title: 'Unauthorized' }] }, status: 401 unless logged_in?
+  end
+
+  def record_not_found
+    render json: { errors: [{ status: '404', title: 'Record not found' }] }, status: 404
   end
 end
