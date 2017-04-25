@@ -2,6 +2,8 @@
 
 # Main class of the program
 class ApplicationController < ActionController::Base
+  include ApiHelper
+
   protect_from_forgery with: :exception
   helper_method :current_user
   helper_method :connect_gateway
