@@ -1,10 +1,24 @@
-class VocabulariesController < ApplicationController
+class DatasetVocabulariesController < ApplicationController
   before_action :check_user_authentication if Rails.env.production?
   before_action :check_permissions if Rails.env.production?
 
   def index
     gon.data = {
+      authorization: 'Bearer ' + user_token,
+      dataset_id: params[:dataset_id]
+    }
+  end
+
+  def new
+    gon.data = {
       authorization: 'Bearer ' + user_token
+    }
+  end
+
+  def edit
+    gon.data = {
+      authorization: 'Bearer ' + user_token,
+      dataset_id: params[:dataset_id]
     }
   end
 
