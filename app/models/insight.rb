@@ -29,8 +29,8 @@ class Insight < ApplicationRecord
 
   has_attached_file :photo,
                     styles: { medium: '320x180>', thumb: '110x60>' }
-
   validates_attachment_content_type :photo, content_type: %r{^image\/.*}
+  do_not_validate_attachment_file_type :photo
 
   def should_generate_new_friendly_id?
     new_record?

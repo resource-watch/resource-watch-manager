@@ -59,6 +59,11 @@ class Partner < ApplicationRecord
   validates_attachment_content_type :cover, content_type: %r{^image\/.*}
   validates_attachment_content_type :icon, content_type: %r{^image\/.*}
 
+  do_not_validate_attachment_file_type :logo
+  do_not_validate_attachment_file_type :white_logo
+  do_not_validate_attachment_file_type :cover
+  do_not_validate_attachment_file_type :icon
+
   def self.published
     where(published: true)
   end
