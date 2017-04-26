@@ -4,7 +4,21 @@ class VocabulariesController < ApplicationController
 
   def index
     gon.data = {
+      authorization: 'Bearer ' + user_token,
+      dataset_id: params[:dataset_id]
+    }
+  end
+
+  def new
+    gon.data = {
       authorization: 'Bearer ' + user_token
+    }
+  end
+
+  def edit
+    gon.data = {
+      authorization: 'Bearer ' + user_token,
+      dataset_id: params[:dataset_id]
     }
   end
 
