@@ -52,7 +52,8 @@ module Api
       end
 
       def insight_params
-        params.require(:insight).permit(:title, :summary, :description, :content, :published, :photo)
+        params.require(:insight).permit(:title, :summary, :description,
+                                        :content, :published, :image_base)
       end
     end
   end

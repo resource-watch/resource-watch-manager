@@ -45,6 +45,7 @@ class StaticPage < ApplicationRecord
   private
 
   def parse_image
+    return if image_base.nil?
     image = Paperclip.io_adapters.for(image_base)
     image.original_filename = 'file.jpg'
     self.photo = image

@@ -53,7 +53,7 @@ module Api
 
       def static_page_params
         params.require(:static_page).permit(:title, :summary, :description,
-                                            :content, :published, :photo, :image_base)
+                                            :content, :published, :image_base)
       end
     end
   end

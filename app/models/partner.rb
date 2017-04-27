@@ -39,6 +39,15 @@ class Partner < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: %i(slugged)
 
+  attr_accessor :logo_base, :white_logo_base, :cover_base, :icon_base
+
+  before_validation do
+    parse_image('logo', logo_base)
+    parse_image('white_logo', white_logo_base)
+    parse_image('cover', cover_base)
+    parse_image('icon', icon_base)
+  end
+
   validates_presence_of :name
 
   has_attached_file :logo,
@@ -74,5 +83,15 @@ class Partner < ApplicationRecord
 
   def self.filtered_by_type(partner_type)
     where(partner_type: partner_type)
+  end
+
+
+  private
+
+  def parse_image(property, parameter)
+    return if parameter.nil?
+    image = Paperclip.io_adapters.for(parameter)
+    image.original_filename = 'file.jpg'
+    send "#{property}=", image
   end
 end
