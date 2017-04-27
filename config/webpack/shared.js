@@ -27,6 +27,14 @@ var datasetsPaths = glob.sync(path.join('app', 'javascript', 'packs', 'dataset',
   }, {}
 );
 
+var vocabulariesPaths = glob.sync(path.join('app', 'javascript', 'packs', 'vocabularies', '*.js*')).reduce(
+  function(map, entry) {
+    var basename = path.basename(entry, extname(entry))
+    map['vocabularies/' + basename] = path.resolve(entry)
+    return map
+  }, {}
+);
+
 var widgetsPaths = glob.sync(path.join('app', 'javascript', 'packs', 'widget', '*.js*')).reduce(
   function(map, entry) {
     var basename = path.basename(entry, extname(entry))
@@ -37,7 +45,7 @@ var widgetsPaths = glob.sync(path.join('app', 'javascript', 'packs', 'widget', '
 
 config = {
 
-  entry: Object.assign({}, entriesPaths, datasetsPaths, widgetsPaths),
+  entry: Object.assign({}, entriesPaths, datasetsPaths, vocabulariesPaths, widgetsPaths),
 
   output: { filename: '[name].js', path: path.resolve('public', distDir) },
 

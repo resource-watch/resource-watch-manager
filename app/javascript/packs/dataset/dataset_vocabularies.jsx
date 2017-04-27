@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { VocabulariesForm, Title } from 'rw-components';
+import { DatasetVocabulariesForm } from 'rw-components';
 
 class DatasetVocabularies extends React.Component {
 
@@ -8,7 +8,7 @@ class DatasetVocabularies extends React.Component {
     return (
       <div className="row">
         <div className="column small-12">
-          <VocabulariesForm
+          <DatasetVocabulariesForm
             application={'rw'}
             authorization={gon.data.authorization}
             language="en"
