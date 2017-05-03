@@ -30,7 +30,7 @@ module Api
           render json: { messages: [{ status: 200, title: 'Partner successfully updated!' }] },
                  status: 200
         else
-          render json: ErrorSerializer.serialize(@partner.errors, 422), status: 422
+          render json: ErrorSSerializer.serialize(@partner.errors, 422), status: 422
         end
       end
 
