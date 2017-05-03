@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       resources :partners, only: %i[index show create destroy update]
       resources :static_pages, only: %i[index show create destroy update]
       resources :insights, only: %i[index show create destroy update]
+      resources :apps, only: %i[index show create destroy update]
       # TODO Check if we're going to be using the categories again
       # resources :categories, only: %i[index show]
       # resources :subcategories, only: %i[index show]
