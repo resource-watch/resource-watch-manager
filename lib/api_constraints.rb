@@ -8,6 +8,6 @@ class ApiConstraints
   end
 
   def matches?(req)
-    @default || req.headers['Accept'].include?("application/json; version=#{@version}")
+    @default || req.headers['Accept'].include?("application/vnd.api+json; version=#{@version}")
   end
 end

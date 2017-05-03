@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: partners
@@ -32,12 +31,22 @@
 #  cover_file_size         :integer
 #  cover_updated_at        :datetime
 #  website                 :string
+#  partner_type            :string
 #
 
 # Model for Partner
 class Partner < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: %i(slugged)
+
+  attr_accessor :logo_base, :white_logo_base, :cover_base, :icon_base
+
+  before_validation do
+    parse_image('logo', logo_base)
+    parse_image('white_logo', white_logo_base)
+    parse_image('cover', cover_base)
+    parse_image('icon', icon_base)
+  end
 
   validates_presence_of :name
 
@@ -59,6 +68,11 @@ class Partner < ApplicationRecord
   validates_attachment_content_type :cover, content_type: %r{^image\/.*}
   validates_attachment_content_type :icon, content_type: %r{^image\/.*}
 
+  do_not_validate_attachment_file_type :logo
+  do_not_validate_attachment_file_type :white_logo
+  do_not_validate_attachment_file_type :cover
+  do_not_validate_attachment_file_type :icon
+
   def self.published
     where(published: true)
   end
@@ -69,5 +83,15 @@ class Partner < ApplicationRecord
 
   def self.filtered_by_type(partner_type)
     where(partner_type: partner_type)
+  end
+
+
+  private
+
+  def parse_image(property, parameter)
+    return if parameter.nil?
+    image = Paperclip.io_adapters.for(parameter)
+    image.original_filename = 'file.jpg'
+    send "#{property}=", image
   end
 end

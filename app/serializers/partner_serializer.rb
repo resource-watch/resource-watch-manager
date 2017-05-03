@@ -31,8 +31,8 @@
 #  cover_file_size         :integer
 #  cover_updated_at        :datetime
 #  website                 :string
+#  partner_type            :string
 #
-
 
 # Partner serializer
 class PartnerSerializer < ActiveModel::Serializer

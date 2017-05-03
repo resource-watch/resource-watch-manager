@@ -19,10 +19,11 @@
 
 FactoryGirl.define do
   factory :insight do
-    title FFaker::CheesyLingo.title
+    sequence(:title) {|n| "#{n} #{FFaker::CheesyLingo.title}"}
     summary FFaker::HealthcareIpsum.paragraph
     description FFaker::HealthcareIpsum.paragraph(2)
     content FFaker::HTMLIpsum.body
+    published true
   end
 end
 
