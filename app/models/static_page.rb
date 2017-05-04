@@ -25,14 +25,29 @@ class StaticPage < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: %i(slugged)
 
+  before_validation :parse_image
+  attr_accessor :image_base
+
   validates_presence_of :title
 
   has_attached_file :photo,
                     styles: { large: '1280x800>', medium: '320x180>', thumb: '110x60>' }
 
   validates_attachment_content_type :photo, content_type: %r{^image\/.*}
+  do_not_validate_attachment_file_type :photo
 
   def should_generate_new_friendly_id?
     new_record?
+  end
+
+  scope :published, -> { where(published: true) }
+
+  private
+
+  def parse_image
+    return if image_base.nil?
+    image = Paperclip.io_adapters.for(image_base)
+    image.original_filename = 'file.jpg'
+    self.photo = image
   end
 end

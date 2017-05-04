@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: partners
@@ -32,6 +31,7 @@
 #  cover_file_size         :integer
 #  cover_updated_at        :datetime
 #  website                 :string
+#  partner_type            :string
 #
 
 FactoryGirl.define do

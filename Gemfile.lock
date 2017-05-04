@@ -57,6 +57,7 @@ GEM
     annotate (2.7.1)
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 12.0)
+    api-pagination (4.5.2)
     arel (8.0.0)
     ast (2.3.0)
     autoprefixer-rails (6.7.7.1)
@@ -67,6 +68,9 @@ GEM
       execjs (~> 2.0)
     bindex (0.5.0)
     builder (3.2.3)
+    bullet (5.5.1)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.10.0)
     byebug (9.0.6)
     case_transform (0.2)
       activesupport
@@ -112,6 +116,7 @@ GEM
       thor (>= 0.14, < 2.0)
     json (2.0.3)
     jsonapi-renderer (0.1.2)
+    jwt (1.5.6)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -145,6 +150,11 @@ GEM
     puma (3.8.2)
     rack (2.0.1)
     rack-cors (0.4.1)
+    rack-proxy (0.6.1)
+      rack
+    rack-reverse-proxy (0.12.0)
+      rack (>= 1.0.0)
+      rack-proxy (~> 0.6, >= 0.6.1)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.1.0.rc1)
@@ -244,6 +254,7 @@ GEM
     uglifier (3.2.0)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.2.0)
+    uniform_notifier (1.10.0)
     web-console (3.5.0)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -256,6 +267,7 @@ GEM
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
+    will_paginate (3.1.5)
 
 PLATFORMS
   ruby
@@ -263,7 +275,9 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   annotate
+  api-pagination
   autoprefixer-rails
+  bullet
   byebug
   database_cleaner
   dotenv-rails
@@ -274,11 +288,13 @@ DEPENDENCIES
   friendly_id (~> 5.1.0)
   gon
   jquery-rails
+  jwt
   listen (>= 3.0.5, < 3.2)
   paperclip
   pg (~> 0.18)
   puma (~> 3.7)
   rack-cors
+  rack-reverse-proxy
   rails (~> 5.1.0.rc1)
   rspec-rails
   rubocop
@@ -293,6 +309,7 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   web-console (>= 3.3.0)
   webpacker (= 1.0)
+  will_paginate
 
 RUBY VERSION
    ruby 2.3.3p222

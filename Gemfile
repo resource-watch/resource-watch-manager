@@ -19,10 +19,20 @@ gem 'puma', '~> 3.7'
 gem 'rack-cors'
 gem 'slim-rails'
 
+
 gem 'active_model_serializers'
-#gem 'activemodel-associations'
+# Use this gem when supported by Rails 5.1
+# gem 'activemodel-associations'
 gem 'pg', '~> 0.18'
 gem 'simple_form'
+
+# Pagination
+gem 'api-pagination'
+gem 'will_paginate'
+
+# Authentication and Authorization
+gem 'jwt'
+
 
 # Assets management
 gem 'autoprefixer-rails'
@@ -59,8 +69,10 @@ group :test do
 end
 
 group :test, :development do
+  gem 'bullet' # Testing query performance
   gem 'factory_girl_rails'
   gem 'ffaker'
+  gem 'rack-reverse-proxy', require: 'rack/reverse_proxy'
 end
 
 gem 'tzinfo-data', platforms: %i(mingw mswin x64_mingw jruby)
