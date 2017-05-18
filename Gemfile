@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 ruby '2.3.3'
 
@@ -45,8 +45,6 @@ gem 'webpacker', '= 1.0'
 # Friendly id
 gem 'friendly_id', '~> 5.1.0'
 
-source 'https://rails-assets.org' do
-end
 
 group :development, :test do
   gem 'annotate'
