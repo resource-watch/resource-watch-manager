@@ -62,10 +62,10 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate
-    render json: { errors: [{ status: '401', title: 'Unauthorized' }] }, status: 401 unless logged_in?
+    # render json: { errors: [{ status: '401', title: 'Unauthorized' }] }, status: 401 unless logged_in?
   end
 
   def record_not_found
-    render json: { errors: [{ status: '404', title: 'Record not found' }] }, status: 404
+    # render json: { errors: [{ status: '404', title: 'Record not found' }] }, status: 404
   end
 end

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { WidgetForm, Title } from 'rw-components';
+import { WidgetWizard, Title } from 'rw-components';
 
 const WidgetNew = () => (
   <div className="row">
@@ -8,7 +8,7 @@ const WidgetNew = () => (
       <Title className="-huge -p-primary">
         New Widget
       </Title>
-      <WidgetForm
+      <WidgetWizard
         application={['rw']}
         authorization={gon.data.authorization}
         dataset={gon.data.dataset_id}
