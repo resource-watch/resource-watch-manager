@@ -1,6 +1,6 @@
 {
   "name": "resource-watch-manager",
-  "version": "0.1.4",
+  "version": "0.1.5",
 	"dependencies": {
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",
