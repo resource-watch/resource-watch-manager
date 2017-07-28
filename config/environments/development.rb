@@ -14,6 +14,9 @@ Rails.application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
+  # Response
+  config.debug_exception_response_format = :api
+
   # Show full error reports.
   config.consider_all_requests_local = true
 
@@ -30,6 +33,12 @@ Rails.application.configure do
 
     config.cache_store = :null_store
   end
+
+  # Routes url
+  Rails.application.routes.default_url_options = {
+    host: 'localhost',
+    port: 3000
+  }
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
