@@ -1,5 +1,9 @@
 version: '2'
 services:
+  postgres:
+    image: postgres
+    volumes:
+      - "./.data/db:/var/lib/postgresql/data"
   api:
     build: .
     command: 'bash -c ''bundle exec puma -C config/puma.rb'''
@@ -9,6 +13,8 @@ services:
     environment:
       - RAILS_ENV=production
       - RACK_ENV=production
+    links:
+      - postgres
     container_name: rw
     volumes:
       - "./public/system:/usr/src/app/public/system"
