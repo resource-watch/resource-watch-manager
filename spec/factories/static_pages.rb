@@ -22,9 +22,9 @@
 FactoryGirl.define do
   factory :static_page do
     sequence(:title) {|n| "#{n} #{FFaker::CheesyLingo.title}"}
-    summary FFaker::HealthcareIpsum.paragraph
-    description FFaker::HealthcareIpsum.paragraph(2)
-    content FFaker::HTMLIpsum.body
-    published true
+    summary {FFaker::HealthcareIpsum.paragraph}
+    description {FFaker::HealthcareIpsum.paragraph(2)}
+    content {FFaker::HTMLIpsum.body}
+    published {FFaker::Boolean.sample}
   end
 end

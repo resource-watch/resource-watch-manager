@@ -12,8 +12,8 @@ class CreatePartners < ActiveRecord::Migration[5.0]
       t.attachment :logo
       t.attachment :white_logo
       t.attachment :icon
-      t.boolean :published
-      t.boolean :featured
+      t.boolean :published, default: false
+      t.boolean :featured, default: false
 
       t.timestamps
     end

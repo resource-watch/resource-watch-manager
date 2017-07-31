@@ -29,10 +29,7 @@ class StaticPage < ApplicationRecord
   attr_accessor :image_base
 
   validates_presence_of :title
-
-  has_attached_file :photo,
-                    styles: { large: '1280x800>', medium: '320x180>', thumb: '110x60>' }
-
+  has_attached_file :photo, styles: { cover: '1280x800>' }
   validates_attachment_content_type :photo, content_type: %r{^image\/.*}
   do_not_validate_attachment_file_type :photo
 
@@ -40,7 +37,28 @@ class StaticPage < ApplicationRecord
     new_record?
   end
 
-  scope :published, -> { where(published: true) }
+  def self.fetch_all(options={})
+    static_pages = StaticPage.all
+    if options[:filter]
+      static_pages = static_pages.by_published(options[:filter][:published]) if options[:filter][:published]
+    end
+    static_pages = static_pages.order(self.get_order(options))
+  end
+
+  def self.get_order(options={})
+    field = 'created_at'
+    direction = 'ASC'
+    if options['sort']
+      f = options['sort'].split(',').first
+      field = f[0] == '-' ? f[1..-1] : f
+      if StaticPage.new.has_attribute?(field)
+        direction = f[0] == '-' ? 'DESC' : 'ASC'
+      else
+        field = 'created_at'
+      end
+    end
+    "#{field} #{direction}"
+  end
 
   private
 

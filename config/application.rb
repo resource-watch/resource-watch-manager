@@ -9,9 +9,9 @@ require 'active_job/railtie'
 require 'active_record/railtie'
 require 'action_controller/railtie'
 require 'action_mailer/railtie'
-require 'action_view/railtie'
+# require 'action_view/railtie'
 # require 'action_cable/engine'
-require 'sprockets/railtie'
+# require 'sprockets/railtie'
 require 'rails/test_unit/railtie'
 
 # Require the gems listed in Gemfile, including any gems
@@ -25,6 +25,9 @@ module ResourceWatchManager
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
     config.load_defaults 5.1
+
+    # Only API
+    config.api_only = true
 
     # Setup scaffold
     config.generators do |g|
@@ -47,7 +50,6 @@ module ResourceWatchManager
         reverse_proxy '/api/dataset', "#{ENV.fetch('APIGATEWAY_URL')}/dataset"
         reverse_proxy '/api/widget', "#{ENV.fetch('APIGATEWAY_URL')}/widget"
         reverse_proxy '/api/layer', "#{ENV.fetch('APIGATEWAY_URL')}/layer"
-
       end
     end
   end

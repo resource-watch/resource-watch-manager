@@ -38,7 +38,9 @@
 class PartnerSerializer < ActiveModel::Serializer
   attributes :id, :name, :slug, :summary, :body,
              :contact_email, :contact_name, :website, :featured,
-             :logo, :white_logo, :cover, :icon, :partner_type
+             :logo, :white_logo, :cover, :icon, :partner_type, :published
+
+  link(:self) { api_partner_url(object) }
 
   def logo
     {
@@ -56,8 +58,7 @@ class PartnerSerializer < ActiveModel::Serializer
 
   def cover
     {
-      large: object.cover.url(:large),
-      medium: object.cover.url(:medium)
+      cover: object.cover.url(:large)
     }
   end
 
