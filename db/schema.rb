@@ -10,10 +10,68 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170417145837) do
+ActiveRecord::Schema.define(version: 20170731093826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "apps", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.text "body"
+    t.text "technical_details"
+    t.string "author"
+    t.string "web_url"
+    t.string "ios_url"
+    t.string "thumbnail_file_name"
+    t.string "thumbnail_content_type"
+    t.integer "thumbnail_file_size"
+    t.datetime "thumbnail_updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_categories_on_slug"
+  end
+
+  create_table "dashboards", force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.string "description"
+    t.text "body"
+    t.boolean "published"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "dataset_subcategories", force: :cascade do |t|
+    t.bigint "subcategory_id"
+    t.string "dataset_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subcategory_id"], name: "index_dataset_subcategories_on_subcategory_id"
+  end
+
+  create_table "insights", force: :cascade do |t|
+    t.string "title"
+    t.text "summary"
+    t.text "description"
+    t.text "content"
+    t.string "photo_file_name"
+    t.string "photo_content_type"
+    t.integer "photo_file_size"
+    t.datetime "photo_updated_at"
+    t.boolean "published"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "partners", id: :serial, force: :cascade do |t|
     t.string "name"
@@ -34,8 +92,8 @@ ActiveRecord::Schema.define(version: 20170417145837) do
     t.string "icon_content_type"
     t.integer "icon_file_size"
     t.datetime "icon_updated_at"
-    t.boolean "published", default: false
-    t.boolean "featured", default: false
+    t.boolean "published"
+    t.boolean "featured"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "cover_file_name"
@@ -63,4 +121,17 @@ ActiveRecord::Schema.define(version: 20170417145837) do
     t.index ["slug"], name: "index_static_pages_on_slug"
   end
 
+  create_table "subcategories", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_subcategories_on_category_id"
+    t.index ["slug"], name: "index_subcategories_on_slug"
+  end
+
+  add_foreign_key "dataset_subcategories", "subcategories"
+  add_foreign_key "subcategories", "categories"
 end
