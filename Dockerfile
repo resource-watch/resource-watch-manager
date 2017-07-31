@@ -16,6 +16,7 @@ RUN apk update && \
       libxml2-dev \
       libxslt-dev \
       postgresql-dev \
+      imagemagick-dev \
     && rm -rf /var/cache/apk/* \
     && bundle config build.nokogiri --use-system-libraries \
     && gem install bundler --no-ri --no-rdoc \
