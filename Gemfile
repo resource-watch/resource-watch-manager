@@ -13,18 +13,15 @@ gem 'rails', '~> 5.1.2'
 
 gem 'dotenv-rails'
 gem 'faraday', '~> 0.11.0'
-gem 'gon'
 gem 'paperclip'
 gem 'puma', '~> 3.7'
 gem 'rack-cors'
-gem 'slim-rails'
 
 # Active record
 gem 'active_model_serializers', '~> 0.10.6'
 # Use this gem when supported by Rails 5.1
 # gem 'activemodel-associations'
 gem 'pg', '~> 0.18'
-gem 'simple_form'
 
 # Pagination
 gem 'api-pagination'
@@ -32,13 +29,6 @@ gem 'will_paginate'
 
 # Authentication and Authorization
 gem 'jwt'
-
-# Assets management
-gem 'autoprefixer-rails'
-gem 'foundation-rails'
-gem 'jquery-rails'
-gem 'sass-rails', github: 'rails/sass-rails'
-gem 'uglifier', '>= 1.3.0'
 
 # Friendly id
 gem 'friendly_id', '~> 5.1.0'
@@ -53,7 +43,6 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'web-console', '>= 3.3.0'
 end
 
 group :test do
