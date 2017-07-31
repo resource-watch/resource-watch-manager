@@ -40,7 +40,7 @@ class PartnerSerializer < ActiveModel::Serializer
              :contact_email, :contact_name, :website, :featured,
              :logo, :white_logo, :cover, :icon, :partner_type, :published
 
-  link(:self) { api_partner_url(object) }
+  link(:self) { api_partner_path(object) }
 
   def logo
     {
