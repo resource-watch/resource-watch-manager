@@ -22,7 +22,7 @@ spec:
             memory: "0Mi"
             cpu: "0m"
         args:
-          - start
+          - bash -c ''bundle exec puma -C config/puma.rb''
         env:
           - name: APIGATEWAY_URL
             value: "http://35.190.38.44"
