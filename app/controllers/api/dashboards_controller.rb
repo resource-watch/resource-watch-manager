@@ -44,6 +44,6 @@ class Api::DashboardsController < ApiController
   end
 
   def dashboard_params
-      ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-    end
+    ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+  end
 end
