@@ -28,5 +28,6 @@ COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
 RUN bundle install --jobs 20 --retry 5 --without development test
 ADD . /usr/src/app
+EXPOSE 3000
 ENTRYPOINT ["./entrypoint.sh"]
 
