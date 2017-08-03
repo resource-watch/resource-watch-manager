@@ -44,7 +44,7 @@ spec:
             scheme: HTTP
             path: /api/partners
             port: 3000
-          initialDelaySeconds: 60
-          timeoutSeconds: 5
+          initialDelaySeconds: 120
+          timeoutSeconds: 15
           periodSeconds: 30
       restartPolicy: Always
