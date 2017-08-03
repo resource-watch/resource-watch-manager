@@ -17,6 +17,8 @@ spec:
       - name: {name}
         image: vizzuality/{name}
         imagePullPolicy: Always
+        command:
+          - "bundle exec puma -C config/puma.rb"
         resources:
           requests:
             memory: "128Mi"
@@ -25,68 +27,22 @@ spec:
         args:
           - start
         env:
-          - name: PORT
-            value: "3500"
-          - name: NODE_ENV
-            value: prod
-          - name: NODE_PATH
-            value: app/src
-          - name: LOCAL_URL
-            value: http://{name}.default.svc.cluster.local:3500
-          - name: QUEUE_PROVIDER
-            value: redis
-          - name: QUEUE_NAME
-            value: mail_staging
-          - name: WRI_MAIL_RECIPIENTS
-            value: raul.requero@vizzuality.com,sergio.gordillo@vizzuality.com
-          - name: MONGO_URI
+          - name: APIGATEWAY_URL
+            value: "http://35.190.38.44"
+          - name: RW_API_URL
+            value: "http://35.190.38.44"
+          - name: SECRET_KEY_BASE
+            value: 6ca3256f0a0442e344da8ed4dd126d14989a25b07f285cff0f3e59ed819317995fa8f943d1564f30266d0df369a077d27e4e7c99ff2ba1e9b7b042f448a503ca
+          - name: RAILS_SERVE_STATIC_FILES
+            value: "true"
+          - name: DATABASE_URL
             valueFrom:
                 secretKeyRef:
                   name: dbsecrets
-                  key: STORY_MONGO_URI
-          - name: QUEUE_URL
-            valueFrom:
-                secretKeyRef:
-                  name: dbsecrets
-                  key: REDIS_URI
-          - name: NEWRELIC_LICENSE
-            valueFrom:
-                secretKeyRef:
-                  name: mssecrets
-                  key: NEWRELIC_LICENSE
-          - name: CT_URL
-            valueFrom:
-                secretKeyRef:
-                  name: mssecrets
-                  key: CT_URL
-          - name: CT_TOKEN
-            valueFrom:
-                secretKeyRef:
-                  name: mssecrets
-                  key: CT_TOKEN
-          - name: CT_REGISTER_MODE
-            valueFrom:
-                secretKeyRef:
-                  name: mssecrets
-                  key: CT_REGISTER_MODE
-          - name: API_VERSION
-            valueFrom:
-                secretKeyRef:
-                  name: mssecrets
-                  key: API_VERSION
-          - name: CARTODB_USER
-            valueFrom:
-                secretKeyRef:
-                  name: mssecrets
-                  key: CARTODB_USER
-          - name: CARTODB_APIKEY
-            valueFrom:
-                secretKeyRef:
-                  name: mssecrets
-                  key: CARTODB_APIKEY
+                  key: RESOURCE_WATCH_MANAGER_POSTGRESDB
 
         ports:
-          - containerPort: 3500
+          - containerPort: 3000
         readinessProbe:
           httpGet:
             scheme: HTTP
