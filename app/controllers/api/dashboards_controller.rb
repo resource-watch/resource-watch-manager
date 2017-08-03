@@ -35,11 +35,11 @@ class Api::DashboardsController < ApiController
 
   def set_dashboard
     begin
-      @partner = Dashboard.friendly.find params[:id]
+      @dashboard = Dashboard.friendly.find params[:id]
     rescue ActiveRecord::RecordNotFound
-      partner = Dashboard.new
-      partner.errors.add(:id, "Wrong ID provided")
-      render_error(partner, 404) and return
+      dashboard = Dashboard.new
+      dashboard.errors.add(:id, "Wrong ID provided")
+      render_error(dashboard, 404) and return
     end
   end
 
