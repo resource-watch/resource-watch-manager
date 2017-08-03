@@ -42,9 +42,9 @@ spec:
         readinessProbe:
           httpGet:
             scheme: HTTP
-            path: /api/partners
+            path: /healthz
             port: 3000
-          initialDelaySeconds: 120
-          timeoutSeconds: 15
-          periodSeconds: 30
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+          periodSeconds: 15
       restartPolicy: Always
