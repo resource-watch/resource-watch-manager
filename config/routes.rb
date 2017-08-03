@@ -9,4 +9,6 @@ Rails.application.routes.draw do
     resources :static_pages
     resources :dashboards
   end
+
+  get '/healthz', 'health#index'
 end
