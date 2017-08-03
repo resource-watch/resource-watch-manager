@@ -3,6 +3,14 @@ class Dashboard < ApplicationRecord
   friendly_id :name, use: %i(slugged)
   validates_presence_of :name
 
+  before_validation :parse_image
+  attr_accessor :image_base
+
+  validates_presence_of :title
+  has_attached_file :photo, styles: { cover: '1280x800>', thumb: '110x110>' }
+  validates_attachment_content_type :photo, content_type: %r{^image\/.*}
+  do_not_validate_attachment_file_type :photo
+
   scope :by_published, -> published { where(published: published) }
 
   def self.fetch_all(options={})
