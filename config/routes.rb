@@ -10,5 +10,5 @@ Rails.application.routes.draw do
     resources :dashboards
   end
 
-  get '/healthz', to: 'health#index'
+  get '/healthz', to: 'healths#index'
 end
