@@ -4,7 +4,7 @@ services:
     image: postgres
     volumes:
       - "./.data/db:/var/lib/postgresql/data"
-  web:
+  api:
     build: .
     command: 'bash -c ''bundle exec puma -C config/puma.rb'''
     ports:
@@ -13,10 +13,9 @@ services:
     environment:
       - RAILS_ENV=production
       - RACK_ENV=production
-      - NODE_ENV=production
-      - DATABASE_URL=postgres://postgres@postgres/rw_manager_prod
-    container_name: resourcewatch-manager
     links:
       - postgres
+    container_name: rw
     volumes:
-      - "./public/system:/usr/src/resourcewatch-manager/public/system"
+      - "./public/system:/usr/src/app/public/system"
+      - "./public/uploads:/usr/src/app/public/uploads"

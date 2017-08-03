@@ -36,13 +36,13 @@
 
 FactoryGirl.define do
   factory :partner do
-    name FFaker::Name.name
-    summary FFaker::Lorem.paragraph
-    contact_name FFaker::Name.name
-    contact_email FFaker::Internet.email
-    body FFaker::HTMLIpsum.body
-    published true
-    featured true
-    website FFaker::Internet.http_url
+    name {FFaker::Name.name}
+    summary {FFaker::Lorem.paragraph}
+    contact_name {FFaker::Name.name}
+    contact_email {FFaker::Internet.email}
+    body {FFaker::HTMLIpsum.body}
+    published {FFaker::Boolean.sample}
+    featured {FFaker::Boolean.sample}
+    website {FFaker::Internet.http_url}
   end
 end

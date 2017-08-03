@@ -73,18 +73,34 @@ class Partner < ApplicationRecord
   do_not_validate_attachment_file_type :cover
   do_not_validate_attachment_file_type :icon
 
-  def self.published
-    where(published: true)
+  scope :by_published, -> published { where(published: published) }
+  scope :by_featured, -> featured { where(featured: featured) }
+  scope :by_partner_type, -> by_partner_type { where(by_partner_type: by_partner_type) }
+
+  def self.fetch_all(options={})
+    partners = Partner.all
+    if options[:filter]
+      partners = partners.by_published(options[:filter][:published]) if options[:filter][:published]
+      partners = partners.by_featured(options[:filter][:featured]) if options[:filter][:featured]
+      partners = partners.by_partner_type(options[:filter][:by_partner_type]) if options[:filter][:by_partner_type]
+    end
+    partners = partners.order(self.get_order(options))
   end
 
-  def self.featured(is_featured)
-    where(featured: is_featured)
+  def self.get_order(options={})
+    field = 'created_at'
+    direction = 'ASC'
+    if options['sort']
+      f = options['sort'].split(',').first
+      field = f[0] == '-' ? f[1..-1] : f
+      if Partner.new.has_attribute?(field)
+        direction = f[0] == '-' ? 'DESC' : 'ASC'
+      else
+        field = 'created_at'
+      end
+    end
+    "#{field} #{direction}"
   end
-
-  def self.filtered_by_type(partner_type)
-    where(partner_type: partner_type)
-  end
-
 
   private
 
