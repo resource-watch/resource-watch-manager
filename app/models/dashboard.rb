@@ -5,9 +5,9 @@ class Dashboard < ApplicationRecord
 
   validates_presence_of :name
 
-  has_attached_file :photo, styles: { cover: '1280x800>', thumb: '110x110>' }
-  validates_attachment_content_type :photo, content_type: %r{^image\/.*}
-  do_not_validate_attachment_file_type :photo
+  # has_attached_file :photo, styles: { cover: '1280x800>', thumb: '110x110>' }
+  # validates_attachment_content_type :photo, content_type: %r{^image\/.*}
+  # do_not_validate_attachment_file_type :photo
 
   scope :by_published, -> published { where(published: published) }
 
