@@ -37,5 +37,12 @@ spec:
                   key: RESOURCE_WATCH_MANAGER_POSTGRESDB
         ports:
           - containerPort: 3000
-
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: 3000
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+          periodSeconds: 15
       restartPolicy: Always

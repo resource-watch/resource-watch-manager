@@ -87,5 +87,12 @@ spec:
 
         ports:
           - containerPort: 3500
-
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: 3000
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+          periodSeconds: 15
       restartPolicy: Always
