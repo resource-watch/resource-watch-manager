@@ -1,5 +1,5 @@
 class HealthsController < ApplicationController
   def index
-    render :ok
+    render nothing: true, status: 200, content_type: 'text/html'
   end
 end
