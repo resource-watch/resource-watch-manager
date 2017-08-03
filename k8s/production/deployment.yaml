@@ -17,13 +17,13 @@ spec:
       - name: {name}
         image: vizzuality/{name}
         imagePullPolicy: Always
-        command:
-          - "bundle exec puma -C config/puma.rb"
+        args:
+          - start
         resources:
           requests:
             memory: "128Mi"
           limits:
-            memory: "512Mi"
+            memory: "1Gi"
         args:
           - start
         env:
