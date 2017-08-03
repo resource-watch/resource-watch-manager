@@ -35,4 +35,13 @@ class Dashboard < ApplicationRecord
     end
     "#{field} #{direction}"
   end
+
+  private
+
+  def parse_image(property, parameter)
+    return if parameter.nil?
+    image = Paperclip.io_adapters.for(parameter)
+    image.original_filename = 'file.jpg'
+    send "#{property}=", image
+  end
 end
