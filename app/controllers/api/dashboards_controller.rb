@@ -10,7 +10,7 @@ class Api::DashboardsController < ApiController
   end
 
   def create
-    dashboard = Partner.new(dashboard_params)
+    dashboard = Dashboard.new(dashboard_params)
     if dashboard.save
       render json: dashboard, status: :created
     else
