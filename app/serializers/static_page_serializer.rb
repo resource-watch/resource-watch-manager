@@ -22,7 +22,7 @@
 # Static page Serializer
 class StaticPageSerializer < ActiveModel::Serializer
   attributes :id, :title, :summary, :description, :content,
-             :photo, :slug, :created_at, :updated_at
+             :photo, :slug, :published, :created_at, :updated_at
 
   def photo
     {
