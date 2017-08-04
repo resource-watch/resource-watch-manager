@@ -1,13 +1,30 @@
+# == Schema Information
+#
+# Table name: dashboards
+#
+#  id          :integer          not null, primary key
+#  name        :string
+#  slug        :string
+#  description :string
+#  content     :text
+#  published   :boolean
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  summary     :string
+#  photo       :string
+#
+
 class Dashboard < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: %i(slugged)
   validates_presence_of :name
 
-  validates_presence_of :name
+  before_validation :parse_image
+  attr_accessor :image_base
 
-  # has_attached_file :photo, styles: { cover: '1280x800>', thumb: '110x110>' }
-  # validates_attachment_content_type :photo, content_type: %r{^image\/.*}
-  # do_not_validate_attachment_file_type :photo
+  has_attached_file :photo, styles: { cover: '1280x800>', thumb: '110x110>' }
+  validates_attachment_content_type :photo, content_type: %r{^image\/.*}
+  do_not_validate_attachment_file_type :photo
 
   scope :by_published, -> published { where(published: published) }
 
@@ -32,5 +49,14 @@ class Dashboard < ApplicationRecord
       end
     end
     "#{field} #{direction}"
+  end
+
+  private
+
+  def parse_image
+    return if image_base.nil?
+    image = Paperclip.io_adapters.for(image_base)
+    image.original_filename = 'file.jpg'
+    self.photo = image
   end
 end
