@@ -45,26 +45,30 @@ class PartnerSerializer < ActiveModel::Serializer
   def logo
     {
       medium: object.logo.url(:medium),
-      thumb: object.logo.url(:thumb)
+      thumb: object.logo.url(:thumb),
+      original: object.logo.url(:original)
     }
   end
 
   def white_logo
     {
       medium: object.white_logo.url(:medium),
-      thumb: object.white_logo.url(:thumb)
+      thumb: object.white_logo.url(:thumb),
+      original: object.white_logo.url(:original)
     }
   end
 
   def cover
     {
-      cover: object.cover.url(:large)
+      cover: object.cover.url(:large),
+      original: object.cover.url(:original)
     }
   end
 
   def icon
     {
-      icon: object.icon.url(:icon)
+      icon: object.icon.url(:icon),
+      original: object.icon.url(:original)
     }
   end
 end

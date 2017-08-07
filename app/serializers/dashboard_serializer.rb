@@ -20,7 +20,8 @@ class DashboardSerializer < ActiveModel::Serializer
   def photo
     {
       cover: object.photo.url(:cover),
-      thumb: object.photo.url(:thumb)
+      thumb: object.photo.url(:thumb),
+      original: object.photo.url(:original)
     }
   end
 end
