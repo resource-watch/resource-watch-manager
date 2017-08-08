@@ -48,7 +48,14 @@ module Api
     end
 
     def partner_params
-      ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+      begin
+        new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+        new_params = ActionController::Parameters.new(new_params)
+        new_params.permit(:name, :contact_email, :contact_name, :body, :partner_type, :summary,
+                          :logo, :white_logo, :icon, :cover, :published, :featured, :website, :partner_type)
+      rescue
+        nil
+      end
     end
   end
 end

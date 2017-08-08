@@ -44,6 +44,12 @@ class Api::DashboardsController < ApiController
   end
 
   def dashboard_params
-    ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+    begin
+      new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+      new_params = ActionController::Parameters.new(new_params)
+      new_params.permit(:name, :description, :content, :published, :summary, :photo)
+    rescue
+      nil
+    end
   end
 end
