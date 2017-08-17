@@ -25,12 +25,19 @@ node {
   currentBuild.result = "SUCCESS"
 
   checkout scm
+  properties([pipelineTriggers([[$class: 'GitHubPushTrigger'], pollSCM('0 * * * *')])])
 
   try {
 
     stage ('Build docker') {
       sh("docker -H :2375 build -t ${imageTag} .")
       sh("docker -H :2375 build -t ${dockerUsername}/${appName}:latest .")
+    }
+
+    stage ('Run Tests') {
+      sh('docker-compose -H :2375 -f docker-compose-test.yml build')
+      sh('docker-compose -H :2375 -f docker-compose-test.yml run --rm test')
+      sh('docker-compose -H :2375 -f docker-compose-test.yml stop')
     }
 
     stage('Push Docker') {
@@ -72,15 +79,13 @@ node {
             }
           }
           catch(err) { // timeout reached or input false
-              def user = err.getCauses()[0].getUser()
+              sh("echo Aborted by user or timeout")
               if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
                   didTimeout = true
               } else {
                   userInput = false
-                  echo "Aborted by: [${user}]"
               }
           }
-
           if (userInput == true && !didTimeout){
             sh("echo Deploying to PROD cluster")
             sh("kubectl config use-context gke_${GCLOUD_PROJECT}_${GCLOUD_GCE_ZONE}_${KUBE_PROD_CLUSTER}")
@@ -93,14 +98,15 @@ node {
             }
             sh("kubectl set image deployment ${appName} ${appName}=${imageTag} --record")
           } else {
-            echo "this was not successful"
-            currentBuild.result = 'FAILURE'
+            sh("echo NOT DEPLOYED")
+            currentBuild.result = 'SUCCESS'
           }
           break
 
         // Default behavior?
         default:
-          sh("Default -> do nothing")
+          echo "Default -> do nothing"
+          currentBuild.result = "SUCCESS"
       }
     }
 
