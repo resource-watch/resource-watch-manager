@@ -10,7 +10,7 @@ class Api::DashboardsController < ApiController
   end
 
   def create
-    dashboard = Partner.new(dashboard_params)
+    dashboard = Dashboard.new(dashboard_params)
     if dashboard.save
       render json: dashboard, status: :created
     else
@@ -35,15 +35,21 @@ class Api::DashboardsController < ApiController
 
   def set_dashboard
     begin
-      @partner = Dashboard.friendly.find params[:id]
+      @dashboard = Dashboard.friendly.find params[:id]
     rescue ActiveRecord::RecordNotFound
-      partner = Dashboard.new
-      partner.errors.add(:id, "Wrong ID provided")
-      render_error(partner, 404) and return
+      dashboard = Dashboard.new
+      dashboard.errors.add(:id, "Wrong ID provided")
+      render_error(dashboard, 404) and return
     end
   end
 
   def dashboard_params
-      ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+    begin
+      new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+      new_params = ActionController::Parameters.new(new_params)
+      new_params.permit(:name, :description, :content, :published, :summary, :photo)
+    rescue
+      nil
     end
+  end
 end

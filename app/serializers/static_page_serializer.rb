@@ -26,7 +26,8 @@ class StaticPageSerializer < ActiveModel::Serializer
 
   def photo
     {
-      cover: object.photo.url(:cover)
+      cover: object.photo.url(:cover),
+      original: object.photo.url(:original)
     }
   end
 end
