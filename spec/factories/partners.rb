@@ -22,8 +22,8 @@
 #  icon_content_type       :string
 #  icon_file_size          :integer
 #  icon_updated_at         :datetime
-#  published               :boolean
-#  featured                :boolean
+#  published               :boolean          default(FALSE)
+#  featured                :boolean          default(FALSE)
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  cover_file_name         :string

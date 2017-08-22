@@ -47,7 +47,7 @@ class Api::DashboardsController < ApiController
     begin
       new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
       new_params = ActionController::Parameters.new(new_params)
-      new_params.permit(:name, :description, :content, :published, :summary, :photo)
+      new_params.permit(:name, :description, :content, :published, :summary, :photo, :user_id, :private)
     rescue
       nil
     end
