@@ -28,11 +28,9 @@ spec:
           - start
         env:
           - name: APIGATEWAY_URL
-            value: "http://35.190.38.44"
+            value: "https://api.resourcewatch.org"
           - name: RW_API_URL
-            value: "http://35.190.38.44"
-          - name: SECRET_KEY_BASE
-            value: 6ca3256f0a0442e344da8ed4dd126d14989a25b07f285cff0f3e59ed819317995fa8f943d1564f30266d0df369a077d27e4e7c99ff2ba1e9b7b042f448a503ca
+            value: "https://api.resourcewatch.org"
           - name: RAILS_SERVE_STATIC_FILES
             value: "true"
           - name: DATABASE_URL

@@ -4,6 +4,9 @@ MAINTAINER David Inga <david.inga@vizzuality.com>
 ENV RAILS_ENV production
 ENV RACK_ENV production
 
+ARG secretKey
+ENV SECRET_KEY_BASE $secretKey
+
 # Install dependencies
 RUN apk update && \
     apk upgrade && \
