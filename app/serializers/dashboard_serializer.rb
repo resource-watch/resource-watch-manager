@@ -20,7 +20,7 @@
 #
 
 class DashboardSerializer < ActiveModel::Serializer
-  attributes :id, :name, :slug, :summary, :description, :content, :published, :photo, :user_id, :private
+  attributes :id, :name, :slug, :summary, :description, :content, :published, :photo, :user_id, :private, :tags
 
   def photo
     {
@@ -28,5 +28,9 @@ class DashboardSerializer < ActiveModel::Serializer
       thumb: object.photo.url(:thumb),
       original: object.photo.url(:original)
     }
+  end
+
+  def tags
+    object.tags_array
   end
 end

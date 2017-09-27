@@ -45,6 +45,24 @@ class Dashboard < ApplicationRecord
     dashboards = dashboards.order(self.get_order(options))
   end
 
+  def self.fetch_related(dashboard, options={})
+    conn = Faraday.new(url: ENV['RW_API_URL'])
+    response = conn.get "/v1/graph/query/concepts-inferred?concepts=#{dashboard.tags}"
+    json = JSON.parse(response.body)
+    related_tags = json["data"].map { |tag| tag["id"] }
+
+    dashboards = related_tags.map do |tag|
+      Dashboard.where("tags like ?", "%#{tag}%")
+    end.flatten.uniq
+
+    rescue
+      []
+  end
+
+  def tags_array
+    tags.present? ? tags.split(',').map(&:strip) : []
+  end
+
   def self.get_order(options={})
     field = 'created_at'
     direction = 'ASC'
