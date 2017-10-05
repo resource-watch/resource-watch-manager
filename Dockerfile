@@ -1,5 +1,4 @@
 FROM ruby:2.4.1-alpine
-MAINTAINER David Inga <david.inga@vizzuality.com>
 
 ENV RAILS_ENV production
 ENV RACK_ENV production
