@@ -2,16 +2,21 @@
 #
 # Table name: dashboards
 #
-#  id          :integer          not null, primary key
-#  name        :string
-#  slug        :string
-#  description :string
-#  content     :text
-#  published   :boolean
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  summary     :string
-#  photo       :string
+#  id                 :integer          not null, primary key
+#  name               :string
+#  slug               :string
+#  description        :string
+#  content            :text
+#  published          :boolean
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  summary            :string
+#  photo_file_name    :string
+#  photo_content_type :string
+#  photo_file_size    :integer
+#  photo_updated_at   :datetime
+#  user_id            :string
+#  private            :boolean          default(TRUE)
 #
 
 class Dashboard < ApplicationRecord
@@ -27,11 +32,15 @@ class Dashboard < ApplicationRecord
   do_not_validate_attachment_file_type :photo
 
   scope :by_published, -> published { where(published: published) }
+  scope :by_private, -> is_private { where(private: is_private) }
+  scope :by_user, -> user { where(user_id: user) }
 
   def self.fetch_all(options={})
     dashboards = Dashboard.all
     if options[:filter]
       dashboards = dashboards.by_published(options[:filter][:published]) if options[:filter][:published]
+      dashboards = dashboards.by_private(options[:filter][:private]) if options[:filter][:private]
+      dashboards = dashboards.by_user(options[:filter][:user]) if options[:filter][:user]
     end
     dashboards = dashboards.order(self.get_order(options))
   end

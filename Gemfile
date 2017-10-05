@@ -13,9 +13,10 @@ gem 'rails', '~> 5.1.2'
 
 gem 'dotenv-rails'
 gem 'faraday', '~> 0.11.0'
-gem 'paperclip'
 gem 'puma', '~> 3.7'
 gem 'rack-cors'
+gem 'paperclip', '~> 5.1.0'
+gem 'aws-sdk', '~> 2.3.0'
 
 # Active record
 gem 'active_model_serializers', '~> 0.10.6'
