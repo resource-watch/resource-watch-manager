@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :partners
     resources :static_pages
     resources :dashboards
+    resources :tools
   end
 
   get '/healthz', to: 'healths#index'

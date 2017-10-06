@@ -1,12 +1,9 @@
 FROM ruby:2.4.1-alpine
 
-ENV RAILS_ENV production
-ENV RACK_ENV production
+ENV RAILS_ENV development
+ENV RACK_ENV development
 ENV RW_API_URL https://api.resourcewatch.org/v1
 ENV APIGATEWAY_URL https://production-api.globalforestwatch.org
-
-ARG secretKey
-ENV SECRET_KEY_BASE $secretKey
 
 # Install dependencies
 RUN apk update && \
@@ -30,8 +27,7 @@ RUN apk update && \
 WORKDIR /usr/src/app
 COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
-RUN bundle install --jobs 20 --retry 5 --without development test
+RUN bundle install --jobs 20 --retry 5
 ADD . /usr/src/app
 EXPOSE 3000
-ENTRYPOINT ["./entrypoint.sh"]
 
