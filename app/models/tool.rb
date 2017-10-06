@@ -1,0 +1,37 @@
+class Tool < ApplicationRecord
+  extend FriendlyId
+  friendly_id :title, use: %i(slugged)
+
+  has_attached_file :thumbnail, styles: { medium: '350x200>' }
+  validates_attachment_content_type :thumbnail, content_type: %r{^image\/.*}
+  do_not_validate_attachment_file_type :thumbnail
+
+  validates_presence_of :title
+
+  def should_generate_new_friendly_id?
+    new_record?
+  end
+
+  def self.get_order(options={})
+    field = 'created_at'
+    direction = 'ASC'
+    if options['sort']
+      f = options['sort'].split(',').first
+      field = f[0] == '-' ? f[1..-1] : f
+      if StaticPage.new.has_attribute?(field)
+        direction = f[0] == '-' ? 'DESC' : 'ASC'
+      else
+        field = 'created_at'
+      end
+    end
+    "#{field} #{direction}"
+  end
+
+  def self.fetch_all(options={})
+    tools = Tool.all
+    if options[:filter]
+      tools = tools.by_published(options[:filter][:published]) if options[:filter][:published]
+    end
+    tools = tools.order(self.get_order(options))
+  end
+end

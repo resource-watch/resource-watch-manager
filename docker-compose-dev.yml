@@ -1,0 +1,27 @@
+version: '2'
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - "./.data/db:/var/lib/postgresql/data"
+  api:
+    build:
+      dockerfile: Dockerfile-dev
+      context: .
+    command: 'bundle exec rails server -b 0.0.0.0'
+    ports:
+      - "3001:3000"
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASS=postgres
+      - SECRET=keyboard cat
+      - BULLET=enabled
+    links:
+      - postgres
+    container_name: rw
+    volumes:
+      - "./:/usr/src/app"
+      - "./public/system:/usr/src/app/public/system"
+      - "./public/uploads:/usr/src/app/public/uploads"
