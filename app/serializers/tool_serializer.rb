@@ -21,7 +21,7 @@
 
 # Tool Serializer
 class ToolSerializer < ActiveModel::Serializer
-  attributes :id, :title, :summary, :description, :content,
+  attributes :id, :title, :summary, :description, :content, :url,
              :thumbnail, :slug, :published, :created_at, :updated_at
 
   def thumbnail
