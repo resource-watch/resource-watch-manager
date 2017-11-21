@@ -27,6 +27,8 @@ class Dashboard < ApplicationRecord
   before_validation :parse_image
   attr_accessor :image_base
 
+  has_many :content_images, dependent: :destroy
+
   has_attached_file :photo, styles: { cover: '1280x800>', thumb: '110x110>' }
   validates_attachment_content_type :photo, content_type: %r{^image\/.*}
   do_not_validate_attachment_file_type :photo
@@ -60,6 +62,34 @@ class Dashboard < ApplicationRecord
     "#{field} #{direction}"
   end
 
+  def manage_content(base_url)
+    content_images.each(&:destroy)
+    contents = JSON.parse(content)
+
+    contents.each do |content|
+      if content['type'] == 'image'
+        content_image = create_content_image(content)
+
+        if content_image.present?
+          contents.find { |item| item['id'] == content['id'] }['content']['src'] = "#{base_url}#{content_image.image.url(:cover)}"
+        end
+      elsif content['type'] == 'grid'
+        content['content'].each do |item|
+          if item['type'] == 'image'
+            content_image = create_content_image(item)
+
+            if content_image.present?
+              contents.find { |item| item['id'] == content['id'] }['content']
+                      .find { |grid_item| grid_item['id'] == item['id'] }['content']['src'] = "#{base_url}#{content_image.image.url(:cover)}"
+            end
+          end
+        end
+      end
+    end
+
+    update_column(:content, contents.to_json)
+  end
+
   private
 
   def parse_image
@@ -67,5 +97,11 @@ class Dashboard < ApplicationRecord
     image = Paperclip.io_adapters.for(image_base)
     image.original_filename = 'file.jpg'
     self.photo = image
+  end
+
+  def create_content_image(content)
+    if content['content']['src'].split(',').first == 'data:image/png;base64'
+      ContentImage.create(dashboard_id: id, image: content['content']['src'])
+    end
   end
 end
