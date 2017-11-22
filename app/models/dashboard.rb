@@ -66,22 +66,13 @@ class Dashboard < ApplicationRecord
     content_images.each(&:destroy)
     contents = JSON.parse(content)
 
-    contents.each do |content|
-      if content['type'] == 'image'
-        content_image = create_content_image(content)
-
-        if content_image.present?
-          contents.find { |item| item['id'] == content['id'] }['content']['src'] = "#{base_url}#{content_image.image.url(:cover)}"
-        end
-      elsif content['type'] == 'grid'
-        content['content'].each do |item|
-          if item['type'] == 'image'
-            content_image = create_content_image(item)
-
-            if content_image.present?
-              contents.find { |item| item['id'] == content['id'] }['content']
-                      .find { |grid_item| grid_item['id'] == item['id'] }['content']['src'] = "#{base_url}#{content_image.image.url(:cover)}"
-            end
+    contents.each do |content_block|
+      if content_block['type'] == 'image'
+        contents = assign_content_image_url(contents, content_block, base_url)
+      elsif content_block['type'] == 'grid'
+        content_block['content'].each do |content|
+          if content['type'] == 'image'
+            contents = assign_content_image_url(contents, content, base_url, is_grid = true, grid = content_block)
           end
         end
       end
@@ -104,4 +95,24 @@ class Dashboard < ApplicationRecord
       ContentImage.create(dashboard_id: id, image: content['content']['src'])
     end
   end
+
+  def assign_content_image_url(contents, content, base_url, is_grid = false, grid = nil)
+    content_image = create_content_image(content)
+
+    if content_image.present?
+      if is_grid
+        contents.find { |content_block| content_block['id'] == grid['id'] }['content']
+                .find { |grid_item| grid_item['id'] == content['id'] }['content']['src'] = full_image_url(base_url, content_image)
+      else
+        contents.find { |item| item['id'] == content['id'] }['content']['src'] = full_image_url(base_url, content_image)
+      end
+    end
+
+    contents
+  end
+
+  def full_image_url(base_url, content_image)
+    "#{base_url}#{content_image.image.url(:cover)}"
+  end
+
 end
