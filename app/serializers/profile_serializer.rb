@@ -1,17 +1,16 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
-# Table name: static_pages
+# Table name: profiles
 #
-#  user_id             :string          not null, primary key
+#  id                  :integer          not null, primary key
+#  user_id             :string
 #  avatar_file_name    :string
 #  avatar_content_type :string
 #  avatar_file_size    :integer
 #  avatar_updated_at   :datetime
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  published           :boolean
 #
 
 # Profile Serializer
