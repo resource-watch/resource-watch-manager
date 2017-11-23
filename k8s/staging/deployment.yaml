@@ -2,19 +2,17 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    name: {name}
-  name: {name}
+    name: {name}-staging
+  name: {name}-staging
 spec:
   revisionHistoryLimit: 0
   template:
     metadata:
-      annotations:
-        chaos.alpha.kubernetes.io/enabled: "true"
       labels:
-        name: {name}
+        name: {name}-staging
     spec:
       containers:
-      - name: {name}
+      - name: {name}-staging
         image: vizzuality/{name}
         imagePullPolicy: Always
         args:
@@ -24,6 +22,8 @@ spec:
             memory: "0Mi"
             cpu: "0m"
         env:
+          - name: RAILS_LOG_TO_STDOUT
+            value: "true"
           - name: APIGATEWAY_URL
             value: "https://api.resourcewatch.org"
           - name: RW_API_URL
@@ -34,11 +34,11 @@ spec:
             valueFrom:
                 secretKeyRef:
                   name: dbsecrets
-                  key: RESOURCE_WATCH_MANAGER_POSTGRESDB
+                  key: RESOURCE_WATCH_MANAGER_POSTGRESDB_STAGING
           - name: S3_BUCKET_NAME
             value: "wri-api-backups"
           - name: S3_PATH
-            value: "resourcewatch/staging"
+            value: "resourcewatch/test"
           - name: AWS_REGION
             value: "us-east-1"
           - name: AWS_ACCESS_KEY_ID

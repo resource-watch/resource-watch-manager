@@ -1,22 +1,22 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
-# Table name: static_pages
+# Table name: tools
 #
-#  id                 :integer          not null, primary key
-#  title              :string           not null
-#  summary            :text
-#  description        :text
-#  content            :text
+#  id                     :integer          not null, primary key
+#  title                  :string
+#  slug                   :string
+#  summary                :string
+#  description            :string
+#  content                :text
+#  url                    :string
 #  thumbnail_file_name    :string
 #  thumbnail_content_type :string
 #  thumbnail_file_size    :integer
 #  thumbnail_updated_at   :datetime
-#  slug               :string
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  published          :boolean
+#  published              :boolean
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
 #
 
 # Tool Serializer

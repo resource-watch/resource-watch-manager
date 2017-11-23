@@ -12,6 +12,7 @@ class Api::DashboardsController < ApiController
   def create
     dashboard = Dashboard.new(dashboard_params_create)
     if dashboard.save
+      dashboard.manage_content(request.base_url)
       render json: dashboard, status: :created
     else
       render_error(dashboard, :unprocessable_entity)
@@ -20,6 +21,7 @@ class Api::DashboardsController < ApiController
 
   def update
     if @dashboard.update_attributes(dashboard_params_update)
+      @dashboard.manage_content(request.base_url)
       render json: @dashboard, status: :ok
     else
       render_error(@dashboard, :unprocessable_entity)
