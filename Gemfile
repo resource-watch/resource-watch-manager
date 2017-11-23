@@ -18,6 +18,9 @@ gem 'rack-cors'
 gem 'paperclip', '~> 5.1.0'
 gem 'aws-sdk', '~> 2.3.0'
 
+# Cronjobs
+gem 'whenever', :require => false
+
 # Active record
 gem 'active_model_serializers', '~> 0.10.6'
 # Use this gem when supported by Rails 5.1
