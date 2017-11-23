@@ -22,6 +22,8 @@ spec:
             memory: "0Mi"
             cpu: "0m"
         env:
+          - name: RAILS_LOG_TO_STDOUT
+            value: "true"
           - name: APIGATEWAY_URL
             value: "https://api.resourcewatch.org"
           - name: RW_API_URL
