@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :static_pages
     resources :dashboards
     resources :tools
+    resources :temporary_content_images, only: [:create]
     resources :profiles, only: [:show, :create, :update, :destroy]
   end
 

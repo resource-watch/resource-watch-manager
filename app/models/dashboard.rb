@@ -91,8 +91,18 @@ class Dashboard < ApplicationRecord
   end
 
   def create_content_image(content)
-    if content['content']['src'].split(',').first == 'data:image/png;base64'
-      ContentImage.create(dashboard_id: id, image: content['content']['src'])
+    uri = URI.parse(content['content']['src'])
+
+    if uri.query.present?
+      params = CGI.parse(uri.query)
+
+      if params['temp_id'].present?
+        temp = TemporaryContentImage.find(params['temp_id'].first)
+        content_image = ContentImage.create(dashboard_id: id, image: temp.image)
+
+        temp.destroy
+        content_image
+      end
     end
   end
 
