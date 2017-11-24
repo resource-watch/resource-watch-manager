@@ -2,7 +2,7 @@ class Api::TemporaryContentImagesController < ApiController
   def create
     content_image = TemporaryContentImage.new(content_image_params)
     if content_image.save
-      render json: { url: request.base_url + content_image.image.url + "&temp_id=#{content_image.id}" }, status: :created
+      render json: { url: content_image.image.url + "&temp_id=#{content_image.id}" }, status: :created
     else
       render_error(content_image, :unprocessable_entity)
     end
