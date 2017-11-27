@@ -37,7 +37,7 @@
 # Model for Partner
 class Partner < ApplicationRecord
   extend FriendlyId
-  friendly_id :name, use: %i(slugged)
+  friendly_id :name, use: %i(slugged finders)
 
   attr_accessor :logo_base, :white_logo_base, :cover_base, :icon_base
 

@@ -18,6 +18,10 @@ gem 'rack-cors'
 gem 'paperclip', '~> 5.1.0'
 gem 'aws-sdk', '~> 2.3.0'
 
+# Active admin
+gem 'activeadmin', github: 'activeadmin'
+gem 'devise'
+
 # Cronjobs
 gem 'whenever', :require => false
 
@@ -30,12 +34,13 @@ gem 'pg', '~> 0.18'
 # Pagination
 gem 'api-pagination'
 gem 'will_paginate'
+gem 'draper'
 
 # Authentication and Authorization
 gem 'jwt'
 
 # Friendly id
-gem 'friendly_id', '~> 5.1.0'
+gem 'friendly_id'
 
 group :development, :test do
   gem 'annotate'

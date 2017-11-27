@@ -4,6 +4,11 @@ require 'api_constraints'
 
 Rails.application.routes.draw do
 
+  # Active Admin routes
+  get 'admin', to: 'admin/dashboard_page#index'
+  ActiveAdmin.routes(self)
+  devise_for :admin_users, ActiveAdmin::Devise.config
+
   # API
   namespace :api, defaults: { format: :json } do
     resources :partners

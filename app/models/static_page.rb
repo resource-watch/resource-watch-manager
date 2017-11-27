@@ -23,12 +23,12 @@
 # Static Page Model
 class StaticPage < ApplicationRecord
   extend FriendlyId
-  friendly_id :title, use: %i(slugged)
+  friendly_id :title, use: %i(slugged finders)
 
   before_validation :parse_image
   attr_accessor :image_base
 
-  has_attached_file :photo, styles: { cover: '1280x800>' }
+  has_attached_file :photo, styles: { medium: '350x200>', cover: '1280x800>' }
   validates_attachment_content_type :photo, content_type: %r{^image\/.*}
   do_not_validate_attachment_file_type :photo
 

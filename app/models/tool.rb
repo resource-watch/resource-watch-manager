@@ -20,7 +20,7 @@
 
 class Tool < ApplicationRecord
   extend FriendlyId
-  friendly_id :title, use: %i(slugged)
+  friendly_id :title, use: [:slugged, :finders]
 
   has_attached_file :thumbnail, styles: { medium: '350x200>' }
   validates_attachment_content_type :thumbnail, content_type: %r{^image\/.*}
