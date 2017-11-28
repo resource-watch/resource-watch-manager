@@ -62,6 +62,7 @@ GEM
     byebug (9.0.6)
     case_transform (0.2)
       activesupport
+    chronic (0.10.2)
     climate_control (0.2.0)
     cocaine (0.5.8)
       climate_control (>= 0.0.3, < 1.0)
@@ -208,6 +209,8 @@ GEM
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
+    whenever (0.10.0)
+      chronic (>= 0.6.3)
     will_paginate (3.1.6)
 
 PLATFORMS
@@ -240,10 +243,11 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
+  whenever
   will_paginate
 
 RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.15.3
+   1.15.4
