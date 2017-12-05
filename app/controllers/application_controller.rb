@@ -1,23 +1,23 @@
-# frozen_string_literal: true
-
-# Main class of the program
 class ApplicationController < ActionController::Base
-  include ApiHelper
-
   protect_from_forgery with: :exception
   helper_method :current_user
   helper_method :connect_gateway
+  before_action :set_current_user
 
-  before_action :authenticate
-
-  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
-
-  def check_permissions
-    logout_apigateway unless current_user && %w[ADMIN MANAGER].include?(current_user['role'])
+  def jwt_authentication
+    unless session.key?('user_token')
+      redirect_to_apigateway
+    end
   end
 
-  def check_user_authentication
-    logout_apigateway unless session[:user_token] && current_user
+  def current_user
+    unless session.key?('current_user')
+      connect = connect_gateway
+      connect.authorization :Bearer, session[:user_token]
+      response = connect.get('/auth/check-logged')
+
+      session[:current_user] = response.body
+    end
   end
 
   def redirect_to_apigateway
@@ -28,30 +28,30 @@ class ApplicationController < ActionController::Base
     redirect_to "#{ENV['APIGATEWAY_URL']}/auth/logout?callbackUrl=#{auth_login_url}&token=true"
   end
 
+  def access_denied(exception)
+    render json: { unpermitted: exception.message }
+  end
+
   protected
 
-  def logged_in?
-    !!current_user
-  end
+  # def current_user
+  #   return nil unless session[:user_token]
+  #   return session[:current_user] if session[:current_user]
+  #   get_current_user
+  # end
 
-  def current_user
-    return nil unless session[:user_token]
-    return session[:current_user] if session[:current_user]
-    get_current_user
-  end
-
-  def get_current_user
-    connect = connect_gateway
-    connect.authorization :Bearer, session[:user_token]
-    response = connect.get('/auth/check-logged')
-    if response.success?
-      user_data = JSON.parse response.body
-      session[:current_user] = user_data
-      return session[:current_user]
-    else
-      return false
-    end
-  end
+  # def get_current_user
+  #   connect = connect_gateway
+  #   connect.authorization :Bearer, session[:user_token]
+  #   response = connect.get('/auth/check-logged')
+  #   if response.success?
+  #     user_data = JSON.parse response.body
+  #     session[:current_user] = user_data
+  #     return session[:current_user]
+  #   else
+  #     return false
+  #   end
+  # end
 
   def connect_gateway
     Faraday.new(url: (ENV['APIGATEWAY_URL']).to_s) do |faraday|
@@ -61,11 +61,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def authenticate
-    # render json: { errors: [{ status: '401', title: 'Unauthorized' }] }, status: 401 unless logged_in?
+  def set_current_user
+    current_user if session[:user_token].present?
+    @current_user = session[:current_user] || nil
+    Thread.current[:user] = @current_user # set on thread to use it on admin_authorization model
   end
 
-  def record_not_found
-    # render json: { errors: [{ status: '404', title: 'Record not found' }] }, status: 404
-  end
 end

@@ -1,23 +1,19 @@
-# frozen_string_literal: true
-
-# Class for the authentication controller
 class AuthController < ApplicationController
+
   def login
-    if params.key?('token')
-      session[:user_token] = params[:token]
-      if current_user && %w[ADMIN MANAGER].include?(current_user['role'])
-        redirect_to root_path
-      else
-        logout
-      end
-    else
+    token = params[:token]
+    if token.nil?
       redirect_to_apigateway
+    else
+      session[:user_token] = token
+      redirect_to admin_root_path
     end
   end
 
   def logout
-    session[:user_token].destroy
-    session[:current_user].destroy
+    session.delete(:user_token)
+    session.delete(:current_user)
     logout_apigateway
   end
+  
 end
