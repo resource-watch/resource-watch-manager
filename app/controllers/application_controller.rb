@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include ApiHelper
+
   protect_from_forgery with: :exception
   helper_method :current_user
   helper_method :connect_gateway
@@ -29,37 +31,10 @@ class ApplicationController < ActionController::Base
   end
 
   def access_denied(exception)
-    render json: { unpermitted: exception.message }
+    logout_apigateway
   end
 
   protected
-
-  # def current_user
-  #   return nil unless session[:user_token]
-  #   return session[:current_user] if session[:current_user]
-  #   get_current_user
-  # end
-
-  # def get_current_user
-  #   connect = connect_gateway
-  #   connect.authorization :Bearer, session[:user_token]
-  #   response = connect.get('/auth/check-logged')
-  #   if response.success?
-  #     user_data = JSON.parse response.body
-  #     session[:current_user] = user_data
-  #     return session[:current_user]
-  #   else
-  #     return false
-  #   end
-  # end
-
-  def connect_gateway
-    Faraday.new(url: (ENV['APIGATEWAY_URL']).to_s) do |faraday|
-      faraday.request  :url_encoded             # form-encode POST params
-      faraday.response :logger, Rails.logger    # log requests to STDOUT
-      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
-    end
-  end
 
   def set_current_user
     current_user if session[:user_token].present?
