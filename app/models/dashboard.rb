@@ -21,7 +21,7 @@
 
 class Dashboard < ApplicationRecord
   extend FriendlyId
-  friendly_id :name, use: %i(slugged)
+  friendly_id :name, use: %i(slugged finders)
   validates_presence_of :name
 
   before_validation :parse_image
@@ -29,7 +29,7 @@ class Dashboard < ApplicationRecord
 
   has_many :content_images, dependent: :destroy
 
-  has_attached_file :photo, styles: { cover: '1280x800>', thumb: '110x110>' }
+  has_attached_file :photo, styles: { cover: '1280x800>', thumb: '110x110>', medium: '500x500' }
   validates_attachment_content_type :photo, content_type: %r{^image\/.*}
   do_not_validate_attachment_file_type :photo
 

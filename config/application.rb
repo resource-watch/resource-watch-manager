@@ -11,7 +11,7 @@ require 'action_controller/railtie'
 require 'action_mailer/railtie'
 # require 'action_view/railtie'
 # require 'action_cable/engine'
-# require 'sprockets/railtie'
+require 'sprockets/railtie'
 require 'rails/test_unit/railtie'
 
 # Require the gems listed in Gemfile, including any gems
@@ -27,7 +27,7 @@ module ResourceWatchManager
     config.load_defaults 5.1
 
     # Only API
-    config.api_only = true
+    config.api_only = false
 
     # Setup scaffold
     config.generators do |g|
@@ -52,5 +52,8 @@ module ResourceWatchManager
         reverse_proxy '/api/layer', "#{ENV.fetch('APIGATEWAY_URL')}/layer"
       end
     end
+
+    # For active admin views
+    config.middleware.use ActionDispatch::Flash
   end
 end

@@ -2,6 +2,7 @@
 
 class ApiController < ActionController::API
   include ApiHelper
+
   before_action :authenticate, except: [:index, :show]
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
