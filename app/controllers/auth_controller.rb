@@ -6,7 +6,7 @@ class AuthController < ApplicationController
       redirect_to_apigateway
     else
       session[:user_token] = token
-      redirect_to admin_root_path
+      redirect_to manager_root_path
     end
   end
 

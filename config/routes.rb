@@ -5,7 +5,7 @@ require 'api_constraints'
 Rails.application.routes.draw do
 
   # Active Admin routes
-  get 'admin', to: 'admin/dashboards#index'
+  get 'manager', to: 'manager/dashboards#index'
   ActiveAdmin.routes(self)
 
   # API
@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   end
 
   # Auth
-  get 'auth/login', to: 'auth#login'
-  get 'auth/logout', to: 'auth#logout'
+  get 'authentication/login', to: 'auth#login'
+  get 'authentication/logout', to: 'auth#logout'
 
 end
