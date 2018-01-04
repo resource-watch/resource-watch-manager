@@ -110,4 +110,8 @@ class Partner < ApplicationRecord
     image.original_filename = 'file.jpg'
     send "#{property}=", image
   end
+
+  def should_generate_new_friendly_id?
+    name_changed?
+  end
 end
