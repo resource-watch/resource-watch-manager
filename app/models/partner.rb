@@ -51,16 +51,16 @@ class Partner < ApplicationRecord
   validates_presence_of :name
 
   has_attached_file :logo,
-                    styles: { medium: '320x180>', thumb: '110x60>' },
+                    styles: { medium: '320x>', thumb: '110x>' },
                     default_url: '/images/:style/missing.png'
   has_attached_file :white_logo,
-                    styles: { medium: '320x180>', thumb: '110x60>' },
+                    styles: { medium: '320x>', thumb: '110x>' },
                     default_url: '/images/:style/missing.png'
   has_attached_file :cover,
-                    styles: { large: '1600x600>', medium: '320x180>' },
+                    styles: { large: '1600x>', medium: '320x>' },
                     default_url: '/images/:style/missing.png'
   has_attached_file :icon,
-                    styles: { thumb: '25x25>' },
+                    styles: { thumb: '25x>' },
                     default_url: '/images/:style/missing.png'
 
   validates_attachment_content_type :logo, content_type: %r{^image\/.*}

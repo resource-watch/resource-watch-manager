@@ -29,7 +29,7 @@ class Dashboard < ApplicationRecord
 
   has_many :content_images, dependent: :destroy
 
-  has_attached_file :photo, styles: { cover: '1280x800>', thumb: '110x110>', medium: '500x500' }
+  has_attached_file :photo, styles: { cover: '1280x>', thumb: '110x>', medium: '500x' }
   validates_attachment_content_type :photo, content_type: %r{^image\/.*}
   do_not_validate_attachment_file_type :photo
 

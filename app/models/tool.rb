@@ -22,7 +22,7 @@ class Tool < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: [:slugged, :finders]
 
-  has_attached_file :thumbnail, styles: { medium: '350x200>' }
+  has_attached_file :thumbnail, styles: { medium: '350x>' }
   validates_attachment_content_type :thumbnail, content_type: %r{^image\/.*}
   do_not_validate_attachment_file_type :thumbnail
 
