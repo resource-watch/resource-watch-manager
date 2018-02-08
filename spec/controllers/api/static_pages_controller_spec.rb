@@ -2,9 +2,7 @@
 
 require 'spec_helper'
 
-
 describe Api::StaticPagesController, type: :controller do
-
   describe 'GET #index' do
     before(:each) do
       @static_pages = FactoryGirl.create_list(:static_page, 4)
@@ -45,7 +43,7 @@ describe Api::StaticPagesController, type: :controller do
   end
 
   describe 'POST #create' do
-    let!(:error) { { errors: [{ status: 422, title: "title can't be blank" }]}}
+    let!(:error) { { errors: [{ status: 422, title: "title can't be blank" }] } }
 
     it 'Valid static page' do
       post :create, params: { 'data' => { 'attributes': { 'title' => 'test' } } }
@@ -60,7 +58,7 @@ describe Api::StaticPagesController, type: :controller do
 
     it 'Edits a static page' do
       title = 'new title'
-      put :update, params: {'id' => @static_page.id, 'data' => { 'attributes': { 'title' => title } } }
+      put :update, params: { 'id' => @static_page.id, 'data' => { 'attributes': { 'title' => title } } }
       expect(response.status).to eql(200)
     end
   end
@@ -71,7 +69,7 @@ describe Api::StaticPagesController, type: :controller do
     end
 
     it 'Delete valid page' do
-      delete :destroy, params: {'id' => @static_page.id }
+      delete :destroy, params: { 'id' => @static_page.id }
       expect(response.status).to eql(204)
     end
   end

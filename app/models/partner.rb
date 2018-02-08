@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: partners
@@ -37,7 +38,7 @@
 # Model for Partner
 class Partner < ApplicationRecord
   extend FriendlyId
-  friendly_id :name, use: %i(slugged finders)
+  friendly_id :name, use: %i[slugged finders]
 
   attr_accessor :logo_base, :white_logo_base, :cover_base, :icon_base
 
@@ -73,21 +74,21 @@ class Partner < ApplicationRecord
   do_not_validate_attachment_file_type :cover
   do_not_validate_attachment_file_type :icon
 
-  scope :by_published, -> published { where(published: published) }
-  scope :by_featured, -> featured { where(featured: featured) }
-  scope :by_partner_type, -> by_partner_type { where(by_partner_type: by_partner_type) }
+  scope :by_published, ->(published) { where(published: published) }
+  scope :by_featured, ->(featured) { where(featured: featured) }
+  scope :by_partner_type, ->(by_partner_type) { where(by_partner_type: by_partner_type) }
 
-  def self.fetch_all(options={})
+  def self.fetch_all(options = {})
     partners = Partner.all
     if options[:filter]
       partners = partners.by_published(options[:filter][:published]) if options[:filter][:published]
       partners = partners.by_featured(options[:filter][:featured]) if options[:filter][:featured]
       partners = partners.by_partner_type(options[:filter][:by_partner_type]) if options[:filter][:by_partner_type]
     end
-    partners = partners.order(self.get_order(options))
+    partners = partners.order(get_order(options))
   end
 
-  def self.get_order(options={})
+  def self.get_order(options = {})
     field = 'created_at'
     direction = 'ASC'
     if options['sort']

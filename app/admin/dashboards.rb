@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Dashboard do
   config.per_page = 20
   config.sort_order = 'created_at_desc'
@@ -12,7 +14,7 @@ ActiveAdmin.register Dashboard do
 
   controller do
     def permitted_params
-      params.permit(:id, dashboard: [:name, :description, :content, :published, :summary, :user_id, :private, :photo])
+      params.permit(:id, dashboard: %i[name description content published summary user_id private photo])
     end
   end
 
@@ -61,5 +63,4 @@ ActiveAdmin.register Dashboard do
       row :created_at
     end
   end
-
 end

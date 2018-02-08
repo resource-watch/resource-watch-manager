@@ -3,7 +3,7 @@
 module Api
   # API class for the Partners Resource
   class PartnersController < ApiController
-    before_action :set_partner, only: [:show, :update, :destroy]
+    before_action :set_partner, only: %i[show update destroy]
 
     def index
       render json: Partner.fetch_all(params)
@@ -38,24 +38,20 @@ module Api
     private
 
     def set_partner
-      begin
-        @partner = Partner.friendly.find params[:id]
-      rescue ActiveRecord::RecordNotFound
-        partner = Partner.new
-        partner.errors.add(:id, "Wrong ID provided")
-        render_error(partner, 404) and return
-      end
+      @partner = Partner.friendly.find params[:id]
+    rescue ActiveRecord::RecordNotFound
+      partner = Partner.new
+      partner.errors.add(:id, 'Wrong ID provided')
+      render_error(partner, 404) && return
     end
 
     def partner_params
-      begin
-        new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-        new_params = ActionController::Parameters.new(new_params)
-        new_params.permit(:name, :contact_email, :contact_name, :body, :partner_type, :summary,
-                          :logo, :white_logo, :icon, :cover, :published, :featured, :website, :partner_type)
-      rescue
-        nil
-      end
+      new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+      new_params = ActionController::Parameters.new(new_params)
+      new_params.permit(:name, :contact_email, :contact_name, :body, :partner_type, :summary,
+                        :logo, :white_logo, :icon, :cover, :published, :featured, :website, :partner_type)
+    rescue
+      nil
     end
   end
 end

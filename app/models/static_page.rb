@@ -23,7 +23,7 @@
 # Static Page Model
 class StaticPage < ApplicationRecord
   extend FriendlyId
-  friendly_id :title, use: %i(slugged finders)
+  friendly_id :title, use: %i[slugged finders]
 
   before_validation :parse_image
   attr_accessor :image_base
@@ -33,20 +33,20 @@ class StaticPage < ApplicationRecord
   do_not_validate_attachment_file_type :photo
 
   validates_presence_of :title
-  
+
   def should_generate_new_friendly_id?
     new_record?
   end
 
-  def self.fetch_all(options={})
+  def self.fetch_all(options = {})
     static_pages = StaticPage.all
     if options[:filter]
       static_pages = static_pages.by_published(options[:filter][:published]) if options[:filter][:published]
     end
-    static_pages = static_pages.order(self.get_order(options))
+    static_pages = static_pages.order(get_order(options))
   end
 
-  def self.get_order(options={})
+  def self.get_order(options = {})
     field = 'created_at'
     direction = 'ASC'
     if options['sort']

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Tool do
   config.per_page = 20
   config.sort_order = 'created_at_desc'
@@ -13,8 +15,8 @@ ActiveAdmin.register Tool do
 
   controller do
     def permitted_params
-      params.permit(:id, tool: [:title, :summary, :description,
-                                :content, :url, :published, :thumbnail])
+      params.permit(:id, tool: %i[title summary description
+                                  content url published thumbnail])
     end
   end
 
@@ -60,5 +62,4 @@ ActiveAdmin.register Tool do
       row :created_at
     end
   end
-
 end

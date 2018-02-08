@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: dashboards
@@ -21,7 +23,7 @@
 
 class Dashboard < ApplicationRecord
   extend FriendlyId
-  friendly_id :name, use: %i(slugged finders)
+  friendly_id :name, use: %i[slugged finders]
   validates_presence_of :name
 
   before_validation :parse_image
@@ -33,21 +35,21 @@ class Dashboard < ApplicationRecord
   validates_attachment_content_type :photo, content_type: %r{^image\/.*}
   do_not_validate_attachment_file_type :photo
 
-  scope :by_published, -> published { where(published: published) }
-  scope :by_private, -> is_private { where(private: is_private) }
-  scope :by_user, -> user { where(user_id: user) }
+  scope :by_published, ->(published) { where(published: published) }
+  scope :by_private, ->(is_private) { where(private: is_private) }
+  scope :by_user, ->(user) { where(user_id: user) }
 
-  def self.fetch_all(options={})
+  def self.fetch_all(options = {})
     dashboards = Dashboard.all
     if options[:filter]
       dashboards = dashboards.by_published(options[:filter][:published]) if options[:filter][:published]
       dashboards = dashboards.by_private(options[:filter][:private]) if options[:filter][:private]
       dashboards = dashboards.by_user(options[:filter][:user]) if options[:filter][:user]
     end
-    dashboards = dashboards.order(self.get_order(options))
+    dashboards = dashboards.order(get_order(options))
   end
 
-  def self.get_order(options={})
+  def self.get_order(options = {})
     field = 'created_at'
     direction = 'ASC'
     if options['sort']
@@ -106,7 +108,7 @@ class Dashboard < ApplicationRecord
     end
   end
 
-  def assign_content_image_url(contents, content, base_url, is_grid = false, grid = nil)
+  def assign_content_image_url(contents, content, _base_url, is_grid = false, grid = nil)
     content_image = create_content_image(content)
 
     if content_image.present?
@@ -124,5 +126,4 @@ class Dashboard < ApplicationRecord
   def should_generate_new_friendly_id?
     name_changed?
   end
-
 end

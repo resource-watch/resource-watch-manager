@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register StaticPage do
   config.per_page = 20
   config.sort_order = 'created_at_desc'
@@ -12,8 +14,8 @@ ActiveAdmin.register StaticPage do
 
   controller do
     def permitted_params
-      params.permit(:id, static_page: [:title, :summary, :description,
-                                :content, :published, :photo])
+      params.permit(:id, static_page: %i[title summary description
+                                         content published photo])
     end
   end
 
@@ -57,5 +59,4 @@ ActiveAdmin.register StaticPage do
       row :created_at
     end
   end
-
 end

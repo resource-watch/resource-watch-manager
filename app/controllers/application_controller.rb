@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   include ApiHelper
 
@@ -7,9 +9,7 @@ class ApplicationController < ActionController::Base
   before_action :set_current_user
 
   def jwt_authentication
-    unless session.key?('user_token')
-      redirect_to_apigateway
-    end
+    redirect_to_apigateway unless session.key?('user_token')
   end
 
   def current_user
@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
     redirect_to "#{ENV['APIGATEWAY_URL']}/auth/logout?callbackUrl=#{authentication_login_url}&token=true"
   end
 
-  def access_denied(exception)
+  def access_denied(_exception)
     logout_apigateway
   end
 
@@ -41,5 +41,4 @@ class ApplicationController < ActionController::Base
     @current_user = session[:current_user] || nil
     Thread.current[:user] = @current_user # set on thread to use it on admin_authorization model
   end
-
 end

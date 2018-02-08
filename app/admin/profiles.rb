@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Profile do
   config.per_page = 20
   config.sort_order = 'created_at_desc'
@@ -8,7 +10,7 @@ ActiveAdmin.register Profile do
 
   controller do
     def permitted_params
-      params.permit(:id, profile: [:user_id, :avatar])
+      params.permit(:id, profile: %i[user_id avatar])
     end
   end
 
@@ -39,5 +41,4 @@ ActiveAdmin.register Profile do
       row :created_at
     end
   end
-
 end

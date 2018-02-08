@@ -1,0 +1,57 @@
+# frozen_string_literal: true
+
+module Api
+  # API class for the Partners Resource
+  class FaqsController < ApiController
+    before_action :set_faq, only: %i[show update destroy]
+
+    def index
+      render json: Faq.all
+    end
+
+    def show
+      render json: @faq
+    end
+
+    def create
+      faq = Faq.new(partner_params)
+      if faq.save
+        render json: faq, status: :created
+      else
+        render_error(faq, :unprocessable_entity)
+      end
+    end
+
+    def update
+      if @faq.update_attributes(faq_params)
+        render json: @faq, status: :ok
+      else
+        render_error(@faq, :unprocessable_entity)
+      end
+    end
+
+    def destroy
+      @faq.destroy
+      head 204
+    end
+
+    private
+
+    def set_faq
+      # @partner = Partner.friendly.find params[:id]
+      @faq = Faq.find params[:id]
+    rescue ActiveRecord::RecordNotFound
+      faq = Faq.new
+      faq.errors.add(:id, 'Wrong ID provided')
+      render_error(faq, 404) && return
+    end
+
+    def partner_params
+      new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+      new_params = ActionController::Parameters.new(new_params)
+      new_params.permit(:question, :answer, :order)
+    rescue
+      nil
+    end
+  end
+end
