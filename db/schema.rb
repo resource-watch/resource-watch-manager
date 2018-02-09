@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20180208191656) do
   create_table "faqs", force: :cascade do |t|
     t.string "question", null: false
     t.text "answer", null: false
-    t.float "order"
+    t.integer "order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

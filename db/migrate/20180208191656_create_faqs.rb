@@ -3,7 +3,7 @@ class CreateFaqs < ActiveRecord::Migration[5.1]
     create_table :faqs do |t|
       t.string :question, null: false
       t.text :answer, null: false
-      t.float :order
+      t.integer :order
 
       t.timestamps
     end

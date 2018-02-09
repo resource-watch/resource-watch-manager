@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Api
-  # API class for the Partners Resource
+  # API class for the Faqs Resource
   class FaqsController < ApiController
     before_action :set_faq, only: %i[show update destroy]
 
@@ -14,7 +14,7 @@ module Api
     end
 
     def create
-      faq = Faq.new(partner_params)
+      faq = Faq.new(faq_params)
       if faq.save
         render json: faq, status: :created
       else
@@ -35,10 +35,20 @@ module Api
       head 204
     end
 
+    def reorder
+      begin
+        Faq.reorder(params[:ids])
+        render json: Faq.all
+      rescue Exception => e
+        faq = Faq.new
+        faq.errors.add(:id, e.message)
+        render_error(faq, :unprocessable_entity)
+      end
+    end
+
     private
 
     def set_faq
-      # @partner = Partner.friendly.find params[:id]
       @faq = Faq.find params[:id]
     rescue ActiveRecord::RecordNotFound
       faq = Faq.new
@@ -46,7 +56,7 @@ module Api
       render_error(faq, 404) && return
     end
 
-    def partner_params
+    def faq_params
       new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
       new_params = ActionController::Parameters.new(new_params)
       new_params.permit(:question, :answer, :order)

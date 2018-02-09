@@ -15,7 +15,11 @@ Rails.application.routes.draw do
     resources :tools
     resources :temporary_content_images, only: [:create]
     resources :profiles, only: %i[show create update destroy]
-    resources :faqs
+    resources :faqs do
+      collection do
+        post 'reorder'
+      end
+    end
   end
 
   # Auth
