@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::TemporaryContentImagesController < ApiController
   def create
     content_image = TemporaryContentImage.new(content_image_params)
@@ -13,5 +15,4 @@ class Api::TemporaryContentImagesController < ApiController
   def content_image_params
     params.permit(:image)
   end
-
 end

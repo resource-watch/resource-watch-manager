@@ -3,7 +3,6 @@
 require 'api_constraints'
 
 Rails.application.routes.draw do
-
   # Active Admin routes
   get 'manager', to: 'manager/dashboards#index'
   ActiveAdmin.routes(self)
@@ -15,11 +14,15 @@ Rails.application.routes.draw do
     resources :dashboards
     resources :tools
     resources :temporary_content_images, only: [:create]
-    resources :profiles, only: [:show, :create, :update, :destroy]
+    resources :profiles, only: %i[show create update destroy]
+    resources :faqs do
+      collection do
+        post 'reorder'
+      end
+    end
   end
 
   # Auth
   get 'authentication/login', to: 'auth#login'
   get 'authentication/logout', to: 'auth#logout'
-
 end

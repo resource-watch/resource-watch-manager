@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: content_images
@@ -14,7 +16,7 @@
 
 class ContentImage < ApplicationRecord
   belongs_to :dashboard
-  
+
   has_attached_file :image, styles: { cover: '1280x>', thumb: '110x>' }
   validates_attachment_content_type :image, content_type: %r{^image\/.*}
 end

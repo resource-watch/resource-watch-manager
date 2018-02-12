@@ -1,6 +1,7 @@
-class AdminAuthorization < ActiveAdmin::AuthorizationAdapter
+# frozen_string_literal: true
 
-  def authorized?(action, subject = nil)
+class AdminAuthorization < ActiveAdmin::AuthorizationAdapter
+  def authorized?(_action, _subject = nil)
     if Thread.current[:user].present?
       user = JSON.parse(Thread.current[:user])
 
@@ -9,5 +10,4 @@ class AdminAuthorization < ActiveAdmin::AuthorizationAdapter
       false
     end
   end
-
 end

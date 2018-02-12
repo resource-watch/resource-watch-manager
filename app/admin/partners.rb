@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Partner do
   config.per_page = 20
   config.sort_order = 'created_at_desc'
@@ -16,8 +18,8 @@ ActiveAdmin.register Partner do
 
   controller do
     def permitted_params
-      params.permit(:id, partner: [:name, :summary, :contact_name, :contact_email, :body, :published,
-                                   :featured, :website, :partner_type, :logo, :white_logo, :icon, :cover])
+      params.permit(:id, partner: %i[name summary contact_name contact_email body published
+                                     featured website partner_type logo white_logo icon cover])
     end
   end
 
@@ -86,5 +88,4 @@ ActiveAdmin.register Partner do
       row :created_at
     end
   end
-
 end

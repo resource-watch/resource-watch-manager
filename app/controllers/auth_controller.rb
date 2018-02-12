@@ -1,5 +1,6 @@
-class AuthController < ApplicationController
+# frozen_string_literal: true
 
+class AuthController < ApplicationController
   def login
     token = params[:token]
     if token.nil?
@@ -15,5 +16,4 @@ class AuthController < ApplicationController
     session.delete(:current_user)
     logout_apigateway
   end
-  
 end
