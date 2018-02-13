@@ -28,7 +28,7 @@ class Faq < ApplicationRecord
       raise ActiveRecord::RecordInvalid.new
     end
     ActiveRecord::Base.transaction do
-      ordered_ids.each_with_index { |id, i| Faq.find(id).update(order: i) }
+      ordered_ids.each_with_index { |id, i| Faq.find(id).update_column(:order, i) }
     end
   end
 
