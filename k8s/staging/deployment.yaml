@@ -22,6 +22,20 @@ spec:
             memory: "0Mi"
             cpu: "0m"
         env:
+          - name: CONTACT_EMAIL
+            value: "santos.tiago@gmail.com"
+          - name: SENDGRID_DOMAIN
+            value: "vizzuality.com"
+          - name: SENDGRID_USERNAME
+            valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: RW_SENDGRID_USERNAME
+          - name: SENDGRID_PASSWORD
+            valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: RW_SENDGRID_PASSWORD
           - name: RAILS_LOG_TO_STDOUT
             value: "true"
           - name: APIGATEWAY_URL
