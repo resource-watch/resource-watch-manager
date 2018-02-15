@@ -20,6 +20,7 @@ Rails.application.routes.draw do
         post 'reorder'
       end
     end
+    post 'contact-us', to: 'contacts#create'
   end
 
   # Auth
