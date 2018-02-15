@@ -101,9 +101,8 @@ describe Api::DashboardsController, type: :controller do
       expect(data).to be_a(Hash)
       expect(json_response[:data][:attributes][:name]).to eq(@dashboard.name)
     end
-     
-    it 'should return in json api format' do
 
+    it 'should return in json api format' do
     end
   end
 end

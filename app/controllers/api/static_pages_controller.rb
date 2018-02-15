@@ -3,7 +3,7 @@
 module Api
   # API class for the Partners Resource
   class StaticPagesController < ApiController
-    before_action :set_static_, only: [:show, :update, :destroy]
+    before_action :set_static_, only: %i[show update destroy]
 
     def index
       render json: StaticPage.fetch_all(params)
@@ -38,23 +38,19 @@ module Api
     private
 
     def set_static_
-      begin
-        @static_page = StaticPage.friendly.find params[:id]
-      rescue ActiveRecord::RecordNotFound
-        static_page = StaticPage.new
-        static_page.errors.add(:id, "Wrong ID provided")
-        render_error(static_page, 404) and return
-      end
+      @static_page = StaticPage.friendly.find params[:id]
+    rescue ActiveRecord::RecordNotFound
+      static_page = StaticPage.new
+      static_page.errors.add(:id, 'Wrong ID provided')
+      render_error(static_page, 404) && return
     end
 
     def static_page_params
-      begin
-        new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-        new_params = ActionController::Parameters.new(new_params)
-        new_params.permit(:title, :summary, :description, :content, :photo, :published)
-      rescue
-        nil
-      end
+      new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+      new_params = ActionController::Parameters.new(new_params)
+      new_params.permit(:title, :summary, :description, :content, :photo, :published)
+    rescue
+      nil
     end
   end
 end

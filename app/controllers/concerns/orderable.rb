@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/controllers/concerns/orderable.rb
 module Orderable
   extend ActiveSupport::Concern
@@ -13,13 +15,13 @@ module Orderable
 
       sorted_params = params[:sort].split(',')
       sorted_params.each do |attr|
-        sort_sign = (attr =~ /\A[+-]/) ? attr.slice!(0) : '+'
+        sort_sign = attr.match?(/\A[+-]/) ? attr.slice!(0) : '+'
         model = controller_name.classify.constantize
         if model.attribute_names.include?(attr)
           ordering[attr] = sort_order[sort_sign]
         end
       end
     end
-    return ordering
+    ordering
   end
 end

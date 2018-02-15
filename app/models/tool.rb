@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: tools
@@ -20,9 +22,9 @@
 
 class Tool < ApplicationRecord
   extend FriendlyId
-  friendly_id :title, use: %i(slugged)
+  friendly_id :title, use: %i[slugged finders]
 
-  has_attached_file :thumbnail, styles: { medium: '350x200>' }
+  has_attached_file :thumbnail, styles: { medium: '350x>' }
   validates_attachment_content_type :thumbnail, content_type: %r{^image\/.*}
   do_not_validate_attachment_file_type :thumbnail
 
@@ -32,7 +34,7 @@ class Tool < ApplicationRecord
     new_record?
   end
 
-  def self.get_order(options={})
+  def self.get_order(options = {})
     field = 'created_at'
     direction = 'ASC'
     if options['sort']
@@ -47,11 +49,15 @@ class Tool < ApplicationRecord
     "#{field} #{direction}"
   end
 
-  def self.fetch_all(options={})
+  def self.fetch_all(options = {})
     tools = Tool.all
     if options[:filter]
       tools = tools.by_published(options[:filter][:published]) if options[:filter][:published]
     end
-    tools = tools.order(self.get_order(options))
+    tools = tools.order(get_order(options))
+  end
+
+  def should_generate_new_friendly_id?
+    title_changed?
   end
 end

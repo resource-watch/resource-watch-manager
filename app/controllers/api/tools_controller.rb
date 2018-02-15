@@ -3,7 +3,7 @@
 module Api
   # API class for the Partners Resource
   class ToolsController < ApiController
-    before_action :set_tool, only: [:show, :update, :destroy]
+    before_action :set_tool, only: %i[show update destroy]
 
     def index
       render json: Tool.fetch_all(params)
@@ -38,23 +38,19 @@ module Api
     private
 
     def set_tool
-      begin
-        @tool = Tool.friendly.find params[:id]
-      rescue ActiveRecord::RecordNotFound
-        tool = Tool.new
-        tool.errors.add(:id, "Wrong ID provided")
-        render_error(tool, 404) and return
-      end
+      @tool = Tool.friendly.find params[:id]
+    rescue ActiveRecord::RecordNotFound
+      tool = Tool.new
+      tool.errors.add(:id, 'Wrong ID provided')
+      render_error(tool, 404) && return
     end
 
     def tool_params
-      begin
-        new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-        new_params = ActionController::Parameters.new(new_params)
-        new_params.permit(:title, :slug, :summary, :description, :content, :thumbnail, :url, :published)
-      rescue
-        nil
-      end
+      new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+      new_params = ActionController::Parameters.new(new_params)
+      new_params.permit(:title, :slug, :summary, :description, :content, :thumbnail, :url, :published)
+    rescue
+      nil
     end
   end
 end

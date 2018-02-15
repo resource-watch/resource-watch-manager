@@ -2,7 +2,8 @@
 
 class ApiController < ActionController::API
   include ApiHelper
-  before_action :authenticate, except: [:index, :show]
+
+  before_action :authenticate, except: %i[index show]
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
@@ -31,8 +32,9 @@ class ApiController < ActionController::API
   end
 
   private
-    def render_error(resource, status)
-      render json: resource, status: status, adapter: :json_api,
-            serializer: ActiveModel::Serializer::ErrorSerializer
-    end
+
+  def render_error(resource, status)
+    render json: resource, status: status, adapter: :json_api,
+           serializer: ActiveModel::Serializer::ErrorSerializer
+  end
 end

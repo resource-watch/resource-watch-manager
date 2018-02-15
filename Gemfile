@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 ruby '2.4.1'
 
@@ -11,15 +11,19 @@ end
 
 gem 'rails', '~> 5.1.2'
 
+gem 'aws-sdk', '~> 2.3.0'
 gem 'dotenv-rails'
 gem 'faraday', '~> 0.11.0'
+gem 'paperclip', '~> 5.1.0'
 gem 'puma', '~> 3.7'
 gem 'rack-cors'
-gem 'paperclip', '~> 5.1.0'
-gem 'aws-sdk', '~> 2.3.0'
+
+# Active admin
+gem 'activeadmin', github: 'activeadmin'
+gem 'devise'
 
 # Cronjobs
-gem 'whenever', :require => false
+gem 'whenever', require: false
 
 # Active record
 gem 'active_model_serializers', '~> 0.10.6'
@@ -29,13 +33,14 @@ gem 'pg', '~> 0.18'
 
 # Pagination
 gem 'api-pagination'
+gem 'draper'
 gem 'will_paginate'
 
 # Authentication and Authorization
 gem 'jwt'
 
 # Friendly id
-gem 'friendly_id', '~> 5.1.0'
+gem 'friendly_id'
 
 group :development, :test do
   gem 'annotate'
@@ -62,4 +67,4 @@ group :test, :development do
   gem 'rack-reverse-proxy', require: 'rack/reverse_proxy'
 end
 
-gem 'tzinfo-data', platforms: %i(mingw mswin x64_mingw jruby)
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

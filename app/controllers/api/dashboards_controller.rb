@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Api::DashboardsController < ApiController
-  before_action :set_dashboard, only: [:show, :update, :destroy]
+  before_action :set_dashboard, only: %i[show update destroy]
 
   def index
     render json: Dashboard.fetch_all(params)
@@ -36,32 +38,26 @@ class Api::DashboardsController < ApiController
   private
 
   def set_dashboard
-    begin
-      @dashboard = Dashboard.friendly.find params[:id]
-    rescue ActiveRecord::RecordNotFound
-      dashboard = Dashboard.new
-      dashboard.errors.add(:id, "Wrong ID provided")
-      render_error(dashboard, 404) and return
-    end
+    @dashboard = Dashboard.friendly.find params[:id]
+  rescue ActiveRecord::RecordNotFound
+    dashboard = Dashboard.new
+    dashboard.errors.add(:id, 'Wrong ID provided')
+    render_error(dashboard, 404) && return
   end
 
   def dashboard_params_create
-    begin
-      new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-      new_params = ActionController::Parameters.new(new_params)
-      new_params.permit(:name, :description, :content, :published, :summary, :photo, :user_id, :private)
-    rescue
-      nil
-    end
+    new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+    new_params = ActionController::Parameters.new(new_params)
+    new_params.permit(:name, :description, :content, :published, :summary, :photo, :user_id, :private)
+  rescue
+    nil
   end
 
   def dashboard_params_update
-    begin
-      new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-      new_params = ActionController::Parameters.new(new_params)
-      new_params.permit(:name, :description, :content, :published, :summary, :photo, :private)
-    rescue
-      nil
-    end
+    new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+    new_params = ActionController::Parameters.new(new_params)
+    new_params.permit(:name, :description, :content, :published, :summary, :photo, :private)
+  rescue
+    nil
   end
 end
