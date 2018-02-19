@@ -11,7 +11,7 @@ module Api
         render status: :created
       rescue Exception => e
         Rails.logger.error "Error sending the email: #{e}"
-        render status: :unprocessable_entity
+        render status: :unprocessable_entity, json: e.message.to_json
       end
     end
   end
