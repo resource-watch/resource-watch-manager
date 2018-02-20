@@ -28,7 +28,7 @@ spec:
           - start
         env:
           - name: CONTACT_EMAIL
-            value: "santos.tiago@gmail.com"
+            value: "pablo.pareja@vizzuality.com"
           - name: SENDGRID_DOMAIN
             value: "vizzuality.com"
           - name: SENDGRID_USERNAME
