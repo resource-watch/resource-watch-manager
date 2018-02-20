@@ -22,6 +22,9 @@ gem 'rack-cors'
 gem 'activeadmin', github: 'activeadmin'
 gem 'devise'
 
+# Mail
+gem 'sendgrid-ruby'
+
 # Cronjobs
 gem 'whenever', require: false
 

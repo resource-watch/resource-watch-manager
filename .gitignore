@@ -40,3 +40,4 @@
 /.data
 /public/packs
 /node_modules
+sendgrid.env
