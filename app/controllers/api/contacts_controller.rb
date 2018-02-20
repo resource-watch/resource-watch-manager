@@ -7,7 +7,7 @@ module Api
 
     def create
       begin
-        ContactMailer.contact_us_email(params[:email], params[:text]).deliver
+        ContactMailer.contact_us_email(params[:email], params[:text]).deliver_now
         render status: :created
       rescue Exception => e
         Rails.logger.error "Error sending the email: #{e}"
