@@ -26,6 +26,11 @@ spec:
             value: "pablo.pareja@vizzuality.com"
           - name: SENDGRID_DOMAIN
             value: "vizzuality.com"
+          - name: RW_SENDGRID_API_KEY
+            valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: RW_SENDGRID_API_KEY
           - name: SENDGRID_USERNAME
             valueFrom:
                 secretKeyRef:
