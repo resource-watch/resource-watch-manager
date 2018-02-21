@@ -14,7 +14,7 @@ class ApplicationMailer < ActionMailer::Base
     email_content = Content.new(type: 'text/plain', value: content)
     mail = Mail.new(email_from, subject, email_to, email_content)
 
-    sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+    sg = SendGrid::API.new(api_key: ENV['RW_SENDGRID_API_KEY'])
 
     sg.client.mail._('send').post(request_body: mail.to_json)
   end
