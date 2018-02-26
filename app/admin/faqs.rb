@@ -12,5 +12,4 @@ ActiveAdmin.register Faq do
       params.permit(:question, :answer, :order)
     end
   end
-
 end
