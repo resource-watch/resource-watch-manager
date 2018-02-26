@@ -9,3 +9,6 @@ module Paperclip
     end
   end
 end
+
+# To accept Base64 encoded data
+Paperclip::DataUriAdapter.register
