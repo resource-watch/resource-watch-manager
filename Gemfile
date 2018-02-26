@@ -64,6 +64,7 @@ group :test do
 end
 
 group :test, :development do
+  gem 'simplecov'
   gem 'bullet' # Testing query performance
   gem 'factory_girl_rails'
   gem 'ffaker'

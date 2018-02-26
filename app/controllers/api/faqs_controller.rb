@@ -36,14 +36,12 @@ module Api
     end
 
     def reorder
-      begin
-        Faq.reorder(params[:ids])
-        render json: Faq.all
-      rescue Exception => e
-        faq = Faq.new
-        faq.errors.add(:id, e.message)
-        render_error(faq, :unprocessable_entity)
-      end
+      Faq.reorder(params[:ids])
+      render json: Faq.all
+    rescue Exception => e
+      faq = Faq.new
+      faq.errors.add(:id, e.message)
+      render_error(faq, :unprocessable_entity)
     end
 
     private

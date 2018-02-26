@@ -41,3 +41,6 @@
 /public/packs
 /node_modules
 sendgrid.env
+
+# Ignore coverage reports
+coverage
