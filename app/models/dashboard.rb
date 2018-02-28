@@ -105,7 +105,8 @@ class Dashboard < ApplicationRecord
 
       if params['temp_id'].present?
         temp = TemporaryContentImage.find(params['temp_id'].first)
-        content_image = ContentImage.create(dashboard_id: id, image: temp.image)
+        content_image = ContentImage.create(imageable_id: id,
+                                            imageable_type: 'Dashboard', image: temp.image)
 
         temp.destroy
         content_image
