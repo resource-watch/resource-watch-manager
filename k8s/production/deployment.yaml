@@ -53,7 +53,7 @@ spec:
           - start
         env:
           - name: CONTACT_EMAIL
-            value: "pablo.pareja@vizzuality.com"
+            value: "resourcewatch@wri.org"
           - name: SENDGRID_DOMAIN
             value: "vizzuality.com"
           - name: SENDGRID_API_KEY
