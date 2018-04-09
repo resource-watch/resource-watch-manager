@@ -1,9 +1,11 @@
 FROM ruby:2.4.1-alpine
 
+ARG apiGatewayUrl=https://production-api.globalforestwatch.org
+
 ENV RAILS_ENV production
 ENV RACK_ENV production
 ENV RW_API_URL https://api.resourcewatch.org/v1
-ENV APIGATEWAY_URL https://production-api.globalforestwatch.org
+ENV APIGATEWAY_URL $apiGatewayUrl
 
 ARG secretKey
 ENV SECRET_KEY_BASE $secretKey

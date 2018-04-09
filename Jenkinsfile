@@ -34,8 +34,8 @@ node {
     stage ('Build docker') {
       switch ("${env.BRANCH_NAME}") {
         case "develop":
-          sh("docker -H :2375 build -f Dockerfile-staging  --build-arg secretKey=${secretKey} -t ${imageTag} .")
-          sh("docker -H :2375 build -f Dockerfile-staging  --build-arg secretKey=${secretKey} -t ${dockerUsername}/${appName}:latest .")
+          sh("docker -H :2375 build --build-arg secretKey=${secretKey} -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg secretKey=${secretKey} -t ${dockerUsername}/${appName}:latest .")
           break;
         default:
           sh("docker -H :2375 build --build-arg secretKey=${secretKey} -t ${imageTag} .")
