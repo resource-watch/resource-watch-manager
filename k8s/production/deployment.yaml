@@ -13,6 +13,31 @@ spec:
       labels:
         name: {name}
     spec:
+      tolerations:
+      - key: "type"
+        operator: "Equal"
+        value: "webapps"
+        effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: type
+                operator: In
+                values:
+                - webapps
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: name
+                  operator: In
+                  values:
+                  - {name}
+              topologyKey: kubernetes.io/hostname
       containers:
       - name: {name}
         image: vizzuality/{name}
@@ -28,9 +53,14 @@ spec:
           - start
         env:
           - name: CONTACT_EMAIL
-            value: "santos.tiago@gmail.com"
+            value: "resourcewatch@wri.org"
           - name: SENDGRID_DOMAIN
             value: "vizzuality.com"
+          - name: SENDGRID_API_KEY
+            valueFrom:
+                secretKeyRef:
+                  name: appsecrets
+                  key: RW_SENDGRID_API_KEY
           - name: SENDGRID_USERNAME
             valueFrom:
                 secretKeyRef:

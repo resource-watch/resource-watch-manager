@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: dashboards
+# Table name: topics
 #
 #  id                 :integer          not null, primary key
 #  name               :string
@@ -10,18 +10,18 @@
 #  description        :string
 #  content            :text
 #  published          :boolean
+#  summary            :string
+#  private            :boolean          default(TRUE)
+#  user_id            :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  summary            :string
 #  photo_file_name    :string
 #  photo_content_type :string
 #  photo_file_size    :integer
 #  photo_updated_at   :datetime
-#  user_id            :string
-#  private            :boolean          default(TRUE)
 #
 
-class Dashboard < ApplicationRecord
+class Topic < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: %i[slugged finders]
   validates_presence_of :name
@@ -40,13 +40,13 @@ class Dashboard < ApplicationRecord
   scope :by_user, ->(user) { where(user_id: user) }
 
   def self.fetch_all(options = {})
-    dashboards = Dashboard.all
+    topics = Topic.all
     if options[:filter]
-      dashboards = dashboards.by_published(options[:filter][:published]) if options[:filter][:published]
-      dashboards = dashboards.by_private(options[:filter][:private]) if options[:filter][:private]
-      dashboards = dashboards.by_user(options[:filter][:user]) if options[:filter][:user]
+      topics = topics.by_published(options[:filter][:published]) if options[:filter][:published]
+      topics = topics.by_private(options[:filter][:private]) if options[:filter][:private]
+      topics = topics.by_user(options[:filter][:user]) if options[:filter][:user]
     end
-    dashboards = dashboards.order(get_order(options))
+    topics.order(get_order(options))
   end
 
   def self.get_order(options = {})
@@ -55,7 +55,7 @@ class Dashboard < ApplicationRecord
     if options['sort']
       f = options['sort'].split(',').first
       field = f[0] == '-' ? f[1..-1] : f
-      if Dashboard.new.has_attribute?(field)
+      if Topic.new.has_attribute?(field)
         direction = f[0] == '-' ? 'DESC' : 'ASC'
       else
         field = 'created_at'
@@ -85,6 +85,7 @@ class Dashboard < ApplicationRecord
       end
     end
 
+
     update_column(:content, contents.to_json)
   end
 
@@ -106,7 +107,7 @@ class Dashboard < ApplicationRecord
       if params['temp_id'].present?
         temp = TemporaryContentImage.find(params['temp_id'].first)
         content_image = ContentImage.create(imageable_id: id,
-                                            imageable_type: 'Dashboard', image: temp.image)
+                                            imageable_type: 'Topic', image: temp.image)
 
         temp.destroy
         content_image

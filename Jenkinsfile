@@ -32,8 +32,15 @@ node {
   try {
 
     stage ('Build docker') {
-      sh("docker -H :2375 build --build-arg secretKey=${secretKey} -t ${imageTag} .")
-      sh("docker -H :2375 build --build-arg secretKey=${secretKey} -t ${dockerUsername}/${appName}:latest .")
+      switch ("${env.BRANCH_NAME}") {
+        case "develop":
+          sh("docker -H :2375 build --build-arg secretKey=${secretKey} -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg secretKey=${secretKey} -t ${dockerUsername}/${appName}:latest .")
+          break;
+        default:
+          sh("docker -H :2375 build --build-arg secretKey=${secretKey} -t ${imageTag} .")
+          sh("docker -H :2375 build --build-arg secretKey=${secretKey} -t ${dockerUsername}/${appName}:latest .")
+      }
     }
 
     stage ('Run Tests') {

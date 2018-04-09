@@ -10,19 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180208191656) do
+ActiveRecord::Schema.define(version: 20180226122251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "content_images", force: :cascade do |t|
-    t.integer "dashboard_id"
+    t.integer "imageable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image_file_name"
     t.string "image_content_type"
     t.integer "image_file_size"
     t.datetime "image_updated_at"
+    t.string "imageable_type"
+    t.index ["imageable_type", "imageable_id"], name: "index_content_images_on_imageable_type_and_imageable_id"
   end
 
   create_table "dashboards", force: :cascade do |t|
@@ -132,6 +134,23 @@ ActiveRecord::Schema.define(version: 20180208191656) do
     t.boolean "published"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.string "description"
+    t.text "content"
+    t.boolean "published"
+    t.string "summary"
+    t.boolean "private", default: true
+    t.string "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "photo_file_name"
+    t.string "photo_content_type"
+    t.integer "photo_file_size"
+    t.datetime "photo_updated_at"
   end
 
 end

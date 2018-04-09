@@ -22,6 +22,9 @@ gem 'rack-cors'
 gem 'activeadmin', github: 'activeadmin'
 gem 'devise'
 
+# Mail
+gem 'sendgrid-ruby'
+
 # Cronjobs
 gem 'whenever', require: false
 
@@ -61,6 +64,7 @@ group :test do
 end
 
 group :test, :development do
+  gem 'simplecov'
   gem 'bullet' # Testing query performance
   gem 'factory_girl_rails'
   gem 'ffaker'
