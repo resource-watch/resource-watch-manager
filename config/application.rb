@@ -27,7 +27,7 @@ module ResourceWatchManager
     config.load_defaults 5.1
 
     # Only API
-    config.api_only = false
+    config.api_only = true
 
     # Setup scaffold
     config.generators do |g|

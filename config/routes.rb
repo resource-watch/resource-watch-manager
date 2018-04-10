@@ -3,10 +3,6 @@
 require 'api_constraints'
 
 Rails.application.routes.draw do
-  # Active Admin routes
-  get 'manager', to: 'manager/dashboards#index'
-  ActiveAdmin.routes(self)
-
   # API
   namespace :api, defaults: { format: :json } do
     resources :partners

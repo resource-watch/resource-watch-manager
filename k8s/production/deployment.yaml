@@ -47,6 +47,7 @@ spec:
         resources:
           requests:
             memory: "128Mi"
+            cpu: "250m"
           limits:
             memory: "1Gi"
         args:
@@ -78,7 +79,7 @@ spec:
           - name: RW_API_URL
             value: "https://api.resourcewatch.org"
           - name: RAILS_SERVE_STATIC_FILES
-            value: "true"
+            value: "false"
           - name: DATABASE_URL
             valueFrom:
                 secretKeyRef:
