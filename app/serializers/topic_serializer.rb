@@ -29,7 +29,7 @@ class TopicSerializer < ActiveModel::Serializer
     {
       cover: object.photo.url(:cover),
       thumb: object.photo.url(:thumb),
-      thumb: object.photo.url(:medium),
+      medium: object.photo.url(:medium),
       original: object.photo.url(:original)
     }
   end
