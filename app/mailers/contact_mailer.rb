@@ -6,7 +6,6 @@ class ContactMailer < ApplicationMailer
 
     @text = text
 
-    send_email(@email, ENV['CONTACT_EMAIL'], "Contact from #{@email}",
-               "The email #{@email} wants to be contacted")
+    mail(to: ENV['CONTACT_EMAIL'], subject: "Contact from #{email}")
   end
 end
