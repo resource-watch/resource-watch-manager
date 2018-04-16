@@ -6,7 +6,7 @@ module Api
     skip_before_action :authenticate, only: [:create]
 
     def create
-      ContactMailer.contact_us_email(params[:email], params[:text]).deliver_now
+      ContactMailer.contact_us_email(params[:email], params[:text], params[:topic]).deliver_now
       render status: :created
     rescue Exception => e
       Rails.logger.error "Error sending the email: #{e}"
