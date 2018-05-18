@@ -38,7 +38,18 @@ module Api
     private
 
     def set_static_
-      @static_page = StaticPage.friendly.find params[:id]
+      environments = params[:env].present? ? params[:env].split(',') : ['production']
+      static_page = StaticPage.friendly.find params[:id]
+
+      matches = environments.map do |env|
+        static_page.public_send(env)
+      end
+
+      if matches.include?(true)
+        @static_page = static_page
+      else
+        raise ActiveRecord::RecordNotFound
+      end
     rescue ActiveRecord::RecordNotFound
       static_page = StaticPage.new
       static_page.errors.add(:id, 'Wrong ID provided')
@@ -48,7 +59,8 @@ module Api
     def static_page_params
       new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
       new_params = ActionController::Parameters.new(new_params)
-      new_params.permit(:title, :summary, :description, :content, :photo, :published)
+      new_params.permit(:title, :summary, :description, :content, :photo, :published,
+                        :production, :preproduction, :staging)
     rescue
       nil
     end

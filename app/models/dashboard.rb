@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: dashboards
@@ -19,6 +18,9 @@
 #  photo_updated_at   :datetime
 #  user_id            :string
 #  private            :boolean          default(TRUE)
+#  production         :boolean          default(TRUE)
+#  pre_production     :boolean          default(FALSE)
+#  staging            :boolean          default(FALSE)
 #
 
 class Dashboard < ApplicationRecord
@@ -38,6 +40,9 @@ class Dashboard < ApplicationRecord
   scope :by_published, ->(published) { where(published: published) }
   scope :by_private, ->(is_private) { where(private: is_private) }
   scope :by_user, ->(user) { where(user_id: user) }
+  scope :production, -> { where(production: true) }
+  scope :pre_production, -> { where(pre_production: true) }
+  scope :staging, -> { where(staging: true) }
 
   def self.fetch_all(options = {})
     dashboards = Dashboard.all
@@ -46,6 +51,19 @@ class Dashboard < ApplicationRecord
       dashboards = dashboards.by_private(options[:filter][:private]) if options[:filter][:private]
       dashboards = dashboards.by_user(options[:filter][:user]) if options[:filter][:user]
     end
+
+    if options[:env]
+      environments = options[:env].split(',')
+
+      ids = environments.map do |env|
+        Dashboard.where(env => true)
+      end.flatten.uniq.pluck(:id)
+
+      dashboards = dashboards.where(id: ids)
+    else
+      dashboards = dashboards.production
+    end
+
     dashboards = dashboards.order(get_order(options))
   end
 

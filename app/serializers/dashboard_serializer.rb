@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: dashboards
@@ -19,10 +18,15 @@
 #  photo_updated_at   :datetime
 #  user_id            :string
 #  private            :boolean          default(TRUE)
+#  production         :boolean          default(TRUE)
+#  pre_production     :boolean          default(FALSE)
+#  staging            :boolean          default(FALSE)
 #
 
 class DashboardSerializer < ActiveModel::Serializer
-  attributes :id, :name, :slug, :summary, :description, :content, :published, :photo, :user_id, :private
+  attributes :id, :name, :slug, :summary, :description,
+             :content, :published, :photo, :user_id, :private,
+             :production, :preproduction, :staging
 
   def photo
     {

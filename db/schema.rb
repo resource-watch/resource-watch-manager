@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180226122251) do
+ActiveRecord::Schema.define(version: 20180514162838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,9 @@ ActiveRecord::Schema.define(version: 20180226122251) do
     t.datetime "photo_updated_at"
     t.string "user_id"
     t.boolean "private", default: true
+    t.boolean "production", default: true
+    t.boolean "preproduction", default: false
+    t.boolean "staging", default: false
   end
 
   create_table "faqs", force: :cascade do |t|
@@ -81,6 +84,9 @@ ActiveRecord::Schema.define(version: 20180226122251) do
     t.datetime "cover_updated_at"
     t.string "website"
     t.string "partner_type"
+    t.boolean "production", default: true
+    t.boolean "preproduction", default: false
+    t.boolean "staging", default: false
     t.index ["slug"], name: "index_partners_on_slug"
   end
 
@@ -108,6 +114,9 @@ ActiveRecord::Schema.define(version: 20180226122251) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "published"
+    t.boolean "production", default: true
+    t.boolean "preproduction", default: false
+    t.boolean "staging", default: false
     t.index ["slug"], name: "index_static_pages_on_slug"
   end
 
@@ -134,6 +143,9 @@ ActiveRecord::Schema.define(version: 20180226122251) do
     t.boolean "published"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "production", default: true
+    t.boolean "preproduction", default: false
+    t.boolean "staging", default: false
   end
 
   create_table "topics", force: :cascade do |t|

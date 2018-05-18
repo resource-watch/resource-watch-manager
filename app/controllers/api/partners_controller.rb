@@ -38,7 +38,18 @@ module Api
     private
 
     def set_partner
-      @partner = Partner.friendly.find params[:id]
+      environments = params[:env].present? ? params[:env].split(',') : ['production']
+      partner = Partner.friendly.find params[:id]
+
+      matches = environments.map do |env|
+        partner.public_send(env)
+      end
+
+      if matches.include?(true)
+        @partner = partner
+      else
+        raise ActiveRecord::RecordNotFound
+      end
     rescue ActiveRecord::RecordNotFound
       partner = Partner.new
       partner.errors.add(:id, 'Wrong ID provided')
@@ -49,7 +60,8 @@ module Api
       new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
       new_params = ActionController::Parameters.new(new_params)
       new_params.permit(:name, :contact_email, :contact_name, :body, :partner_type, :summary,
-                        :logo, :white_logo, :icon, :cover, :published, :featured, :website, :partner_type)
+                        :logo, :white_logo, :icon, :cover, :published, :featured, :website, :partner_type,
+                        :production, :preproduction, :staging)
     rescue
       nil
     end
