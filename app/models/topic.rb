@@ -77,14 +77,15 @@ class Topic < ApplicationRecord
       if content_block['type'] == 'image'
         contents = assign_content_image_url(contents, content_block, base_url)
       elsif content_block['type'] == 'grid'
-        content_block['content'].each do |content|
-          if content && content['type'] == 'image'
-            contents = assign_content_image_url(contents, content, base_url, is_grid = true, grid = content_block)
+        content_block['content'].compact.each do |column|
+          column.each do |content|
+            if content && content['type'] == 'image'
+              contents = assign_content_image_url(contents, content, base_url, is_grid = true, grid = content_block)
+            end
           end
         end
       end
     end
-
 
     update_column(:content, contents.to_json)
   end
@@ -120,7 +121,7 @@ class Topic < ApplicationRecord
 
     if content_image.present?
       if is_grid
-        contents.find { |content_block| content_block['id'] == grid['id'] }['content']
+        contents.find { |content_block| content_block['id'] == grid['id'] }['content'].flatten
                 .find { |grid_item| grid_item['id'] == content['id'] }['content']['src'] = content_image.image.url(:cover)
       else
         contents.find { |item| item['id'] == content['id'] }['content']['src'] = content_image.image.url(:cover)
