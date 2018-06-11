@@ -38,7 +38,18 @@ class Api::DashboardsController < ApiController
   private
 
   def set_dashboard
-    @dashboard = Dashboard.friendly.find params[:id]
+    environments = params[:env].present? ? params[:env].split(',') : ['production']
+    dashboard = Dashboard.friendly.find params[:id]
+
+    matches = environments.map do |env|
+      dashboard.public_send(env)
+    end
+
+    if matches.include?(true)
+      @dashboard = dashboard
+    else
+      raise ActiveRecord::RecordNotFound
+    end
   rescue ActiveRecord::RecordNotFound
     dashboard = Dashboard.new
     dashboard.errors.add(:id, 'Wrong ID provided')
@@ -48,7 +59,8 @@ class Api::DashboardsController < ApiController
   def dashboard_params_create
     new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
     new_params = ActionController::Parameters.new(new_params)
-    new_params.permit(:name, :description, :content, :published, :summary, :photo, :user_id, :private)
+    new_params.permit(:name, :description, :content, :published, :summary, :photo,
+                      :user_id, :private, :production, :preproduction, :staging)
   rescue
     nil
   end
@@ -56,7 +68,8 @@ class Api::DashboardsController < ApiController
   def dashboard_params_update
     new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
     new_params = ActionController::Parameters.new(new_params)
-    new_params.permit(:name, :description, :content, :published, :summary, :photo, :private)
+    new_params.permit(:name, :description, :content, :published, :summary,
+                      :photo, :private, :production, :preproduction, :staging)
   rescue
     nil
   end

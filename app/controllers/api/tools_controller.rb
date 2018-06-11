@@ -38,7 +38,18 @@ module Api
     private
 
     def set_tool
-      @tool = Tool.friendly.find params[:id]
+      environments = params[:env].present? ? params[:env].split(',') : ['production']
+      tool = Tool.friendly.find params[:id]
+
+      matches = environments.map do |env|
+        tool.public_send(env)
+      end
+
+      if matches.include?(true)
+        @tool = tool
+      else
+        raise ActiveRecord::RecordNotFound
+      end
     rescue ActiveRecord::RecordNotFound
       tool = Tool.new
       tool.errors.add(:id, 'Wrong ID provided')
@@ -48,7 +59,8 @@ module Api
     def tool_params
       new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
       new_params = ActionController::Parameters.new(new_params)
-      new_params.permit(:title, :slug, :summary, :description, :content, :thumbnail, :url, :published)
+      new_params.permit(:title, :slug, :summary, :description, :content,
+                        :thumbnail, :url, :published, :production, :preproduction, :staging)
     rescue
       nil
     end

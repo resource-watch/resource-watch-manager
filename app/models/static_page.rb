@@ -16,6 +16,9 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  published          :boolean
+#  production         :boolean          default(TRUE)
+#  pre_production     :boolean          default(FALSE)
+#  staging            :boolean          default(FALSE)
 #
 
 # frozen_string_literal: true
@@ -34,6 +37,10 @@ class StaticPage < ApplicationRecord
 
   validates_presence_of :title
 
+  scope :production, -> { where(production: true) }
+  scope :pre_production, -> { where(pre_production: true) }
+  scope :staging, -> { where(staging: true) }
+
   def should_generate_new_friendly_id?
     new_record?
   end
@@ -43,6 +50,19 @@ class StaticPage < ApplicationRecord
     if options[:filter]
       static_pages = static_pages.by_published(options[:filter][:published]) if options[:filter][:published]
     end
+
+    if options[:env]
+      environments = options[:env].split(',')
+
+      ids = environments.map do |env|
+        StaticPage.where(env => true)
+      end.flatten.uniq.pluck(:id)
+
+      static_pages = static_pages.where(id: ids)
+    else
+      static_pages = static_pages.production
+    end
+    
     static_pages = static_pages.order(get_order(options))
   end
 

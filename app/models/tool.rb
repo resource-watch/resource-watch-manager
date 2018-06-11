@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: tools
@@ -18,6 +17,9 @@
 #  published              :boolean
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  production             :boolean          default(TRUE)
+#  pre_production         :boolean          default(FALSE)
+#  staging                :boolean          default(FALSE)
 #
 
 class Tool < ApplicationRecord
@@ -29,6 +31,10 @@ class Tool < ApplicationRecord
   do_not_validate_attachment_file_type :thumbnail
 
   validates_presence_of :title
+
+  scope :production, -> { where(production: true) }
+  scope :pre_production, -> { where(pre_production: true) }
+  scope :staging, -> { where(staging: true) }
 
   def should_generate_new_friendly_id?
     new_record?
@@ -54,6 +60,19 @@ class Tool < ApplicationRecord
     if options[:filter]
       tools = tools.by_published(options[:filter][:published]) if options[:filter][:published]
     end
+
+    if options[:env]
+      environments = options[:env].split(',')
+
+      ids = environments.map do |env|
+        Tool.where(env => true)
+      end.flatten.uniq.pluck(:id)
+
+      tools = tools.where(id: ids)
+    else
+      tools = tools.production
+    end
+
     tools = tools.order(get_order(options))
   end
 

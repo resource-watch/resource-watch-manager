@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: static_pages
@@ -17,12 +16,16 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  published          :boolean
+#  production         :boolean          default(TRUE)
+#  pre_production     :boolean          default(FALSE)
+#  staging            :boolean          default(FALSE)
 #
 
 # Static page Serializer
 class StaticPageSerializer < ActiveModel::Serializer
   attributes :id, :title, :summary, :description, :content,
-             :photo, :slug, :published, :created_at, :updated_at
+             :photo, :slug, :published, :created_at, :updated_at,
+             :production, :preproduction, :staging
 
   def photo
     {

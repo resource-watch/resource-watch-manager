@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: partners
@@ -33,13 +32,17 @@
 #  cover_updated_at        :datetime
 #  website                 :string
 #  partner_type            :string
+#  production              :boolean          default(TRUE)
+#  pre_production          :boolean          default(FALSE)
+#  staging                 :boolean          default(FALSE)
 #
 
 # Partner serializer
 class PartnerSerializer < ActiveModel::Serializer
   attributes :id, :name, :slug, :summary, :body,
              :contact_email, :contact_name, :website, :featured,
-             :logo, :white_logo, :cover, :icon, :partner_type, :published
+             :logo, :white_logo, :cover, :icon, :partner_type, :published,
+             :production, :preproduction, :staging
 
   link(:self) { api_partner_path(object) }
 
