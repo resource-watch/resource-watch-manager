@@ -139,7 +139,7 @@ class Dashboard < ApplicationRecord
 
     if content_image.present?
       if is_grid
-        contents.find { |content_block| content_block['id'] == grid['id'] }['content']
+        contents.find { |content_block| content_block['id'] == grid['id'] }['content'].flatten
                 .find { |grid_item| grid_item['id'] == content['id'] }['content']['src'] = content_image.image.url(:cover)
       else
         contents.find { |item| item['id'] == content['id'] }['content']['src'] = content_image.image.url(:cover)
