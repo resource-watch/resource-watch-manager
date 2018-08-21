@@ -1,34 +1,37 @@
 # Resource Watch Manager
 
-TODO: Write a description
+The other API for Resource Watch
+
+# Setup
+
+## Requirements:
+
+* [Ruby 2.4.1+](https://www.ruby-lang.org/en/)
+* [Bundler](https://bundler.io/)
+
+## Installation process:
+
+Copy `.env.sample` to `.env` and fill in the necessary values:
+- RAILS_ENV: `development`|`production`
+- SECRET_KEY_BASE: rails secret. [read more](https://medium.com/@michaeljcoyne/understanding-the-secret-key-base-in-ruby-on-rails-ce2f6f9968a1)
+- RW_API_URL: URL of the RW API. Usually you want `https://api.resourcewatch.org` here
+- APIGATEWAY_URL: URL of the RW API gateway. Usually you want `https://api.resourcewatch.org` here
+- POSTGRES_PORT_5432_TCP_ADDR: Network address of your Postgres database server
+- POSTGRES_PORT_5432_TCP_PORT: Network port of your Postgres database server
+- POSTGRES_USER: Username of your Postgres database server
+- POSTGRES_PASS: Password of your Postgres database server
+- POSTGRES_DATABASE: Name of your database
+- BULLET
 
 
-## How to install
-
-Requirements:
-
-* [Node JS](https://nodejs.org/download/)
-* [Ruby 2.3.3](https://gorails.com/setup/osx/10.12-sierra)
-* [Yarn](https://yarnpkg.com/lang/en/docs/install/)
-
-Installation command:
+Install the ruby dependencies:
 
 ```bash
 bundle install
-yarn install
 ```
 
-To start application run:
+To start the development application server, run:
 
 ```bash
 bundle exec rails server
 ```
-
-In another terminal window run:
-
-```bash
-./bin/webpack-watcher
-```
-
-
-
