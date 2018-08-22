@@ -1,6 +1,9 @@
 # Resource Watch Manager
 
-The other API for Resource Watch
+Content API for Resource Watch
+Stores information on dashboards, profiles, etc.
+
+If you are looking for the RW dataset API, you can find it [here](https://github.com/resource-watch/dataset)
 
 # Setup
 
