@@ -25,6 +25,9 @@ Copy `.env.sample` to `.env` and fill in the necessary values:
 - POSTGRES_PASS: Password of your Postgres database server
 - POSTGRES_DATABASE: Name of your database
 - BULLET
+- CT_URL: Control Tower URL (microservice mode only)
+- LOCAL_URL: Local URL  (microservice mode only)
+- CT_TOKEN: Control Tower token (microservice mode only)
 
 
 Install the ruby dependencies:

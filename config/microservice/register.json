@@ -1,0 +1,72 @@
+{
+  "name": "#(service.name)",
+  "tags": [
+    "dashboard"
+  ],
+  "endpoints": [
+    {
+      "path": "/v1/dashboard",
+      "method": "GET",
+      "redirect": {
+        "method": "GET",
+        "path": "/api/dashboards"
+      }
+    },
+    {
+      "path": "/v1/dashboard",
+      "method": "POST",
+      "invalidateCache": [
+        "/dashboard*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "POST",
+        "path": "/api/dashboards"
+      }
+    },
+    {
+      "path": "/v1/dashboard/:dashboard",
+      "method": "GET",
+      "redirect": {
+        "method": "GET",
+        "path": "/api/dashboards/:dashboard"
+      }
+    },
+    {
+      "path": "/v1/dashboard/:dashboard",
+      "method": "PATCH",
+      "invalidateCache": [
+        "/dashboard*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/dashboards/:dashboard"
+      }
+    },
+    {
+      "path": "/v1/dashboard/:dashboard",
+      "method": "PUT",
+      "invalidateCache": [
+        "/dashboard*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/dashboards/:dashboard"
+      }
+    },
+    {
+      "path": "/v1/dashboard/:dashboard",
+      "method": "DELETE",
+      "invalidateCache": [
+        "/dashboard*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "DELETE",
+        "path": "/api/dashboards/:dashboard"
+      }
+    }
+  ]
+}

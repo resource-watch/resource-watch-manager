@@ -3,6 +3,8 @@
 require 'api_constraints'
 
 Rails.application.routes.draw do
+  mount CtRegisterMicroservice::Engine => '/'
+
   # API
   namespace :api, defaults: { format: :json } do
     resources :partners
