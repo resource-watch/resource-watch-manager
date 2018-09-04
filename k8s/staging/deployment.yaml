@@ -69,9 +69,9 @@ spec:
           - name: RAILS_LOG_TO_STDOUT
             value: "true"
           - name: APIGATEWAY_URL
-            value: "https://api.resourcewatch.org"
+            value: "https://staging-api.globalforestwatch.org"
           - name: RW_API_URL
-            value: "https://api.resourcewatch.org"
+            value: "https://staging-api.globalforestwatch.org"
           - name: RAILS_SERVE_STATIC_FILES
             value: "true"
           - name: DATABASE_URL
