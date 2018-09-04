@@ -9,7 +9,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 5.1.2'
+gem 'rails', '~> 5.1.6'
 
 gem 'aws-sdk', '~> 2.3.0'
 gem 'dotenv-rails'
@@ -44,6 +44,8 @@ gem 'jwt'
 
 # Friendly id
 gem 'friendly_id'
+
+gem 'ct-register-microservice', :git => 'git://github.com/control-tower/ct-register-microservice-rails.git', :tag => 'v1.0.0'
 
 group :development, :test do
   gem 'annotate'

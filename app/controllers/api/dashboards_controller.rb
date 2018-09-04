@@ -3,6 +3,12 @@
 class Api::DashboardsController < ApiController
   before_action :set_dashboard, only: %i[show update destroy]
 
+  def authenticate_from_api
+    return false unless CtRegisterMicroservice.config.ct_url.eql? request.base_url
+    user_data = JSON.parse request.env.fetch('HTTP_USER_KEY', '{}')
+    return (user_data.present? and %w(ADMIN USER).include? user_data['role'])
+  end
+
   def index
     render json: Dashboard.fetch_all(params)
   end
