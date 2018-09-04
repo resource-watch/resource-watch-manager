@@ -101,6 +101,18 @@ spec:
                 secretKeyRef:
                   name: mssecrets
                   key: S3_SECRET_ACCESS_KEY
+          - name: CT_URL
+            valueFrom:
+              secretKeyRef:
+                name: mssecrets
+                key: CT_URL
+          - name: CT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: mssecrets
+                key: CT_TOKEN
+          - name: LOCAL_URL
+            value: http://{name}.default.svc.cluster.local:3000
 
         ports:
           - containerPort: 3000
