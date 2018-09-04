@@ -2,14 +2,14 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    name: {name}-staging
-  name: {name}-staging
+    name: {name}
+  name: {name}
 spec:
   revisionHistoryLimit: 0
   template:
     metadata:
       labels:
-        name: {name}-staging
+        name: {name}
     spec:
       affinity:
         podAntiAffinity:
@@ -21,10 +21,10 @@ spec:
                 - key: name
                   operator: In
                   values:
-                  - {name}-staging
+                  - {name}
               topologyKey: kubernetes.io/hostname
       containers:
-      - name: {name}-staging
+      - name: {name}
         image: vizzuality/{name}
         imagePullPolicy: Always
         args:
