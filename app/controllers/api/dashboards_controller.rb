@@ -4,9 +4,20 @@ class Api::DashboardsController < ApiController
   before_action :set_dashboard, only: %i[show update destroy]
 
   def authenticate_from_api
-    return false unless CtRegisterMicroservice.config.ct_url.eql? request.base_url
+    unless (CtRegisterMicroservice.config.ct_url.eql? request.base_url)
+      logger.debug 'Dashboard MS auth request: source URL does not match know CT URL, failing auth challenge'
+      logger.debug 'source URL: ' + request.base_url
+      logger.debug 'Know CT URL: ' + CtRegisterMicroservice.config.ct_url
+      return false
+    end
+    unless CtRegisterMicroservice.config.ct_url.eql? request.base_url
     user_data = JSON.parse request.env.fetch('HTTP_USER_KEY', '{}')
-    return (user_data.present? and %w(ADMIN USER).include? user_data['role'])
+    has_user_or_admin_role = (user_data.present? and %w(ADMIN USER).include? user_data['role'])
+    if (!has_user_or_admin_role)
+      logger.debug 'Dashboard MS auth request: user has no valid roles, failing auth challenge'
+      logger.debug 'User data: ' + user_data
+    end
+    has_user_or_admin_role
   end
 
   def index
