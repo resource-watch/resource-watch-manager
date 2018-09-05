@@ -10,7 +10,6 @@ class Api::DashboardsController < ApiController
       logger.debug 'Know CT URL: ' + CtRegisterMicroservice.config.ct_url
       return false
     end
-    unless CtRegisterMicroservice.config.ct_url.eql? request.base_url
     user_data = JSON.parse request.env.fetch('HTTP_USER_KEY', '{}')
     has_user_or_admin_role = (user_data.present? and %w(ADMIN USER).include? user_data['role'])
     if (!has_user_or_admin_role)
