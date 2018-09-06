@@ -1,19 +1,29 @@
-# Resource Watch Manager
+# Resource Watch site manager microservice for the RW API
 
-Content API for Resource Watch
+Content API microservice for Resource Watch website
 Stores information on dashboards, profiles, etc.
 
 If you are looking for the RW dataset API, you can find it [here](https://github.com/resource-watch/dataset)
 
 # Setup
 
-## Requirements:
+## Requirements
 
+### Native execution 
+
+* [Control Tower](https://github.com/control-tower)
 * [Ruby 2.4.1+](https://www.ruby-lang.org/en/)
 * [Bundler](https://bundler.io/)
+* [Postgres](https://www.postgresql.org/)
+
+### Docker 
+
+* [Docker](https://www.docker.com/)
+* [Docker compose](https://docs.docker.com/compose/)
 
 ## Installation process:
 
+### Native execution 
 Copy `.env.sample` to `.env` and fill in the necessary values:
 - RAILS_ENV: `development`|`production`
 - SECRET_KEY_BASE: rails secret. [read more](https://medium.com/@michaeljcoyne/understanding-the-secret-key-base-in-ruby-on-rails-ce2f6f9968a1)
@@ -40,4 +50,18 @@ To start the development application server, run:
 
 ```bash
 bundle exec rails server
+```
+
+And use the following command once the rails server is up to register the microservice in Control Tower:
+
+```bash
+bundle exec rake ct_register_microservice:register
+```
+
+### Docker
+
+TODO: add more detailed docker installation instructions
+
+```bash
+./entrypoint.sh start
 ```

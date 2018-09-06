@@ -1,10 +1,10 @@
 GIT
   remote: git://github.com/control-tower/ct-register-microservice-rails.git
-  revision: 45da809cf95719e4344409c89bbbb1f227c35b9b
-  tag: v1.0.0
+  revision: 0dd2abbb7f21952694aaf89ea26ad18a25d100e3
+  tag: v1.1.0
   specs:
-    ct-register-microservice (1.0.0)
-      faraday
+    ct-register-microservice (1.1.0)
+      httparty
       multi_json
       rails (~> 5.1.2)
 
@@ -146,6 +146,8 @@ GEM
     has_scope (0.7.2)
       actionpack (>= 4.1)
       activesupport (>= 4.1)
+    httparty (0.16.2)
+      multi_xml (>= 0.5.2)
     i18n (1.1.0)
       concurrent-ruby (~> 1.0)
     inherited_resources (1.9.0)
@@ -192,6 +194,7 @@ GEM
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     multi_json (1.13.1)
+    multi_xml (0.6.0)
     multipart-post (2.0.0)
     mustermann (1.0.3)
     nio4r (2.3.1)

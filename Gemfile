@@ -45,7 +45,7 @@ gem 'jwt'
 # Friendly id
 gem 'friendly_id'
 
-gem 'ct-register-microservice', :git => 'git://github.com/control-tower/ct-register-microservice-rails.git', :tag => 'v1.0.0'
+gem 'ct-register-microservice', :git => 'git://github.com/control-tower/ct-register-microservice-rails.git', :tag => 'v1.1.0'
 
 group :development, :test do
   gem 'annotate'
