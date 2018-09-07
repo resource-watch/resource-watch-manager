@@ -457,7 +457,7 @@
       }
     },
     {
-      "path": "/api/temporary_content_image",
+      "path": "/v1/temporary_content_image",
       "method": "POST",
       "invalidateCache": [
         "/temporary_content_image*"
