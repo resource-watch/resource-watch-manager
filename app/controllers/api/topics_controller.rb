@@ -30,6 +30,15 @@ class Api::TopicsController < ApiController
     end
   end
 
+  def clone
+    if duplicated_topic = @topic.duplicate(params[:token])
+      @topic = duplicated_topic
+      render json: @topic, status: :ok
+    else
+      render_error(@topic, :unprocessable_entity)
+    end
+  end
+
   def destroy
     @topic.destroy
     head 204

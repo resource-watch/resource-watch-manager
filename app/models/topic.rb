@@ -90,6 +90,11 @@ class Topic < ApplicationRecord
     update_column(:content, contents.to_json)
   end
 
+  def duplicate(token)
+    widgets = clone_widgets(token)
+    clone_topic(widgets)
+  end
+
   private
 
   def parse_image
@@ -133,5 +138,37 @@ class Topic < ApplicationRecord
 
   def should_generate_new_friendly_id?
     name_changed?
+  end
+
+  def clone_widgets(token)
+    widget_list = obtain_widget_list(JSON.parse(content), [])
+    create_widgets(widget_list, token)
+  end
+
+  def obtain_widget_list(content, widget_list)
+    content.each do |subcontent|
+      widget_list = obtain_widget_list(subcontent.content, widget_list) if subcontent['type'].eql? 'grid'
+      widget_list << { widget_id: subcontent['widgetId'], dataset_id: subcontent['datasetId'] } if subcontent['type'].eql? 'widget'
+    end
+    widget_list
+  end
+
+  def create_widgets(widgets_list, token)
+    new_widgets_list = []
+    widgets_list.each do |widget|
+      new_widget_id = WidgetService.clone(token, widget[:widget_id], widget[:dataset_id])
+      new_widgets_list << { old_id: widget[:widget_id], new_id: new_widget_id }
+    end
+    new_widgets_list
+  end
+
+  def clone_topic(widgets = [])
+    new_topic = self.clone
+    new_topic.slug += Time.now.to_i.to_s
+    new_content = self.content
+    #new_content = replace_content_widgets(JSON.parse(self.content),JSON.parse(self.content), widgets) if widgets.any?
+    widgets.each { |x| new_content.gsub!(x.old_id, x.new_id) }
+    new_topic.content = new_content
+    new_topic.save
   end
 end
