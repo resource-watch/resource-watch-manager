@@ -2,21 +2,16 @@ class WidgetService < ApiService
 
   @conn ||= connect
 
-  def self.clone(token, widget_id, dataset_id)
+  def self.clone(widget_id, dataset_id)
     begin
       Rails.logger.info 'Cloning Widget in the API.'
       Rails.logger.info "Widget: #{widget_id}"
 
-      res = @conn.patch do |req|
-        req.url "dataset/#{dataset_id}/widget/#{widget_id}/clone"
-        req.headers['Authorization'] = "Bearer #{token}"
-        req.headers['Content-Type'] = 'application/json'
-      end
+      res = @conn.microservice_request(
+          "/dataset/#{dataset_id}/widget/#{widget_id}/clone",
+          :post)
 
-      raise JSON.parse(res.body)['errors'].first['detail'] unless res.status == 200
-
-      Rails.logger.info "Response from widget creation endpoint: #{res.body}"
-      widget_id = JSON.parse(res.body)['data']['id']
+      widget_id = JSON.parse(res)['data']['id']
     rescue => e
       Rails.logger.error "Error creating new widget in the API: #{e}"
       raise e.message

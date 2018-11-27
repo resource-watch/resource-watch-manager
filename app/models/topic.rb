@@ -90,8 +90,8 @@ class Topic < ApplicationRecord
     update_column(:content, contents.to_json)
   end
 
-  def duplicate(token)
-    widgets = clone_widgets(token)
+  def duplicate
+    widgets = clone_widgets
     clone_topic(widgets)
   end
 
@@ -140,22 +140,20 @@ class Topic < ApplicationRecord
     name_changed?
   end
 
-  def clone_widgets(token)
+  def clone_widgets
     widget_list = obtain_widget_list(content)
-    create_widgets(widget_list, token)
+    create_widgets(widget_list)
   end
 
   def obtain_widget_list(content)
     widgets_list = content.scan(/widgetId":"([^"]*)","datasetId":"([^"]*)"/)
-    widgets_list.map { |w| {widget_id: w.first, dataset_id: w.last} }
+    widgets_list.map { |w| {widget_id: w.first, dataset_id: w.last} }.uniq!
   end
 
-  def create_widgets(widgets_list, token)
+  def create_widgets(widgets_list)
     new_widgets_list = []
-    a = 20
     widgets_list.each do |widget|
-      # TODO test this with the API
-      new_widget_id = (a+=1).to_s #WidgetService.clone(token, widget[:widget_id], widget[:dataset_id])
+      new_widget_id = WidgetService.clone(widget[:widget_id], widget[:dataset_id])
       new_widgets_list << { old_id: widget[:widget_id], new_id: new_widget_id }
     end
     new_widgets_list

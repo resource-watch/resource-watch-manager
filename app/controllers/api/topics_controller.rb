@@ -32,15 +32,14 @@ class Api::TopicsController < ApiController
 
   def clone
     begin
-      if duplicated_topic = @topic.duplicate(params[:token])
+      if duplicated_topic = @topic.duplicate
         @topic = duplicated_topic
         render json: @topic, status: :ok
       else
         render_error@topic, :unprocessable_entity
       end
-    rescue
+    rescue Exception => e
       render_error @topic, :internal_server_error
-
     end
   end
 
