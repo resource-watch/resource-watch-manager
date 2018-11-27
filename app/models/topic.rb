@@ -147,7 +147,7 @@ class Topic < ApplicationRecord
 
   def obtain_widget_list(content)
     widgets_list = content.scan(/widgetId":"([^"]*)","datasetId":"([^"]*)"/)
-    widgets_list.map { |w| {widget_id: w.first, dataset_id: w.last} }.uniq!
+    widgets_list.map { |w| {widget_id: w.first, dataset_id: w.last} }.uniq
   end
 
   def create_widgets(widgets_list)
