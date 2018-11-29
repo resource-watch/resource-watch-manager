@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::TopicsController < ApiController
-  before_action :set_topic, only: %i[show update destroy]
+  before_action :set_topic, only: %i[show update destroy clone]
 
   def index
     render json: Topic.fetch_all(params)
@@ -27,6 +27,20 @@ class Api::TopicsController < ApiController
       render json: @topic, status: :ok
     else
       render_error(@topic, :unprocessable_entity)
+    end
+  end
+
+  def clone
+    begin
+      if duplicated_topic = @topic.duplicate
+        @topic = duplicated_topic
+        render json: @topic, status: :ok
+      else
+        render_error@topic, :unprocessable_entity
+      end
+    rescue Exception => e
+      @topic.errors['id'] << e.message
+      render_error @topic, :internal_server_error
     end
   end
 

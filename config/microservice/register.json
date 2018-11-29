@@ -205,6 +205,15 @@
       }
     },
     {
+      "authenticated": true,
+      "path": "/v1/topics/:topic/clone",
+      "method": "POST",
+      "redirect": {
+        "method": "POST",
+        "path": "/api/topics/:topic/clone"
+      }
+    },
+    {
       "path": "/v1/topic",
       "method": "POST",
       "invalidateCache": [
