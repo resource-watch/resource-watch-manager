@@ -12,6 +12,8 @@ class WidgetService < ApiService
           :post)
 
       widget_id = JSON.parse(res)['data']['id']
+    rescue CtRegisterMicroservice::NotFoundError
+      Rails.logger.info "Widget #{widget_id} doesn't exist and can't be cloned"
     rescue => e
       Rails.logger.error "Error creating new widget in the API: #{e}"
       raise e.message

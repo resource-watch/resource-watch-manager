@@ -39,6 +39,7 @@ class Api::TopicsController < ApiController
         render_error@topic, :unprocessable_entity
       end
     rescue Exception => e
+      @topic.errors['id'] << e.message
       render_error @topic, :internal_server_error
     end
   end
