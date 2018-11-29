@@ -165,5 +165,6 @@ class Topic < ApplicationRecord
     widgets.each { |x| new_content.gsub!(x[:old_id], x[:new_id]) }
     new_topic.content = new_content
     new_topic.save
+    new_topic
   end
 end
