@@ -9,7 +9,11 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     resources :partners
     resources :static_pages
-    resources :dashboards
+    resources :dashboards do
+      member do
+        post :clone
+      end
+    end
     resources :topics do
       member do
         post :clone

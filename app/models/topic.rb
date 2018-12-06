@@ -22,6 +22,7 @@
 #
 
 class Topic < ApplicationRecord
+  include Duplicable
   extend FriendlyId
   friendly_id :name, use: %i[slugged finders]
   validates_presence_of :name
@@ -92,7 +93,7 @@ class Topic < ApplicationRecord
 
   def duplicate
     widgets = clone_widgets
-    clone_topic(widgets)
+    clone_model(widgets)
   end
 
   private
@@ -138,33 +139,5 @@ class Topic < ApplicationRecord
 
   def should_generate_new_friendly_id?
     name_changed?
-  end
-
-  def clone_widgets
-    widget_list = obtain_widget_list(content)
-    create_widgets(widget_list)
-  end
-
-  def obtain_widget_list(content)
-    widgets_list = content.scan(/widgetId":"([^"]*)","datasetId":"([^"]*)"/)
-    widgets_list.map { |w| {widget_id: w.first, dataset_id: w.last} }.uniq
-  end
-
-  def create_widgets(widgets_list)
-    new_widgets_list = []
-    widgets_list.each do |widget|
-      new_widget_id = WidgetService.clone(widget[:widget_id], widget[:dataset_id])
-      new_widgets_list << { old_id: widget[:widget_id], new_id: new_widget_id }
-    end
-    new_widgets_list
-  end
-
-  def clone_topic(widgets = [])
-    new_topic = self.dup
-    new_content = self.content
-    widgets.each { |x| new_content.gsub!(x[:old_id], x[:new_id]) }
-    new_topic.content = new_content
-    new_topic.save
-    new_topic
   end
 end
