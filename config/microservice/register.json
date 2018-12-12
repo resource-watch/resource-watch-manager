@@ -69,6 +69,15 @@
       }
     },
     {
+      "authenticated": true,
+      "path": "/v1/dashboards/:dashboard/clone",
+      "method": "POST",
+      "redirect": {
+        "method": "POST",
+        "path": "/api/dashboards/:dashboard/clone"
+      }
+    },
+    {
       "path": "/v1/partner",
       "method": "GET",
       "redirect": {

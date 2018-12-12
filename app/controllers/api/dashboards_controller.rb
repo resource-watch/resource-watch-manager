@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::DashboardsController < ApiController
-  before_action :set_dashboard, only: %i[show update destroy]
+  before_action :set_dashboard, only: %i[show update destroy clone]
 
   def index
     render json: Dashboard.fetch_all(params)
@@ -27,6 +27,20 @@ class Api::DashboardsController < ApiController
       render json: @dashboard, status: :ok
     else
       render_error(@dashboard, :unprocessable_entity)
+    end
+  end
+
+  def clone
+    begin
+      if duplicated_dashboard = @dashboard.duplicate
+        @dashboard = duplicated_dashboard
+        render json: @dashboard, status: :ok
+      else
+        render_error@dashboard, :unprocessable_entity
+      end
+    rescue Exception => e
+      @dashboard.errors['id'] << e.message
+      render_error @dashboard, :internal_server_error
     end
   end
 
