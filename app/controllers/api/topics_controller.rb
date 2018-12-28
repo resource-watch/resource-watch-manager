@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::TopicsController < ApiController
-  before_action :set_topic, only: %i[show update destroy clone]
+  before_action :set_topic, only: %i[show update destroy clone clone_dashboard]
 
   def index
     render json: Topic.fetch_all(params)
@@ -36,7 +36,21 @@ class Api::TopicsController < ApiController
         @topic = duplicated_topic
         render json: @topic, status: :ok
       else
-        render_error@topic, :unprocessable_entity
+        render_error @topic, :unprocessable_entity
+      end
+    rescue Exception => e
+      @topic.errors['id'] << e.message
+      render_error @topic, :internal_server_error
+    end
+  end
+
+  def clone_dashboard
+    begin
+      if dashboard = @topic.duplicate_dashboard
+        @dashboard = dashboard
+        render json: @dashboard, status: :ok
+      else
+        render_error @dashboard, :unprocessable_entity
       end
     rescue Exception => e
       @topic.errors['id'] << e.message

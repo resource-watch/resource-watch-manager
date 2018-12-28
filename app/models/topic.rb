@@ -96,6 +96,11 @@ class Topic < ApplicationRecord
     clone_model(widgets)
   end
 
+  def duplicate_dashboard
+    widgets = clone_widgets
+    clone_to Dashboard, widgets
+  end
+
   private
 
   def parse_image
