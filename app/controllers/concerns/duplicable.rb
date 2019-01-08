@@ -34,4 +34,14 @@ module Duplicable
     new_model.save
     new_model
   end
+
+  def clone_to(new_class, widgets = [])
+    new_model = new_class.new
+    new_model.attributes = self.attributes.except 'id', 'updated_at', 'created_at'
+    new_content = self.content
+    widgets.each { |x| new_content.gsub!(x[:old_id], x[:new_id]) }
+    new_model.content = new_content
+    new_model.save
+    new_model
+  end
 end

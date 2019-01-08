@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :topics do
       member do
         post :clone
+        post 'clone-dashboard', to: :clone_dashboard
       end
     end
     resources :tools
