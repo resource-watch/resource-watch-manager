@@ -46,7 +46,7 @@ class Api::TopicsController < ApiController
 
   def clone_dashboard
     begin
-      if dashboard = @topic.duplicate_dashboard
+      if dashboard = @topic.duplicate_dashboard(params.dig('loggedUser', 'id'))
         @dashboard = dashboard
         render json: @dashboard, status: :ok
       else

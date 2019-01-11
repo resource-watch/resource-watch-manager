@@ -96,9 +96,9 @@ class Topic < ApplicationRecord
     clone_model(widgets)
   end
 
-  def duplicate_dashboard
+  def duplicate_dashboard(user_id)
     widgets = clone_widgets
-    clone_to Dashboard, widgets
+    clone_to Dashboard, widgets, user_id
   end
 
   private
