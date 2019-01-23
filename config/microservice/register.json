@@ -5,7 +5,7 @@
   ],
   "endpoints": [
     {
-      "path": "/v1/dashboard",
+      "path": "/v1/dashboards",
       "method": "GET",
       "redirect": {
         "method": "GET",
@@ -13,10 +13,10 @@
       }
     },
     {
-      "path": "/v1/dashboard",
+      "path": "/v1/dashboards",
       "method": "POST",
       "invalidateCache": [
-        "/dashboard*"
+        "/dashboards*"
       ],
       "authenticated": true,
       "redirect": {
@@ -25,7 +25,7 @@
       }
     },
     {
-      "path": "/v1/dashboard/:dashboard",
+      "path": "/v1/dashboards/:dashboard",
       "method": "GET",
       "redirect": {
         "method": "GET",
@@ -33,10 +33,10 @@
       }
     },
     {
-      "path": "/v1/dashboard/:dashboard",
+      "path": "/v1/dashboards/:dashboard",
       "method": "PATCH",
       "invalidateCache": [
-        "/dashboard*"
+        "/dashboards*"
       ],
       "authenticated": true,
       "redirect": {
@@ -45,10 +45,10 @@
       }
     },
     {
-      "path": "/v1/dashboard/:dashboard",
+      "path": "/v1/dashboards/:dashboard",
       "method": "PUT",
       "invalidateCache": [
-        "/dashboard*"
+        "/dashboards*"
       ],
       "authenticated": true,
       "redirect": {
@@ -57,10 +57,10 @@
       }
     },
     {
-      "path": "/v1/dashboard/:dashboard",
+      "path": "/v1/dashboards/:dashboard",
       "method": "DELETE",
       "invalidateCache": [
-        "/dashboard*"
+        "/dashboards*"
       ],
       "authenticated": true,
       "redirect": {
@@ -206,7 +206,7 @@
       }
     },
     {
-      "path": "/v1/topic",
+      "path": "/v1/topics",
       "method": "GET",
       "redirect": {
         "method": "GET",
@@ -232,10 +232,10 @@
       }
     },
     {
-      "path": "/v1/topic",
+      "path": "/v1/topics",
       "method": "POST",
       "invalidateCache": [
-        "/topic*"
+        "/topics*"
       ],
       "authenticated": true,
       "redirect": {
@@ -244,7 +244,7 @@
       }
     },
     {
-      "path": "/v1/topic/:topic",
+      "path": "/v1/topics/:topic",
       "method": "GET",
       "redirect": {
         "method": "GET",
@@ -252,10 +252,10 @@
       }
     },
     {
-      "path": "/v1/topic/:topic",
+      "path": "/v1/topics/:topic",
       "method": "PATCH",
       "invalidateCache": [
-        "/topic*"
+        "/topics*"
       ],
       "authenticated": true,
       "redirect": {
@@ -264,10 +264,10 @@
       }
     },
     {
-      "path": "/v1/topic/:topic",
+      "path": "/v1/topics/:topic",
       "method": "PUT",
       "invalidateCache": [
-        "/topic*"
+        "/topics*"
       ],
       "authenticated": true,
       "redirect": {
@@ -276,10 +276,10 @@
       }
     },
     {
-      "path": "/v1/topic/:topic",
+      "path": "/v1/topics/:topic",
       "method": "DELETE",
       "invalidateCache": [
-        "/topic*"
+        "/topics*"
       ],
       "authenticated": true,
       "redirect": {
