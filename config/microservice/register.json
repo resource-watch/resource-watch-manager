@@ -78,7 +78,7 @@
       }
     },
     {
-      "path": "/v1/partner",
+      "path": "/v1/partners",
       "method": "GET",
       "redirect": {
         "method": "GET",
@@ -86,10 +86,10 @@
       }
     },
     {
-      "path": "/v1/partner",
+      "path": "/v1/partners",
       "method": "POST",
       "invalidateCache": [
-        "/partner*"
+        "/partners*"
       ],
       "authenticated": true,
       "redirect": {
@@ -98,7 +98,7 @@
       }
     },
     {
-      "path": "/v1/partner/:partner",
+      "path": "/v1/partners/:partner",
       "method": "GET",
       "redirect": {
         "method": "GET",
@@ -106,10 +106,10 @@
       }
     },
     {
-      "path": "/v1/partner/:partner",
+      "path": "/v1/partners/:partner",
       "method": "PATCH",
       "invalidateCache": [
-        "/partner*"
+        "/partners*"
       ],
       "authenticated": true,
       "redirect": {
@@ -118,10 +118,10 @@
       }
     },
     {
-      "path": "/v1/partner/:partner",
+      "path": "/v1/partners/:partner",
       "method": "PUT",
       "invalidateCache": [
-        "/partner*"
+        "/partners*"
       ],
       "authenticated": true,
       "redirect": {
@@ -130,10 +130,10 @@
       }
     },
     {
-      "path": "/v1/partner/:partner",
+      "path": "/v1/partners/:partner",
       "method": "DELETE",
       "invalidateCache": [
-        "/partner*"
+        "/partners*"
       ],
       "authenticated": true,
       "redirect": {
