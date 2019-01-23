@@ -8,15 +8,13 @@ class ApiController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def authenticate_from_api
-    begin
-      token = request.env.fetch('HTTP_AUTHORIZATION', '').split(/Bearer /).last
-      api_connection = connect_gateway
-      api_connection.authorization :Bearer, token
-      response = api_connection.get('/auth/check-logged')
-      return true if response.success?
-    rescue
+    user_data = JSON.parse request.env.fetch('HTTP_USER_KEY', '{}')
+    has_user_or_admin_role = (user_data.present? and %w(ADMIN USER).include? user_data['role'])
+    if (!has_user_or_admin_role)
+      logger.debug 'Dashboard MS auth request: user has no valid roles, failing auth challenge'
+      logger.debug 'User data: ' + user_data
     end
-    false
+    has_user_or_admin_role
   end
 
   protected

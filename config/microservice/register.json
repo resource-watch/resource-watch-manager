@@ -1,0 +1,507 @@
+{
+  "name": "#(service.name)",
+  "tags": [
+    "dashboard"
+  ],
+  "endpoints": [
+    {
+      "path": "/v1/dashboard",
+      "method": "GET",
+      "redirect": {
+        "method": "GET",
+        "path": "/api/dashboards"
+      }
+    },
+    {
+      "path": "/v1/dashboard",
+      "method": "POST",
+      "invalidateCache": [
+        "/dashboard*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "POST",
+        "path": "/api/dashboards"
+      }
+    },
+    {
+      "path": "/v1/dashboard/:dashboard",
+      "method": "GET",
+      "redirect": {
+        "method": "GET",
+        "path": "/api/dashboards/:dashboard"
+      }
+    },
+    {
+      "path": "/v1/dashboard/:dashboard",
+      "method": "PATCH",
+      "invalidateCache": [
+        "/dashboard*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/dashboards/:dashboard"
+      }
+    },
+    {
+      "path": "/v1/dashboard/:dashboard",
+      "method": "PUT",
+      "invalidateCache": [
+        "/dashboard*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/dashboards/:dashboard"
+      }
+    },
+    {
+      "path": "/v1/dashboard/:dashboard",
+      "method": "DELETE",
+      "invalidateCache": [
+        "/dashboard*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "DELETE",
+        "path": "/api/dashboards/:dashboard"
+      }
+    },
+    {
+      "authenticated": true,
+      "path": "/v1/dashboards/:dashboard/clone",
+      "method": "POST",
+      "redirect": {
+        "method": "POST",
+        "path": "/api/dashboards/:dashboard/clone"
+      }
+    },
+    {
+      "path": "/v1/partner",
+      "method": "GET",
+      "redirect": {
+        "method": "GET",
+        "path": "/api/partners"
+      }
+    },
+    {
+      "path": "/v1/partner",
+      "method": "POST",
+      "invalidateCache": [
+        "/partner*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "POST",
+        "path": "/api/partners"
+      }
+    },
+    {
+      "path": "/v1/partner/:partner",
+      "method": "GET",
+      "redirect": {
+        "method": "GET",
+        "path": "/api/partners/:partner"
+      }
+    },
+    {
+      "path": "/v1/partner/:partner",
+      "method": "PATCH",
+      "invalidateCache": [
+        "/partner*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/partners/:partner"
+      }
+    },
+    {
+      "path": "/v1/partner/:partner",
+      "method": "PUT",
+      "invalidateCache": [
+        "/partner*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/partners/:partner"
+      }
+    },
+    {
+      "path": "/v1/partner/:partner",
+      "method": "DELETE",
+      "invalidateCache": [
+        "/partner*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "DELETE",
+        "path": "/api/partners/:partner"
+      }
+    },
+    {
+      "path": "/v1/static_page",
+      "method": "GET",
+      "redirect": {
+        "method": "GET",
+        "path": "/api/static_pages"
+      }
+    },
+    {
+      "path": "/v1/static_page",
+      "method": "POST",
+      "invalidateCache": [
+        "/static_page*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "POST",
+        "path": "/api/static_pages"
+      }
+    },
+    {
+      "path": "/v1/static_page/:static_page",
+      "method": "GET",
+      "redirect": {
+        "method": "GET",
+        "path": "/api/static_pages/:static_page"
+      }
+    },
+    {
+      "path": "/v1/static_page/:static_page",
+      "method": "PATCH",
+      "invalidateCache": [
+        "/static_page*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/static_pages/:static_page"
+      }
+    },
+    {
+      "path": "/v1/static_page/:static_page",
+      "method": "PUT",
+      "invalidateCache": [
+        "/static_page*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/static_pages/:static_page"
+      }
+    },
+    {
+      "path": "/v1/static_page/:static_page",
+      "method": "DELETE",
+      "invalidateCache": [
+        "/static_page*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "DELETE",
+        "path": "/api/static_pages/:static_page"
+      }
+    },
+    {
+      "path": "/v1/topic",
+      "method": "GET",
+      "redirect": {
+        "method": "GET",
+        "path": "/api/topics"
+      }
+    },
+    {
+      "authenticated": true,
+      "path": "/v1/topics/:topic/clone",
+      "method": "POST",
+      "redirect": {
+        "method": "POST",
+        "path": "/api/topics/:topic/clone"
+      }
+    },
+    {
+      "authenticated": true,
+      "path": "/v1/topics/:topic/clone-dashboard",
+      "method": "POST",
+      "redirect": {
+        "method": "POST",
+        "path": "/api/topics/:topic/clone-dashboard"
+      }
+    },
+    {
+      "path": "/v1/topic",
+      "method": "POST",
+      "invalidateCache": [
+        "/topic*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "POST",
+        "path": "/api/topics"
+      }
+    },
+    {
+      "path": "/v1/topic/:topic",
+      "method": "GET",
+      "redirect": {
+        "method": "GET",
+        "path": "/api/topics/:topic"
+      }
+    },
+    {
+      "path": "/v1/topic/:topic",
+      "method": "PATCH",
+      "invalidateCache": [
+        "/topic*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/topics/:topic"
+      }
+    },
+    {
+      "path": "/v1/topic/:topic",
+      "method": "PUT",
+      "invalidateCache": [
+        "/topic*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/topics/:topic"
+      }
+    },
+    {
+      "path": "/v1/topic/:topic",
+      "method": "DELETE",
+      "invalidateCache": [
+        "/topic*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "DELETE",
+        "path": "/api/topics/:topic"
+      }
+    },
+    {
+      "path": "/v1/tool",
+      "method": "GET",
+      "redirect": {
+        "method": "GET",
+        "path": "/api/tools"
+      }
+    },
+    {
+      "path": "/v1/tool",
+      "method": "POST",
+      "invalidateCache": [
+        "/tool*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "POST",
+        "path": "/api/tools"
+      }
+    },
+    {
+      "path": "/v1/tool/:tool",
+      "method": "GET",
+      "redirect": {
+        "method": "GET",
+        "path": "/api/tools/:tool"
+      }
+    },
+    {
+      "path": "/v1/tool/:tool",
+      "method": "PATCH",
+      "invalidateCache": [
+        "/tool*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/tools/:tool"
+      }
+    },
+    {
+      "path": "/v1/tool/:tool",
+      "method": "PUT",
+      "invalidateCache": [
+        "/tool*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/tools/:tool"
+      }
+    },
+    {
+      "path": "/v1/tool/:tool",
+      "method": "DELETE",
+      "invalidateCache": [
+        "/tool*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "DELETE",
+        "path": "/api/tools/:tool"
+      }
+    },
+    {
+      "path": "/v1/profile",
+      "method": "POST",
+      "invalidateCache": [
+        "/profile*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "POST",
+        "path": "/api/profiles"
+      }
+    },
+    {
+      "path": "/v1/profile/:profile",
+      "method": "GET",
+      "redirect": {
+        "method": "GET",
+        "path": "/api/profiles/:profile"
+      }
+    },
+    {
+      "path": "/v1/profile/:profile",
+      "method": "PATCH",
+      "invalidateCache": [
+        "/profile*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/profiles/:profile"
+      }
+    },
+    {
+      "path": "/v1/profile/:profile",
+      "method": "PUT",
+      "invalidateCache": [
+        "/profile*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/profiles/:profile"
+      }
+    },
+    {
+      "path": "/v1/profile/:profile",
+      "method": "DELETE",
+      "invalidateCache": [
+        "/profile*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "DELETE",
+        "path": "/api/profiles/:profile"
+      }
+    },
+    {
+      "path": "/v1/faq",
+      "method": "GET",
+      "redirect": {
+        "method": "GET",
+        "path": "/api/faqs"
+      }
+    },
+    {
+      "path": "/v1/faq",
+      "method": "POST",
+      "invalidateCache": [
+        "/faq*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "POST",
+        "path": "/api/faqs"
+      }
+    },
+    {
+      "path": "/v1/faq/:faq",
+      "method": "GET",
+      "redirect": {
+        "method": "GET",
+        "path": "/api/faqs/:faq"
+      }
+    },
+    {
+      "path": "/v1/faq/:faq",
+      "method": "PATCH",
+      "invalidateCache": [
+        "/faq*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/faqs/:faq"
+      }
+    },
+    {
+      "path": "/v1/faq/:faq",
+      "method": "PUT",
+      "invalidateCache": [
+        "/faq*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "PATCH",
+        "path": "/api/faqs/:faq"
+      }
+    },
+    {
+      "path": "/v1/faq/:faq",
+      "method": "DELETE",
+      "invalidateCache": [
+        "/faq*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "DELETE",
+        "path": "/api/faqs/:faq"
+      }
+    },
+    {
+      "path": "/v1/faq/reorder",
+      "method": "POST",
+      "invalidateCache": [
+        "/faq*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "POST",
+        "path": "/api/faqs/reorder"
+      }
+    },
+    {
+      "path": "/v1/temporary_content_image",
+      "method": "POST",
+      "invalidateCache": [
+        "/temporary_content_image*"
+      ],
+      "authenticated": true,
+      "redirect": {
+        "method": "POST",
+        "path": "/api/temporary_content_images"
+      }
+    },
+    {
+      "path": "/v1/contact-us",
+      "method": "POST",
+      "redirect": {
+        "method": "POST",
+        "path": "/api/contact-us"
+      }
+    }
+  ]
+}

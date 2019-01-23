@@ -6,7 +6,7 @@ services:
       - "./.data/db:/var/lib/postgresql/data"
   api:
     build: .
-    command: 'bash -c ''bundle exec puma -C config/puma.rb'''
+    command: 'bash -c ''sleep 5 && bundle exec rake ct_register_microservice:register & bundle exec puma -C config/puma.rb'''
     ports:
       - "3001:3000"
     env_file: .env

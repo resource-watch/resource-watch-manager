@@ -3,6 +3,18 @@
 require 'spec_helper'
 
 describe Api::DashboardsController, type: :controller do
+  describe 'POST #dashboard' do
+    before(:each) do
+      FactoryGirl.create :dashboard_with_widgets
+    end
+    it 'should perform the cloning' do
+      VCR.use_cassette('dataset_widget') do
+        post 'clone', params: {id: '1'}
+        expect(response.status).to eq(200)
+      end
+    end
+  end
+
   describe 'GET #index' do
     before(:each) do
       FactoryGirl.create :dashboard_private_user_1

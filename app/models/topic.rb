@@ -22,6 +22,7 @@
 #
 
 class Topic < ApplicationRecord
+  include Duplicable
   extend FriendlyId
   friendly_id :name, use: %i[slugged finders]
   validates_presence_of :name
@@ -88,6 +89,16 @@ class Topic < ApplicationRecord
     end
 
     update_column(:content, contents.to_json)
+  end
+
+  def duplicate
+    widgets = clone_widgets
+    clone_model(widgets)
+  end
+
+  def duplicate_dashboard(user_id)
+    widgets = clone_widgets
+    clone_to Dashboard, widgets, user_id
   end
 
   private

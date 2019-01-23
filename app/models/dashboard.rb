@@ -24,6 +24,7 @@
 #
 
 class Dashboard < ApplicationRecord
+  include Duplicable
   extend FriendlyId
   friendly_id :name, use: %i[slugged finders]
   validates_presence_of :name
@@ -106,6 +107,11 @@ class Dashboard < ApplicationRecord
     end
 
     update_column(:content, contents.to_json)
+  end
+
+  def duplicate
+    widgets = clone_widgets
+    clone_model(widgets)
   end
 
   private
