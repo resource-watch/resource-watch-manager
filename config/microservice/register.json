@@ -41,7 +41,7 @@
       "authenticated": true,
       "redirect": {
         "method": "PATCH",
-        "path": "/api/dashboard/:dashboard"
+        "path": "/api/dashboards/:dashboard"
       }
     },
     {
@@ -65,7 +65,7 @@
       "authenticated": true,
       "redirect": {
         "method": "DELETE",
-        "path": "/api/dashboard/:dashboard"
+        "path": "/api/dashboards/:dashboard"
       }
     },
     {
