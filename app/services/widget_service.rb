@@ -8,7 +8,7 @@ class WidgetService < ApiService
       Rails.logger.info "Widget: #{widget_id}"
 
       res = @conn.microservice_request(
-          "/dataset/#{dataset_id}/widget/#{widget_id}/clone",
+          "/v1/dataset/#{dataset_id}/widget/#{widget_id}/clone",
           :post)
 
       widget_id = JSON.parse(res)['data']['id']
