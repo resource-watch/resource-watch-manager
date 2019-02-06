@@ -98,7 +98,7 @@ class Dashboard < ApplicationRecord
       elsif content_block['type'] == 'grid'
         content_block['content'].compact.each do |column|
           column.each do |content|
-            if content && content['type'] == 'image'
+            if content && content.is_a?(Hash) && content['type'] == 'image'
               contents = assign_content_image_url(contents, content, base_url, is_grid = true, grid = content_block)
             end
           end
