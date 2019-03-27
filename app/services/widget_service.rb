@@ -2,14 +2,18 @@ class WidgetService < ApiService
 
   @conn ||= connect
 
-  def self.clone(widget_id, dataset_id)
+  def self.clone(widget_id, dataset_id, user_id = nil)
     begin
       Rails.logger.info 'Cloning Widget in the API.'
       Rails.logger.info "Widget: #{widget_id}"
 
+      user = { userId: user_id }.to_json if user_id.present?
+
       res = @conn.microservice_request(
           "/v1/dataset/#{dataset_id}/widget/#{widget_id}/clone",
-          :post)
+          :post,
+          {},
+          user)
 
       widget_id = JSON.parse(res)['data']['id']
     rescue CtRegisterMicroservice::NotFoundError
