@@ -32,7 +32,7 @@ class Api::TopicsController < ApiController
 
   def clone
     begin
-      if duplicated_topic = @topic.duplicate
+      if duplicated_topic = @topic.duplicate(params.dig('loggedUser', 'id'))
         @topic = duplicated_topic
         render json: @topic, status: :ok
       else
