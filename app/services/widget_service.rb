@@ -7,7 +7,7 @@ class WidgetService < ApiService
       Rails.logger.info 'Cloning Widget in the API.'
       Rails.logger.info "Widget: #{widget_id}"
 
-      user = { userId: user_id }.to_json if user_id.present?
+      user = { userId: user_id } if user_id.present?
 
       res = @conn.microservice_request(
           "/v1/dataset/#{dataset_id}/widget/#{widget_id}/clone",
