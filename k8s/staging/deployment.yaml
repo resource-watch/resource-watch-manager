@@ -1,6 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
+  namespace: rw
   labels:
     name: {name}
   name: {name}
@@ -8,92 +9,93 @@ spec:
   revisionHistoryLimit: 0
   template:
     metadata:
+      namespace: rw
       labels:
         name: {name}
     spec:
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: name
-                  operator: In
-                  values:
-                  - {name}
-              topologyKey: kubernetes.io/hostname
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: name
+                      operator: In
+                      values:
+                        - {name}
+                topologyKey: kubernetes.io/hostname
       containers:
-      - name: {name}
-        image: vizzuality/{name}
-        imagePullPolicy: Always
-        args:
-          - start
-        resources:
-          requests:
-            memory: "0Mi"
-            cpu: "0m"
-        env:
-          - name: CONTACT_EMAIL
-            value: "resourcewatch@wri.org"
-          - name: SENDGRID_DOMAIN
-            value: "vizzuality.com"
-          - name: SENDGRID_API_KEY
-            valueFrom:
+        - name: {name}
+          image: vizzuality/{name}
+          imagePullPolicy: Always
+          args:
+            - start
+          resources:
+            requests:
+              memory: "0Mi"
+              cpu: "0m"
+          env:
+            - name: CONTACT_EMAIL
+              value: "resourcewatch@wri.org"
+            - name: SENDGRID_DOMAIN
+              value: "vizzuality.com"
+            - name: SENDGRID_API_KEY
+              valueFrom:
                 secretKeyRef:
                   name: appsecrets
                   key: RW_SENDGRID_API_KEY
-          - name: SENDGRID_USERNAME
-            valueFrom:
+            - name: SENDGRID_USERNAME
+              valueFrom:
                 secretKeyRef:
                   name: appsecrets
                   key: RW_SENDGRID_USERNAME
-          - name: SENDGRID_PASSWORD
-            valueFrom:
+            - name: SENDGRID_PASSWORD
+              valueFrom:
                 secretKeyRef:
                   name: appsecrets
                   key: RW_SENDGRID_PASSWORD
-          - name: RAILS_LOG_TO_STDOUT
-            value: "true"
-          - name: APIGATEWAY_URL
-            value: "https://staging-api.globalforestwatch.org"
-          - name: RW_API_URL
-            value: "https://staging-api.globalforestwatch.org"
-          - name: RAILS_SERVE_STATIC_FILES
-            value: "true"
-          - name: DATABASE_URL
-            valueFrom:
+            - name: RAILS_LOG_TO_STDOUT
+              value: "true"
+            - name: APIGATEWAY_URL
+              value: "https://staging-api.globalforestwatch.org"
+            - name: RW_API_URL
+              value: "https://staging-api.globalforestwatch.org"
+            - name: RAILS_SERVE_STATIC_FILES
+              value: "true"
+            - name: DATABASE_URL
+              valueFrom:
                 secretKeyRef:
                   name: dbsecrets
                   key: RESOURCE_WATCH_MANAGER_POSTGRESDB
-          - name: S3_BUCKET_NAME
-            value: "wri-api-backups"
-          - name: S3_PATH
-            value: "resourcewatch/test"
-          - name: AWS_REGION
-            value: "us-east-1"
-          - name: AWS_ACCESS_KEY_ID
-            valueFrom:
+            - name: S3_BUCKET_NAME
+              value: "wri-api-backups"
+            - name: S3_PATH
+              value: "resourcewatch/test"
+            - name: AWS_REGION
+              value: "us-east-1"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
                 secretKeyRef:
                   name: mssecrets
                   key: S3_ACCESS_KEY_ID
-          - name: AWS_SECRET_ACCESS_KEY
-            valueFrom:
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
                 secretKeyRef:
                   name: mssecrets
                   key: S3_SECRET_ACCESS_KEY
-          - name: CT_URL
-            valueFrom:
-              secretKeyRef:
-                name: mssecrets
-                key: CT_URL
-          - name: CT_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: mssecrets
-                key: CT_TOKEN
-          - name: LOCAL_URL
-            value: http://{name}.default.svc.cluster.local:3000
-        ports:
-          - containerPort: 3000
+            - name: CT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mssecrets
+                  key: CT_URL
+            - name: CT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: mssecrets
+                  key: CT_TOKEN
+            - name: LOCAL_URL
+              value: http://{name}.rw.svc.cluster.local:3000
+          ports:
+            - containerPort: 3000
       restartPolicy: Always
