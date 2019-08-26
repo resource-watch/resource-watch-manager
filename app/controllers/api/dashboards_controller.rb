@@ -8,7 +8,14 @@ class Api::DashboardsController < ApiController
   end
 
   def show
-    render json: @dashboard
+    dashboard_json =
+      if params['includes']&.include?('user')
+        UserService.users(['5d41da9757d218dd74d478a8'])
+        @dashboard.as_json
+      else
+        @dashboard.as_json
+      end
+    render json: dashboard_json
   end
 
   def create
