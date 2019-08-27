@@ -3,9 +3,9 @@ class UserService < ApiService
   @conn ||= connect
 
   def self.users(user_ids= [])
+    users = []
     begin
       Rails.logger.info "Fetching user for id: #{user_ids.join(', ')}"
-
 
       res = @conn.microservice_request(
           "/auth/user/find-by-ids",
@@ -15,12 +15,12 @@ class UserService < ApiService
               ids: user_ids
           })
 
-      widget_id = JSON.parse(res)['data']['id']
+      users = JSON.parse(res)['data']
     rescue CtRegisterMicroservice::NotFoundError
       Rails.logger.info "User #{user_ids.inspect} doesn't exist and can't be cloned"
     rescue => e
       Rails.logger.error "Error fetching users from the API: #{e}"
     end
-    widget_id
+    users
   end
 end

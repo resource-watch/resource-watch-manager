@@ -8,7 +8,16 @@ class Api::TopicsController < ApiController
   end
 
   def show
-    render json: @topic
+    topic_json =
+        if params['includes']&.include?('user')
+          users = UserService.users([@topic.user_id])
+          serializer = @topic.as_json
+          serializer[:users] = users
+          serializer
+        else
+          @topic.as_json
+        end
+    render json: topic_json
   end
 
   def create
