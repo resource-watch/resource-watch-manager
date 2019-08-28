@@ -4,7 +4,18 @@ class Api::TopicsController < ApiController
   before_action :set_topic, only: %i[show update destroy clone clone_dashboard]
 
   def index
-    render json: Topic.fetch_all(params)
+    topics = Topic.fetch_all(params)
+    topics_json =
+        if params['includes']&.include?('user')
+          user_ids = topics.pluck(:user_id).reduce([], :<<)
+          users = UserService.users(user_ids.uniq!)
+          serializer = topics.as_json
+          serializer << { users: users }
+          serializer
+        else
+          topics.as_json
+        end
+    render json: topics_json
   end
 
   def show

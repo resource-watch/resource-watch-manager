@@ -4,7 +4,18 @@ class Api::DashboardsController < ApiController
   before_action :set_dashboard, only: %i[show update destroy clone]
 
   def index
-    render json: Dashboard.fetch_all(params)
+    dashboards = Dashboard.fetch_all(params)
+    dashboards_json =
+      if params['includes']&.include?('user')
+        user_ids = dashboards.pluck(:user_id).reduce([], :<<)
+        users = UserService.users(user_ids.uniq!)
+        serializer = dashboards.as_json
+        serializer << { users: users }
+        serializer
+      else
+        dashboards.as_json
+      end
+    render json: dashboards_json
   end
 
   def show
