@@ -9,9 +9,7 @@ class Api::DashboardsController < ApiController
       if params['includes']&.include?('user')
         user_ids = dashboards.pluck(:user_id).reduce([], :<<)
         users = UserService.users(user_ids.uniq!)
-        serializer = dashboards.as_json
-        serializer << { users: users }
-        serializer
+        UserSerializerHelper.list dashboards, users
       else
         dashboards.as_json
       end
@@ -22,9 +20,7 @@ class Api::DashboardsController < ApiController
     dashboard_json =
       if params['includes']&.include?('user')
         users = UserService.users([@dashboard.user_id])
-        serializer = @dashboard.as_json
-        serializer[:users] = users
-        serializer
+        UserSerializerHelper.element @dashboard, users
       else
         @dashboard.as_json
       end
