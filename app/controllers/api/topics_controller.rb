@@ -8,7 +8,7 @@ class Api::TopicsController < ApiController
     topics_json =
       if params['includes']&.include?('user')
         user_ids = topics.pluck(:user_id).reduce([], :<<)
-        users = UserService.users(user_ids.uniq!)
+        users = UserService.users(user_ids.compact.uniq)
         UserSerializerHelper.list topics, users
       else
         topics.as_json
