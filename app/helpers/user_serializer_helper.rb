@@ -5,11 +5,9 @@ module UserSerializerHelper
 
   def self.element(element, users)
     hash = element.as_json
-    Rails.logger.info("<Element> hash: #{hash.inspect}")
-    Rails.logger.info("<Element> string: #{hash['user_id']}")
-    Rails.logger.info("<Element> symbol: #{hash[:user_id]}")
     user_id = hash.delete('user_id')
     Rails.logger.info("<Element> users_id: #{user_id}")
+    Rails.logger.info("<Element> users: #{users.inspect}")
     user = users.select{ |u| u['_id'] == user_id }.first rescue nil
     Rails.logger.info("<Element> user: #{user.inspect}")
     hash[:user] = user_serializer(user)
