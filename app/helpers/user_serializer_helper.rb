@@ -16,12 +16,17 @@ module UserSerializerHelper
   def self.user_serializer(user)
     return {} if user.blank?
 
-    {
-        id: user['_id'],
-        name: user['name'],
-        role: user['role'],
-        email: user['email'],
-        apps: user.dig('extraUserData', :apps)
-    }
+    begin
+      {
+          id: user['_id'],
+          name: user['name'],
+          role: user['role'],
+          email: user['email'],
+          apps: user.dig('extraUserData', 'apps')
+      }
+    rescue
+      puts "Error on user: #{user.inspect}"
+      return {}
+    end
   end
 end
