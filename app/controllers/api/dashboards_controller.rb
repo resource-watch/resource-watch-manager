@@ -20,7 +20,6 @@ class Api::DashboardsController < ApiController
     dashboard_json =
       if params['includes']&.include?('user')
         users = UserService.users([@dashboard.user_id])
-        Rails.logger.info("<Dashboard> users: #{users.inspect}")
         UserSerializerHelper.element @dashboard, users
       else
         @dashboard.as_json
