@@ -11,7 +11,7 @@ class Api::TopicsController < ApiController
         users = UserService.users(user_ids.compact.uniq)
         UserSerializerHelper.list topics, users
       else
-        topics.as_json
+        topics
       end
     render json: topics_json
   end
@@ -22,7 +22,7 @@ class Api::TopicsController < ApiController
         users = UserService.users([@topic.user_id])
         UserSerializerHelper.element @topic, users
       else
-        @topic.as_json
+        @topic
       end
     render json: topic_json
   end

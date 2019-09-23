@@ -11,7 +11,7 @@ class Api::DashboardsController < ApiController
         users = UserService.users(user_ids.compact.uniq)
         UserSerializerHelper.list dashboards, users
       else
-        dashboards.as_json
+        dashboards
       end
     render json: dashboards_json
   end
@@ -22,7 +22,7 @@ class Api::DashboardsController < ApiController
         users = UserService.users([@dashboard.user_id])
         UserSerializerHelper.element @dashboard, users
       else
-        @dashboard.as_json
+        @dashboard
       end
     render json: dashboard_json
   end

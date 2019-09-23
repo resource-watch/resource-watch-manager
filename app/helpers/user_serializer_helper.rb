@@ -4,11 +4,10 @@ module UserSerializerHelper
   end
 
   def self.element(element, users)
-    hash = element.as_json
-    user_id = hash.delete('user_id')
     user = users.select{ |u| u['_id'] == user_id }.first rescue nil
-    hash[:user] = user_serializer(user)
-    hash
+    element.class.module_eval { attr_accessor :user }
+    element.user = user_serializer(user)
+    element
   end
 
   private
