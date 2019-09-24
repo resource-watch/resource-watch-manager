@@ -4,12 +4,11 @@ module UserSerializerHelper
   end
 
   def self.element(element, users)
-    Rails.logger.info "[USH#element1]Params. Elem: #{element.inspect}. Users: #{users.inspect}"
+    hash = element.as_json
+    user_id = hash.delete('user_id')
     user = users.select{ |u| u['_id'] == user_id }.first rescue nil
-    Rails.logger.info "[USH#element2]User to serialize: #{user.inspect}"
     element.class.module_eval { attr_accessor :user }
     element.user = user_serializer(user)
-    Rails.logger.info "[USH#element3]User serialized: #{element.user.inspect}"
     element
   end
 
