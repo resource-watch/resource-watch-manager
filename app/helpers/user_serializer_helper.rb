@@ -5,8 +5,10 @@ module UserSerializerHelper
 
   def self.element(element, users)
     user = users.select{ |u| u['_id'] == user_id }.first rescue nil
+    Rails.logger.info "[USH#element]User to serialize: #{user.inspect}"
     element.class.module_eval { attr_accessor :user }
     element.user = user_serializer(user)
+    Rails.logger.info "[USH#element2]User serialized: #{element.user.inspect}"
     element
   end
 
