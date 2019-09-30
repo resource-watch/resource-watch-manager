@@ -5,7 +5,7 @@
   ],
   "endpoints": [
     {
-      "path": "/v1/dashboards",
+      "path": "/v1/dashboard",
       "method": "GET",
       "redirect": {
         "method": "GET",
@@ -13,7 +13,7 @@
       }
     },
     {
-      "path": "/v1/dashboards",
+      "path": "/v1/dashboard",
       "method": "POST",
       "invalidateCache": [
         "/dashboards*"
@@ -25,7 +25,7 @@
       }
     },
     {
-      "path": "/v1/dashboards/:dashboard",
+      "path": "/v1/dashboard/:dashboard",
       "method": "GET",
       "redirect": {
         "method": "GET",
@@ -33,7 +33,7 @@
       }
     },
     {
-      "path": "/v1/dashboards/:dashboard",
+      "path": "/v1/dashboard/:dashboard",
       "method": "PATCH",
       "invalidateCache": [
         "/dashboards*"
@@ -45,7 +45,7 @@
       }
     },
     {
-      "path": "/v1/dashboards/:dashboard",
+      "path": "/v1/dashboard/:dashboard",
       "method": "PUT",
       "invalidateCache": [
         "/dashboards*"
@@ -57,7 +57,7 @@
       }
     },
     {
-      "path": "/v1/dashboards/:dashboard",
+      "path": "/v1/dashboard/:dashboard",
       "method": "DELETE",
       "invalidateCache": [
         "/dashboards*"
@@ -70,7 +70,7 @@
     },
     {
       "authenticated": true,
-      "path": "/v1/dashboards/:dashboard/clone",
+      "path": "/v1/dashboard/:dashboard/clone",
       "method": "POST",
       "redirect": {
         "method": "POST",
@@ -78,7 +78,7 @@
       }
     },
     {
-      "path": "/v1/partners",
+      "path": "/v1/partner",
       "method": "GET",
       "redirect": {
         "method": "GET",
@@ -86,7 +86,7 @@
       }
     },
     {
-      "path": "/v1/partners",
+      "path": "/v1/partner",
       "method": "POST",
       "invalidateCache": [
         "/partners*"
@@ -98,7 +98,7 @@
       }
     },
     {
-      "path": "/v1/partners/:partner",
+      "path": "/v1/partner/:partner",
       "method": "GET",
       "redirect": {
         "method": "GET",
@@ -106,7 +106,7 @@
       }
     },
     {
-      "path": "/v1/partners/:partner",
+      "path": "/v1/partner/:partner",
       "method": "PATCH",
       "invalidateCache": [
         "/partners*"
@@ -118,7 +118,7 @@
       }
     },
     {
-      "path": "/v1/partners/:partner",
+      "path": "/v1/partner/:partner",
       "method": "PUT",
       "invalidateCache": [
         "/partners*"
@@ -130,7 +130,7 @@
       }
     },
     {
-      "path": "/v1/partners/:partner",
+      "path": "/v1/partner/:partner",
       "method": "DELETE",
       "invalidateCache": [
         "/partners*"
@@ -206,7 +206,7 @@
       }
     },
     {
-      "path": "/v1/topics",
+      "path": "/v1/topic",
       "method": "GET",
       "redirect": {
         "method": "GET",
@@ -214,8 +214,8 @@
       }
     },
     {
+      "path": "/v1/topic/:topic/clone",
       "authenticated": true,
-      "path": "/v1/topics/:topic/clone",
       "method": "POST",
       "redirect": {
         "method": "POST",
@@ -223,8 +223,8 @@
       }
     },
     {
+      "path": "/v1/topic/:topic/clone-dashboard",
       "authenticated": true,
-      "path": "/v1/topics/:topic/clone-dashboard",
       "method": "POST",
       "redirect": {
         "method": "POST",
@@ -232,7 +232,7 @@
       }
     },
     {
-      "path": "/v1/topics",
+      "path": "/v1/topic",
       "method": "POST",
       "invalidateCache": [
         "/topics*"
@@ -244,7 +244,7 @@
       }
     },
     {
-      "path": "/v1/topics/:topic",
+      "path": "/v1/topic/:topic",
       "method": "GET",
       "redirect": {
         "method": "GET",
@@ -252,7 +252,7 @@
       }
     },
     {
-      "path": "/v1/topics/:topic",
+      "path": "/v1/topic/:topic",
       "method": "PATCH",
       "invalidateCache": [
         "/topics*"
@@ -264,7 +264,7 @@
       }
     },
     {
-      "path": "/v1/topics/:topic",
+      "path": "/v1/topic/:topic",
       "method": "PUT",
       "invalidateCache": [
         "/topics*"
@@ -276,7 +276,7 @@
       }
     },
     {
-      "path": "/v1/topics/:topic",
+      "path": "/v1/topic/:topic",
       "method": "DELETE",
       "invalidateCache": [
         "/topics*"

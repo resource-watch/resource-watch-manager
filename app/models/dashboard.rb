@@ -98,7 +98,7 @@ class Dashboard < ApplicationRecord
       elsif content_block['type'] == 'grid'
         content_block['content'].compact.each do |column|
           column.each do |content|
-            if content && content['type'] == 'image'
+            if content && content.is_a?(Hash) && content['type'] == 'image'
               contents = assign_content_image_url(contents, content, base_url, is_grid = true, grid = content_block)
             end
           end
@@ -109,8 +109,8 @@ class Dashboard < ApplicationRecord
     update_column(:content, contents.to_json)
   end
 
-  def duplicate
-    widgets = clone_widgets
+  def duplicate(user_id = nil)
+    widgets = clone_widgets(user_id)
     clone_model(widgets)
   end
 

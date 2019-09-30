@@ -23,7 +23,7 @@
 
 class TopicSerializer < ActiveModel::Serializer
   attributes :id, :name, :slug, :summary, :description, :content,
-             :published, :photo, :user_id, :private
+             :published, :photo, :user_id, :private, :user
 
   def photo
     {
@@ -32,5 +32,11 @@ class TopicSerializer < ActiveModel::Serializer
       medium: object.photo.url(:medium),
       original: object.photo.url(:original)
     }
+
+    def user
+      return unless object.public_methods.include?(:user)
+
+      object.user
+    end
   end
 end

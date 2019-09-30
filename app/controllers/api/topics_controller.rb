@@ -4,11 +4,27 @@ class Api::TopicsController < ApiController
   before_action :set_topic, only: %i[show update destroy clone clone_dashboard]
 
   def index
-    render json: Topic.fetch_all(params)
+    topics = Topic.fetch_all(params)
+    topics_json =
+      if params['includes']&.include?('user')
+        user_ids = topics.pluck(:user_id).reduce([], :<<)
+        users = UserService.users(user_ids.compact.uniq)
+        UserSerializerHelper.list topics, users
+      else
+        topics
+      end
+    render json: topics_json
   end
 
   def show
-    render json: @topic
+    topic_json =
+      if params['includes']&.include?('user')
+        users = UserService.users([@topic.user_id])
+        UserSerializerHelper.element @topic, users
+      else
+        @topic
+      end
+    render json: topic_json
   end
 
   def create
@@ -32,7 +48,7 @@ class Api::TopicsController < ApiController
 
   def clone
     begin
-      if duplicated_topic = @topic.duplicate
+      if duplicated_topic = @topic.duplicate(params.dig('loggedUser', 'id'))
         @topic = duplicated_topic
         render json: @topic, status: :ok
       else

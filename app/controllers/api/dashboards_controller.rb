@@ -4,11 +4,27 @@ class Api::DashboardsController < ApiController
   before_action :set_dashboard, only: %i[show update destroy clone]
 
   def index
-    render json: Dashboard.fetch_all(params)
+    dashboards = Dashboard.fetch_all(params)
+    dashboards_json =
+      if params['includes']&.include?('user')
+        user_ids = dashboards.pluck(:user_id).reduce([], :<<)
+        users = UserService.users(user_ids.compact.uniq)
+        UserSerializerHelper.list dashboards, users
+      else
+        dashboards
+      end
+    render json: dashboards_json
   end
 
   def show
-    render json: @dashboard
+    dashboard_json =
+      if params['includes']&.include?('user')
+        users = UserService.users([@dashboard.user_id])
+        UserSerializerHelper.element @dashboard, users
+      else
+        @dashboard
+      end
+    render json: dashboard_json
   end
 
   def create
@@ -32,7 +48,7 @@ class Api::DashboardsController < ApiController
 
   def clone
     begin
-      if duplicated_dashboard = @dashboard.duplicate
+      if duplicated_dashboard = @dashboard.duplicate(params.dig('loggedUser', 'id'))
         @dashboard = duplicated_dashboard
         render json: @dashboard, status: :ok
       else

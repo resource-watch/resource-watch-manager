@@ -26,7 +26,7 @@
 class DashboardSerializer < ActiveModel::Serializer
   attributes :id, :name, :slug, :summary, :description,
              :content, :published, :photo, :user_id, :private,
-             :production, :preproduction, :staging
+             :production, :preproduction, :staging, :user
 
   def photo
     {
@@ -34,5 +34,11 @@ class DashboardSerializer < ActiveModel::Serializer
       thumb: object.photo.url(:thumb),
       original: object.photo.url(:original)
     }
+
+    def user
+      return unless object.public_methods.include?(:user)
+
+      object.user
+    end
   end
 end

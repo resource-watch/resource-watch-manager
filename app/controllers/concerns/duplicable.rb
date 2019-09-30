@@ -7,9 +7,9 @@ module Duplicable
   module ClassMethods
   end
 
-  def clone_widgets
+  def clone_widgets(user_id = nil)
     widget_list = obtain_widget_list(content)
-    create_widgets(widget_list)
+    create_widgets(widget_list, user_id)
   end
 
   def obtain_widget_list(content)
@@ -17,10 +17,10 @@ module Duplicable
     widgets_list.map { |w| {widget_id: w.first, dataset_id: w.last} }.uniq
   end
 
-  def create_widgets(widgets_list)
+  def create_widgets(widgets_list, user_id = nil)
     new_widgets_list = []
     widgets_list.each do |widget|
-      new_widget_id = WidgetService.clone(widget[:widget_id], widget[:dataset_id])
+      new_widget_id = WidgetService.clone(widget[:widget_id], widget[:dataset_id], user_id)
       new_widgets_list << { old_id: widget[:widget_id], new_id: new_widget_id }
     end
     new_widgets_list
