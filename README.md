@@ -65,3 +65,12 @@ TODO: add more detailed docker installation instructions
 ```bash
 ./entrypoint.sh start
 ```
+
+
+
+# Tests
+
+```bash
+RAILS_ENV=test rake db:drop db:create db:schema:load
+bundle exec rspec spec
+```

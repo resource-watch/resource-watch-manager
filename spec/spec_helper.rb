@@ -20,7 +20,13 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start 'rails' do
+  add_filter 'app/channels/'
+  add_filter 'app/jobs/'
+  add_filter 'app/mailers/'
+  add_filter 'lib/db_helpers/'
+  add_filter 'config'
+end
 
 require 'vcr'
 

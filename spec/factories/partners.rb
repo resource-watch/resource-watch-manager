@@ -35,7 +35,7 @@
 #  partner_type            :string
 #
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :partner do
     name { FFaker::Name.name }
     summary { FFaker::Lorem.paragraph }

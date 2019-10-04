@@ -5,7 +5,7 @@ require 'spec_helper'
 describe Api::DashboardsController, type: :controller do
   describe 'POST #dashboard' do
     before(:each) do
-      FactoryGirl.create :dashboard_with_widgets
+      FactoryBot.create :dashboard_with_widgets
     end
     it 'should perform the cloning' do
       VCR.use_cassette('dataset_widget') do
@@ -17,10 +17,10 @@ describe Api::DashboardsController, type: :controller do
 
   describe 'GET #index' do
     before(:each) do
-      FactoryGirl.create :dashboard_private_user_1
-      FactoryGirl.create :dashboard_not_private_user_1
-      FactoryGirl.create :dashboard_private_user_2
-      FactoryGirl.create :dashboard_not_private_user_2
+      FactoryBot.create :dashboard_private_user_1
+      FactoryBot.create :dashboard_not_private_user_1
+      FactoryBot.create :dashboard_private_user_2
+      FactoryBot.create :dashboard_not_private_user_2
     end
 
     it 'should return all dashboards' do
@@ -89,10 +89,10 @@ describe Api::DashboardsController, type: :controller do
       body = json_response
       record = body[:data].first
 
-      body.should include(:data)
-      record.should include(:id)
-      record.should include(:type)
-      record.should include(:attributes)
+      expect(body).to include(:data)
+      expect(record).to include(:id)
+      expect(record).to include(:type)
+      expect(record).to include(:attributes)
 
       expect(body[:data]).to be_a(Array)
       expect(record.keys.size).to eq(3)
@@ -101,7 +101,7 @@ describe Api::DashboardsController, type: :controller do
 
   describe 'GET #show' do
     before(:each) do
-      @dashboard = FactoryGirl.create :dashboard_private_user_1
+      @dashboard = FactoryBot.create :dashboard_private_user_1
     end
 
     it 'should return the information from this id' do
