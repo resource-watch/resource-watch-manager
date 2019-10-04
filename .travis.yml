@@ -4,7 +4,7 @@ rvm:
 services:
   - postgresql
 addons:
-  postgresql: 9
+  postgresql: 9.6
 env:
   global:
     - CC_TEST_REPORTER_ID=a3be7f7e518ebe5830293ad0074d606bba62df942679ee11e210e25ed749cf3b
@@ -16,6 +16,7 @@ env:
     - SECRET_KEY_BASE=secret
     - RW_API_URL=https://api.resourcewatch.org
     - APIGATEWAY_URL=https://production-api.globalforestwatch.org
+    - POSTGRES_DATABASE=travis_ci_test
 
 before_script:
   - RAILS_ENV=test bundle exec rake db:drop db:create db:schema:load
