@@ -71,6 +71,6 @@ TODO: add more detailed docker installation instructions
 # Tests
 
 ```bash
-RAILS_ENV=test rake db:drop db:create db:schema:load
+RAILS_ENV=test bundle exec rake db:drop db:create db:schema:load
 bundle exec rspec spec
 ```

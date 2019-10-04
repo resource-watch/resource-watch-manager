@@ -9,7 +9,7 @@ env:
   global:
     - CC_TEST_REPORTER_ID=a3be7f7e518ebe5830293ad0074d606bba62df942679ee11e210e25ed749cf3b
 before_script:
-  - RAILS_ENV=test rake db:drop db:create db:schema:load
+  - RAILS_ENV=test bundle exec rake db:drop db:create db:schema:load
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
