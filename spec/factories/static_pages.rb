@@ -19,7 +19,7 @@
 #  published          :boolean
 #
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :static_page do
     sequence(:title) { |n| "#{n} #{FFaker::CheesyLingo.title}" }
     summary { FFaker::HealthcareIpsum.paragraph }

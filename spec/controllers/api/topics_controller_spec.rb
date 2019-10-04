@@ -5,7 +5,7 @@ require 'spec_helper'
 describe Api::TopicsController, type: :controller do
   describe 'POST #clone' do
     before(:each) do
-      FactoryGirl.create :topic_with_widgets
+      FactoryBot.create :topic_with_widgets
     end
     it 'should perform the cloning' do
       VCR.use_cassette('dataset_widget') do
@@ -17,7 +17,7 @@ describe Api::TopicsController, type: :controller do
 
   describe 'POST #clone-dashboard' do
     before(:each) do
-      FactoryGirl.create :topic_with_widgets
+      FactoryBot.create :topic_with_widgets
     end
     it 'should perform the cloning' do
       VCR.use_cassette('dataset_widget') do
@@ -29,10 +29,10 @@ describe Api::TopicsController, type: :controller do
 
   describe 'GET #index' do
     before(:each) do
-      FactoryGirl.create :topic_private_user_1
-      FactoryGirl.create :topic_not_private_user_1
-      FactoryGirl.create :topic_private_user_2
-      FactoryGirl.create :topic_not_private_user_2
+      FactoryBot.create :topic_private_user_1
+      FactoryBot.create :topic_not_private_user_1
+      FactoryBot.create :topic_private_user_2
+      FactoryBot.create :topic_not_private_user_2
     end
 
     it 'should return all topics' do
@@ -101,10 +101,10 @@ describe Api::TopicsController, type: :controller do
       body = json_response
       record = body[:data].first
 
-      body.should include(:data)
-      record.should include(:id)
-      record.should include(:type)
-      record.should include(:attributes)
+      expect(body).to include(:data)
+      expect(record).to include(:id)
+      expect(record).to include(:type)
+      expect(record).to include(:attributes)
 
       expect(body[:data]).to be_a(Array)
       expect(record.keys.size).to eq(3)
@@ -113,7 +113,7 @@ describe Api::TopicsController, type: :controller do
 
   describe 'GET #show' do
     before(:each) do
-      @topic = FactoryGirl.create :topic_private_user_1
+      @topic = FactoryBot.create :topic_private_user_1
     end
 
     it 'should return the information from this id' do

@@ -5,8 +5,8 @@ require 'spec_helper'
 describe Api::StaticPagesController, type: :controller do
   describe 'GET #index' do
     before(:each) do
-      @static_pages = FactoryGirl.create_list(:static_page, 4)
-      @static_pages << FactoryGirl.create(:static_page, title: 'ZZZZ')
+      @static_pages = FactoryBot.create_list(:static_page, 4)
+      @static_pages << FactoryBot.create(:static_page, title: 'ZZZZ')
     end
 
     it 'Gets all the static pages' do
@@ -18,7 +18,7 @@ describe Api::StaticPagesController, type: :controller do
 
   describe 'GET #show' do
     before(:each) do
-      @static_page = FactoryGirl.create :static_page
+      @static_page = FactoryBot.create :static_page
       get :show, params: { id: @static_page.id }
     end
 
@@ -30,7 +30,7 @@ describe Api::StaticPagesController, type: :controller do
 
   describe 'GET #show by slug' do
     before(:each) do
-      @static_page = FactoryGirl.create :static_page
+      @static_page = FactoryBot.create :static_page
       get :show, params: { id: @static_page.slug }
     end
 
@@ -53,7 +53,7 @@ describe Api::StaticPagesController, type: :controller do
 
   describe 'PUT #update' do
     before(:each) do
-      @static_page = FactoryGirl.create(:static_page)
+      @static_page = FactoryBot.create(:static_page)
     end
 
     it 'Edits a static page' do
@@ -65,7 +65,7 @@ describe Api::StaticPagesController, type: :controller do
 
   describe 'DELETE #destroy' do
     before(:each) do
-      @static_page = FactoryGirl.create(:static_page)
+      @static_page = FactoryBot.create(:static_page)
     end
 
     it 'Delete valid page' do
