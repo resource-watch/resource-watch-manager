@@ -8,6 +8,10 @@ addons:
 env:
   global:
     - CC_TEST_REPORTER_ID=a3be7f7e518ebe5830293ad0074d606bba62df942679ee11e210e25ed749cf3b
+    - CT_URL=http://127.0.0.1:9000
+    - CT_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
+    - API_VERSION=v1
+
 before_script:
   - RAILS_ENV=test bundle exec rake db:drop db:create db:schema:load
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
