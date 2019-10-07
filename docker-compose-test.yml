@@ -6,16 +6,19 @@ services:
     ports:
       - "3001:3000"
     environment:
-      - POSTGRES_HOST=postgres
-      - POSTGRES_PORT=5432
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASS=postgres
-      - POSTGRES_DATABASE=postgres
-      - SECRET=keyboard cat
-      - BULLET=enabled
-      - RAILS_ENV=test
-      - RACK_ENV=test
-      - WAIT_HOSTS=postgres:5432
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASS: postgres
+      POSTGRES_DATABASE: postgres
+      SECRET: keyboard cat
+      BULLET: enabled
+      RAILS_ENV: test
+      RACK_ENV: test
+      WAIT_HOSTS: postgres:5432
+      CT_TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
+      API_VERSION: v1
+      CT_URL: http://localhost:9000
     depends_on:
       - postgres
     container_name: rw
