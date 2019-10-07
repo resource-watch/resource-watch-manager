@@ -44,9 +44,9 @@ node {
     }
 
     stage ('Run Tests') {
-      // sh('docker-compose -H :2375 -f docker-compose-test.yml build')
-      // sh('docker-compose -H :2375 -f docker-compose-test.yml run --rm test')
-      // sh('docker-compose -H :2375 -f docker-compose-test.yml stop')
+      sh('docker-compose -H :2375 -f docker-compose-test.yml build')
+      sh('docker-compose -H :2375 -f docker-compose-test.yml run --rm test')
+      sh('docker-compose -H :2375 -f docker-compose-test.yml stop')
     }
 
     stage('Push Docker') {
@@ -115,27 +115,9 @@ node {
       }
     }
 
-    // Notify Success
-    slackSend (color: '#00FF00', channel: '#the-new-api', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-    emailext (
-      subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-      body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-        <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
-      recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-    )
-
-
   } catch (err) {
 
     currentBuild.result = "FAILURE"
-    // Notify Error
-    slackSend (color: '#FF0000', channel: '#the-new-api', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-    emailext (
-      subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-      body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-        <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
-      recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-    )
     throw err
   }
 

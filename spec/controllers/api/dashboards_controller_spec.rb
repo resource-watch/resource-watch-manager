@@ -50,6 +50,16 @@ describe Api::DashboardsController, type: :controller do
       expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(['123abc'])
     end
 
+    # it 'should filter by user role' do
+    #   get :index, params: { filter: { 'user.role': 'USER' } }
+    #
+    #   data = json_response[:data]
+    #
+    #   expect(response.status).to eq(200)
+    #   expect(data.size).to eq(2)
+    #   expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(['123abc'])
+    # end
+
     it 'should filter only private by user' do
       get :index, params: { filter: { user: '123abc', private: true } }
 
