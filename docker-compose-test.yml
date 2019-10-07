@@ -19,6 +19,7 @@ services:
       CT_TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
       API_VERSION: v1
       CT_URL: http://localhost:9000
+      LOCAL_URL: http://localhost:3000
     depends_on:
       - postgres
     container_name: rw
