@@ -23,4 +23,23 @@ class UserService < ApiService
     end
     users
   end
+
+  def self.userByRole(role)
+    users = []
+    begin
+      Rails.logger.info "Fetching user for role: #{role}"
+
+      res = @conn.microservice_request(
+        "/auth/user/ids/#{role}",
+        :get
+      )
+
+      users = JSON.parse(res)['data']
+    rescue CtRegisterMicroservice::NotFoundError
+      Rails.logger.info "User by #{role} could not be retrieved"
+    rescue => e
+      Rails.logger.error "Error fetching users by role from the API: #{e}"
+    end
+    users
+  end
 end

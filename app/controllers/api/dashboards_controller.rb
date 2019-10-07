@@ -2,14 +2,20 @@
 
 class Api::DashboardsController < ApiController
   before_action :set_dashboard, only: %i[show update destroy clone]
+  before_action :get_user, only: %i[index]
 
   def index
     dashboards = Dashboard.fetch_all(params)
     dashboards_json =
-      if params['includes']&.include?('user')
+      if params['includes']&.include?('user') || (params['user.role']&.in?(%w(USER MANAGER ADMIN)) && @user.role.equal?('ADMIN'))
         user_ids = dashboards.pluck(:user_id).reduce([], :<<)
         users = UserService.users(user_ids.compact.uniq)
-        UserSerializerHelper.list dashboards, users
+
+        if params['includes']&.include?('user')
+          UserSerializerHelper.list dashboards, users
+        else
+          usersIdsByRole = UserService.userByRole(params['user.role'])
+        end
       else
         dashboards
       end
@@ -84,6 +90,10 @@ class Api::DashboardsController < ApiController
     dashboard = Dashboard.new
     dashboard.errors.add(:id, 'Wrong ID provided')
     render_error(dashboard, 404) && return
+  end
+
+  def get_user
+    @user = params['loggedUser'].present? ? JSON.parse(params['loggedUser']) : nil
   end
 
   def dashboard_params_create
