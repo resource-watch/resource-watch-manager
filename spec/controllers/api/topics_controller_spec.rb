@@ -53,34 +53,34 @@ describe Api::TopicsController, type: :controller do
     end
 
     it 'should filter only user' do
-      get :index, params: { filter: { user: '123abc' } }
+      get :index, params: { filter: { user: '57a1ff091ebc1ad91d089bdc' } }
 
       data = json_response[:data]
 
       expect(response.status).to eq(200)
       expect(data.size).to eq(2)
-      expect(data.map { |topic| topic[:attributes][:"user-id"] }.uniq).to eq(['123abc'])
+      expect(data.map { |topic| topic[:attributes][:"user-id"] }.uniq).to eq(['57a1ff091ebc1ad91d089bdc'])
     end
 
     it 'should filter only private by user' do
-      get :index, params: { filter: { user: '123abc', private: true } }
+      get :index, params: { filter: { user: '57a1ff091ebc1ad91d089bdc', private: true } }
 
       data = json_response[:data]
 
       expect(response.status).to eq(200)
       expect(data.size).to eq(1)
-      expect(data.map { |topic| topic[:attributes][:"user-id"] }).to eq(['123abc'])
+      expect(data.map { |topic| topic[:attributes][:"user-id"] }).to eq(['57a1ff091ebc1ad91d089bdc'])
       expect(data.map { |topic| topic[:attributes][:private] }).to eq([true])
     end
 
     it 'should filter only not private by user' do
-      get :index, params: { filter: { user: '123abc', private: false } }
+      get :index, params: { filter: { user: '57a1ff091ebc1ad91d089bdc', private: false } }
 
       data = json_response[:data]
 
       expect(response.status).to eq(200)
       expect(data.size).to eq(1)
-      expect(data.map { |topic| topic[:attributes][:"user-id"] }).to eq(['123abc'])
+      expect(data.map { |topic| topic[:attributes][:"user-id"] }).to eq(['57a1ff091ebc1ad91d089bdc'])
       expect(data.map { |topic| topic[:attributes][:private] }).to eq([false])
     end
 

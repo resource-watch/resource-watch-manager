@@ -1,0 +1,65 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:9000/auth/user/ids/ADMIN
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authentication:
+      - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Vary:
+      - Origin
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Response-Time:
+      - 3630 ms
+      Content-Length:
+      - '475210'
+      Date:
+      - Tue, 08 Oct 2019 12:23:02 GMT
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"data":["5c143429f8d19932db9d06ea", "5c069855ccc46a6660a4be68"]}'
+    http_version:
+  recorded_at: Tue, 08 Oct 2019 12:23:02 GMT
+- request:
+    method: post
+    uri: http://localhost:9000/auth/user/find-by-ids
+    body:
+      encoding: UTF-8
+      string: ids[]=5c143429f8d19932db9d06ea&ids[]=5c069855ccc46a6660a4be68
+    headers:
+      Authentication:
+      - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Vary:
+      - Origin
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Response-Time:
+      - 3439 ms
+      Content-Length:
+      - '459'
+      Date:
+      - Tue, 08 Oct 2019 12:23:05 GMT
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"data":[{"provider":"local","role":"ADMIN","_id":"5c143429f8d19932db9d06ea","email":"john.doe@vizzuality.com","createdAt":"2016-08-03T14:26:17.014Z","extraUserData":{"apps":["rw","gfw","prep","aqueduct","forest-atlas","data4sdgs","aqueduct-water-risk"]}},{"provider":"local","role":"USER","_id":"5c069855ccc46a6660a4be68","email":"jane.doe@vizzuality.com","extraUserData":{"apps":[]},"createdAt":"2018-12-14T22:52:25.418Z","name":"Jane","photo":""}]}'
+    http_version:
+  recorded_at: Tue, 08 Oct 2019 12:23:05 GMT
+recorded_with: VCR 4.0.0

@@ -24,7 +24,7 @@ class UserService < ApiService
     users
   end
 
-  def self.userByRole(role)
+  def self.usersByRole(role)
     users = []
     begin
       Rails.logger.info "Fetching user for role: #{role}"

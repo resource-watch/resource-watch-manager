@@ -5,17 +5,24 @@ class Api::DashboardsController < ApiController
   before_action :get_user, only: %i[index]
 
   def index
+    if params.include?('user.role')
+      usersIdsByRole = UserService.usersByRole params['user.role']
+      if (params[:filter]&.include?('user'))
+        params[:filter]['user'].concat usersIdsByRole if params[:filter]['user'].kind_of?(Array)
+        params[:filter]['user'] = usersIdsByRole & [params[:filter]['user']] if params[:filter]['user'].kind_of?(String)
+      else
+        params[:filter] = {} if params[:filter].nil?
+        params[:filter]['user'] = usersIdsByRole
+      end
+    end
+
+
     dashboards = Dashboard.fetch_all(params)
     dashboards_json =
-      if params['includes']&.include?('user') || (params['user.role']&.in?(%w(USER MANAGER ADMIN)) && @user.role.equal?('ADMIN'))
+      if params['includes']&.include?('user')
         user_ids = dashboards.pluck(:user_id).reduce([], :<<)
         users = UserService.users(user_ids.compact.uniq)
-
-        if params['includes']&.include?('user')
-          UserSerializerHelper.list dashboards, users
-        else
-          usersIdsByRole = UserService.userByRole(params['user.role'])
-        end
+        UserSerializerHelper.list dashboards, users
       else
         dashboards
       end
@@ -58,7 +65,7 @@ class Api::DashboardsController < ApiController
         @dashboard = duplicated_dashboard
         render json: @dashboard, status: :ok
       else
-        render_error@dashboard, :unprocessable_entity
+        render_error @dashboard, :unprocessable_entity
       end
     rescue Exception => e
       @dashboard.errors['id'] << e.message
