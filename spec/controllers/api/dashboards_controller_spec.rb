@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'json'
+require 'constants'
 
 describe Api::DashboardsController, type: :controller do
   describe 'POST #dashboard' do
@@ -84,7 +86,7 @@ describe Api::DashboardsController, type: :controller do
       expect(data.map { |dashboard| dashboard[:attributes][:private] }.uniq).to eq([false])
     end
 
-    it 'with includes=user should return dashboards including user details' do
+    it 'with includes=user while not being logged in should return dashboards including user name and email address' do
       VCR.use_cassette("include_user") do
         get :index, params: {includes: 'user'}
 
@@ -93,12 +95,96 @@ describe Api::DashboardsController, type: :controller do
         expect(response.status).to eq(200)
         expect(data.size).to eq(5)
         expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
+        data.each do |dashboard|
+          expect(dashboard[:attributes][:user].keys).to eq([:name, :email])
+        end
       end
     end
 
-    it 'with user.role=USER should filter by user role' do
+    it 'with includes=user while being logged in as USER should return dashboards including user name and email address' do
+      VCR.use_cassette("include_user") do
+        get :index, params: {includes: 'user', loggedUser: USERS[:USER].to_json}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(5)
+        expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
+        data.each do |dashboard|
+          expect(dashboard[:attributes][:user].keys).to eq([:name, :email])
+        end
+      end
+    end
+
+    it 'with includes=user while being logged in as MANAGER should return dashboards including user name and email address' do
+      VCR.use_cassette("include_user") do
+        get :index, params: {includes: 'user', loggedUser: USERS[:MANAGER].to_json}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(5)
+        expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
+        data.each do |dashboard|
+          expect(dashboard[:attributes][:user].keys).to eq([:name, :email])
+        end
+      end
+    end
+
+    it 'with includes=user while being logged in as ADMIN should return dashboards including user name, email address and role' do
+      VCR.use_cassette("include_user") do
+        get :index, params: {includes: 'user', loggedUser: USERS[:ADMIN].to_json}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(5)
+        expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
+        data.each do |dashboard|
+          expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :role])
+        end
+      end
+    end
+
+    it 'with user.role=USER and not logged in should not filter by user role' do
       VCR.use_cassette("get_users_by_role_user") do
-        get :index, params: {'user.role': 'USER'}
+        get :index, params: {'user.role': 'USER', loggedUser: nil}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(5)
+        expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(%w(57a1ff091ebc1ad91d089bdc 5c143429f8d19932db9d06ea 5c069855ccc46a6660a4be68))
+      end
+    end
+
+    it 'with user.role=USER while being logged in as USER should not filter by user role' do
+      VCR.use_cassette("get_users_by_role_user") do
+        get :index, params: {'user.role': 'USER', loggedUser: USERS[:USER].to_json}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(5)
+        expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(%w(57a1ff091ebc1ad91d089bdc 5c143429f8d19932db9d06ea 5c069855ccc46a6660a4be68))
+      end
+    end
+
+    it 'with user.role=USER while being logged in as MANAGER should not filter by user role' do
+      VCR.use_cassette("get_users_by_role_user") do
+        get :index, params: {'user.role': 'USER', loggedUser: USERS[:MANAGER].to_json}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(5)
+        expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(%w(57a1ff091ebc1ad91d089bdc 5c143429f8d19932db9d06ea 5c069855ccc46a6660a4be68))
+      end
+    end
+
+    it 'with user.role=USER while being logged in as ADMIN should filter by user role' do
+      VCR.use_cassette("get_users_by_role_user") do
+        get :index, params: {'user.role': 'USER', loggedUser: USERS[:ADMIN].to_json}
 
         data = json_response[:data]
 
@@ -108,9 +194,9 @@ describe Api::DashboardsController, type: :controller do
       end
     end
 
-    it 'with user.role=ADMIN should filter by user role' do
+    it 'with user.role=ADMIN while being logged in as ADMIN should filter by user role' do
       VCR.use_cassette("get_users_by_role_admin") do
-        get :index, params: {'user.role': 'ADMIN'}
+        get :index, params: {'user.role': 'ADMIN', loggedUser: USERS[:ADMIN].to_json}
 
         data = json_response[:data]
 
@@ -120,9 +206,21 @@ describe Api::DashboardsController, type: :controller do
       end
     end
 
-    it 'with user.role=ADMIN and filter by user id should return dashboards that match both criteria' do
+    it 'with user.role=ADMIN and filter by user id while not being logged in should return dashboards that match both criteria' do
       VCR.use_cassette("get_users_by_role_admin") do
-        get :index, params: {'user.role': 'ADMIN', filter: {user: '5c069855ccc46a6660a4be68'} }
+        get :index, params: {'user.role': 'ADMIN', filter: {user: '5c069855ccc46a6660a4be68'}}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(1)
+        expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(["5c069855ccc46a6660a4be68"])
+      end
+    end
+
+    it 'with user.role=ADMIN and filter by user id while being logged in as ADMIN should return dashboards that match both criteria' do
+      VCR.use_cassette("get_users_by_role_admin") do
+        get :index, params: {'user.role': 'ADMIN', filter: {user: '5c069855ccc46a6660a4be68'}, loggedUser: USERS[:ADMIN].to_json}
 
         data = json_response[:data]
 
