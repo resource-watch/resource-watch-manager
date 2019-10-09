@@ -5,7 +5,7 @@ class Api::DashboardsController < ApiController
   before_action :get_user, only: %i[index]
 
   def index
-    if params.include?('user.role')
+    if params.include?('user.role') && @user&.dig('role').eql?('ADMIN')
       usersIdsByRole = UserService.usersByRole params['user.role']
       if (params[:filter]&.include?('user'))
         params[:filter]['user'].concat usersIdsByRole if params[:filter]['user'].kind_of?(Array)
@@ -16,13 +16,12 @@ class Api::DashboardsController < ApiController
       end
     end
 
-
     dashboards = Dashboard.fetch_all(params)
     dashboards_json =
       if params['includes']&.include?('user')
         user_ids = dashboards.pluck(:user_id).reduce([], :<<)
         users = UserService.users(user_ids.compact.uniq)
-        UserSerializerHelper.list dashboards, users
+        UserSerializerHelper.list dashboards, users, @user&.dig('role').eql?('ADMIN')
       else
         dashboards
       end
