@@ -34,11 +34,11 @@ class DashboardSerializer < ActiveModel::Serializer
       thumb: object.photo.url(:thumb),
       original: object.photo.url(:original)
     }
+  end
 
-    def user
-      return unless object.public_methods.include?(:user)
+  def user
+    return unless object.public_methods.include?(:user)
 
-      object.user
-    end
+    object.user
   end
 end
