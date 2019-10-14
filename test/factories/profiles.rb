@@ -14,9 +14,9 @@
 #  updated_at          :datetime         not null
 #
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :profile do
-    user_id 'MyString'
-    avatar ''
+    user_id { 'MyString' }
+    avatar { '' }
   end
 end

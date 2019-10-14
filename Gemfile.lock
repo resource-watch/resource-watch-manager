@@ -125,11 +125,11 @@ GEM
       request_store (~> 1.0)
     erubi (1.7.1)
     execjs (2.7.0)
-    factory_girl (4.9.0)
-      activesupport (>= 3.0.0)
-    factory_girl_rails (4.9.0)
-      factory_girl (~> 4.9.0)
-      railties (>= 3.0.0)
+    factory_bot (5.1.1)
+      activesupport (>= 4.2.0)
+    factory_bot_rails (5.1.1)
+      factory_bot (~> 5.1.0)
+      railties (>= 4.2.0)
     faraday (0.11.0)
       multipart-post (>= 1.2, < 3)
     ffaker (2.10.0)
@@ -365,7 +365,7 @@ DEPENDENCIES
   devise
   dotenv-rails
   draper
-  factory_girl_rails
+  factory_bot_rails
   faraday (~> 0.11.0)
   ffaker
   friendly_id
@@ -394,4 +394,4 @@ RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.17.3
+   2.0.2

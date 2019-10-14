@@ -19,6 +19,7 @@ default: &default
   encoding: unicode
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
+  host: <%= ENV.fetch("POSTGRES_HOST") { "localhost" } %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   password: <%= ENV.fetch("POSTGRES_PASS") {} %>
   username: <%= ENV.fetch("POSTGRES_USER") { "postgres" } %>
@@ -26,7 +27,6 @@ default: &default
 development:
   <<: *default
   database: <%= ENV.fetch("POSTGRES_DATABASE") { "resource-watch-manager" } %>
-  host: <%= ENV.fetch("POSTGRES_HOST") { "localhost" } %>
   port: <%= ENV.fetch("POSTGRES_PORT") { 5432 } %>
 
   # The specified database role being used to connect to postgres.
@@ -61,7 +61,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: resource-watch-manager_test
+  database: <%= ENV.fetch("POSTGRES_DATABASE") { "resource-watch-manager" } %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is

@@ -37,7 +37,7 @@ spec:
               cpu: "0m"
           env:
             - name: CONTACT_EMAIL
-              value: "resourcewatch@wri.org"
+              value: "tiago.garcia@vizzuality.com"
             - name: SENDGRID_DOMAIN
               value: "vizzuality.com"
             - name: SENDGRID_API_KEY
@@ -96,6 +96,8 @@ spec:
                   key: CT_TOKEN
             - name: LOCAL_URL
               value: http://{name}.rw.svc.cluster.local:3000
+            - name: RAILS_ENV
+              value: "production"
           ports:
             - containerPort: 3000
       restartPolicy: Always

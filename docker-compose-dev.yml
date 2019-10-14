@@ -1,13 +1,7 @@
 version: '2'
 services:
-  postgres:
-    image: postgres
-    volumes:
-      - "./.data/db:/var/lib/postgresql/data"
   api:
-    build:
-      dockerfile: Dockerfile-dev
-      context: .
+    build: .
     command: 'bundle exec rails server -b 0.0.0.0'
     ports:
       - "3001:3000"
@@ -25,3 +19,14 @@ services:
       - "./:/usr/src/app"
       - "./public/system:/usr/src/app/public/system"
       - "./public/uploads:/usr/src/app/public/uploads"
+
+  postgres:
+    image: postgres:9.6.2
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: resource-watch-manager
+    volumes:
+      - "./.data/db:/var/lib/postgresql/data"
+    ports:
+      - "5432"

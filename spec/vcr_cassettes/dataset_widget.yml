@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: http://mymachine:9000/v1/dataset/9aa17362-2a4f-4a4f-9e4e-97ebb60ce76b/widget/841a6544-e8c9-411d-9987-83e81b58fd6f/clone
+    uri: http://localhost:9000/v1/dataset/9aa17362-2a4f-4a4f-9e4e-97ebb60ce76b/widget/841a6544-e8c9-411d-9987-83e81b58fd6f/clone
     body:
       encoding: UTF-8
       string: ''
@@ -45,6 +45,6 @@ http_interactions:
         as value, commodity from r ) select crop, risk,value, (area*100/sum(area)
         over(partition by crop)) area_perc from d inner join t on lower(commodity)=crop
         order by risk desc, crop asc","name":"hist"},{"transform":[{"output":{"mid":"val_m","end":"val_e","start":"val_s"},"offset":"zero","field":"area_perc","groupby":["crop"],"type":"stack"},{"output":{"mid":"t_m","end":"t_e","start":"t_s"},"offset":"zero","field":"value","groupby":["risk"],"type":"stack"}],"source":"hist","name":"stats_risk"},{"transform":[{"summarize":[{"as":["counts_r"],"ops":["min"],"field":"t_m"},{"as":["counts_e"],"ops":["min"],"field":"t_e"}],"groupby":["crop"],"type":"aggregate"}],"source":"stats_risk","name":"legend_crop"},{"transform":[{"summarize":[{"as":["counts_c"],"ops":["count"],"field":"risk"}],"groupby":["risk"],"type":"aggregate"}],"source":"hist","name":"legend_risk"}]},"template":false,"createdAt":"2018-11-27T16:18:35.188Z","updatedAt":"2018-11-27T16:18:35.188Z"}}}'
-    http_version: 
+    http_version:
   recorded_at: Tue, 27 Nov 2018 16:18:35 GMT
 recorded_with: VCR 4.0.0

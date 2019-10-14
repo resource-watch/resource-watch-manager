@@ -5,7 +5,7 @@ require 'spec_helper'
 describe Api::PartnersController, type: :controller do
   describe 'GET #show' do
     before(:each) do
-      @partner = FactoryGirl.create :partner
+      @partner = FactoryBot.create :partner
       get :show, params: { id: @partner.id }
     end
 
@@ -19,7 +19,7 @@ describe Api::PartnersController, type: :controller do
 
   describe 'GET #show by slug' do
     before(:each) do
-      @partner = FactoryGirl.create :partner
+      @partner = FactoryBot.create :partner
       get :show, params: { id: @partner.slug }
     end
 

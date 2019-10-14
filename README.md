@@ -1,5 +1,8 @@
 # Resource Watch site manager microservice for the RW API
 
+[![Build Status](https://travis-ci.org/resource-watch/resource-watch-manager.svg?branch=develop)](https://travis-ci.org/resource-watch/resource-watch-manager)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/cc3b209e57a896fe6d7c/test_coverage)](https://codeclimate.com/github/resource-watch/resource-watch-manager/test_coverage)
+
 Content API microservice for Resource Watch website
 Stores information on dashboards, profiles, etc.
 
@@ -64,4 +67,13 @@ TODO: add more detailed docker installation instructions
 
 ```bash
 ./entrypoint.sh start
+```
+
+
+
+# Tests
+
+```bash
+RAILS_ENV=test bundle exec rake db:drop db:create db:schema:load
+bundle exec rspec spec
 ```
