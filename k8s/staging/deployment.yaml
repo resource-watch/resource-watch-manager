@@ -96,6 +96,8 @@ spec:
                   key: CT_TOKEN
             - name: LOCAL_URL
               value: http://{name}.rw.svc.cluster.local:3000
+            - name: RAILS_ENV
+              value: "production"
           ports:
             - containerPort: 3000
       restartPolicy: Always
