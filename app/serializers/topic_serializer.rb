@@ -32,11 +32,11 @@ class TopicSerializer < ActiveModel::Serializer
       medium: object.photo.url(:medium),
       original: object.photo.url(:original)
     }
+  end
 
-    def user
-      return unless object.public_methods.include?(:user)
+  def user
+    return unless object.public_methods.include?(:user)
 
-      object.user
-    end
+    object.user
   end
 end
