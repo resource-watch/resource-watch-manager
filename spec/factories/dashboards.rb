@@ -29,18 +29,18 @@ FactoryBot.define do
     private { true }
   end
 
-  factory :dashboard_not_private_user_1, class: Dashboard do
-    name { FFaker::Name.name }
-    published { true }
-    user_id { '57a1ff091ebc1ad91d089bdc' }
-    private { false }
-  end
-
   factory :dashboard_private_user_2, class: Dashboard do
     name { FFaker::Name.name }
     published { true }
     user_id { '5c143429f8d19932db9d06ea' }
     private { true }
+  end
+
+  factory :dashboard_not_private_user_1, class: Dashboard do
+    name { FFaker::Name.name }
+    published { true }
+    user_id { '57a1ff091ebc1ad91d089bdc' }
+    private { false }
   end
 
   factory :dashboard_not_private_user_2, class: Dashboard do
