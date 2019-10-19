@@ -146,6 +146,35 @@ describe Api::DashboardsController, type: :controller do
       end
     end
 
+    it 'with includes=user while being logged in as ADMIN should return dashboards including user name, email address and role, even if only partial data is available' do
+      VCR.use_cassette("include_user_partial") do
+        get :index, params: {includes: 'user', loggedUser: USERS[:ADMIN].to_json}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(5)
+
+        responseDatasetOne = data.find { |dataset| dataset[:attributes]['user-id'.to_sym] == '57a1ff091ebc1ad91d089bdc' }
+        responseDatasetTwo = data.find { |dataset| dataset[:attributes]['user-id'.to_sym] == '5c143429f8d19932db9d06ea' }
+        responseDatasetThree = data.find { |dataset| dataset[:attributes]['user-id'.to_sym] == '5c069855ccc46a6660a4be68' }
+
+        expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
+
+        expect(responseDatasetOne[:attributes][:user][:name]).to eq('John Doe')
+        expect(responseDatasetOne[:attributes][:user][:role]).to eq('ADMIN')
+        expect(responseDatasetOne[:attributes][:user][:email]).to eq('john.doe@vizzuality.com')
+
+        expect(responseDatasetTwo[:attributes][:user][:name]).to eq(nil)
+        expect(responseDatasetTwo[:attributes][:user][:role]).to eq('USER')
+        expect(responseDatasetTwo[:attributes][:user][:email]).to eq('jane.poe@vizzuality.com')
+
+        expect(responseDatasetThree[:attributes][:user][:name]).to eq('mark')
+        expect(responseDatasetThree[:attributes][:user][:role]).to eq('USER')
+        expect(responseDatasetThree[:attributes][:user][:email]).to eq(nil)
+      end
+    end
+
     it 'with user.role=USER and not logged in should not filter by user role' do
       VCR.use_cassette("get_users_by_role_user") do
         get :index, params: {'user.role': 'USER', loggedUser: nil}
