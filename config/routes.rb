@@ -3,6 +3,8 @@
 require 'api_constraints'
 
 Rails.application.routes.draw do
+  get 'health', to: 'health#health'
+
   mount CtRegisterMicroservice::Engine => '/'
 
   # API
