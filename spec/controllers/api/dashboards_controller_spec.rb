@@ -19,7 +19,7 @@ describe Api::DashboardsController, type: :controller do
 
   describe 'GET #index' do
     before(:each) do
-      FactoryBot.create :dashboard_private_user_1
+      @dashboard_private_user_1 = FactoryBot.create :dashboard_private_user_1
       FactoryBot.create :dashboard_not_private_user_1
       FactoryBot.create :dashboard_private_user_2
       FactoryBot.create :dashboard_not_private_user_2
@@ -41,6 +41,27 @@ describe Api::DashboardsController, type: :controller do
       expect(response.status).to eq(200)
       expect(data.size).to eq(3)
       expect(data.map { |dashboard| dashboard[:attributes][:private] }.uniq).to eq([false])
+    end
+
+    it 'with name=<string> filter should return only dashboards with "string" in the name (full match)' do
+      get :index, params: {name: @dashboard_private_user_1.name}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(1)
+
+      expect(data.map { |dashboard| dashboard[:attributes][:"name"] }.uniq).to eq([@dashboard_private_user_1.name])
+    end
+
+    it 'with name=<string> filter should return only dashboards with "string" in the name (partial match)' do
+      get :index, params: {name: @dashboard_private_user_1.name.split()[1]}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to be >= 1
+      expect(data.map { |dashboard| dashboard[:attributes][:"name"] }.uniq).to eq([@dashboard_private_user_1.name])
     end
 
     it 'with user=<userId> filter should return only dashboards associated with that user' do

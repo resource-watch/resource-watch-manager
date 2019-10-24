@@ -41,6 +41,7 @@ class Dashboard < ApplicationRecord
   scope :by_published, ->(published) { where(published: published) }
   scope :by_private, ->(is_private) { where(private: is_private) }
   scope :by_user, ->(user) { where(user_id: user) }
+  scope :by_name, ->(name) { where("name like ?",  "%#{name}%") }
   scope :production, -> { where(production: true) }
   scope :pre_production, -> { where(pre_production: true) }
   scope :staging, -> { where(staging: true) }
@@ -58,6 +59,7 @@ class Dashboard < ApplicationRecord
     dashboards = dashboards.by_published(options[:published]) if options[:published]
     dashboards = dashboards.by_private(options[:private]) if options[:private]
     dashboards = dashboards.by_user(options[:user]) if options[:user]
+    dashboards = dashboards.by_name(options[:name]) if options[:name]
 
     if options[:env]
       environments = options[:env].split(',')
