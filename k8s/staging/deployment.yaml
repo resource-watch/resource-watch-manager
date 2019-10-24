@@ -33,8 +33,11 @@ spec:
             - start
           resources:
             requests:
-              memory: "0Mi"
-              cpu: "0m"
+              memory: "128Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
           env:
             - name: CONTACT_EMAIL
               value: "tiago.garcia@vizzuality.com"
