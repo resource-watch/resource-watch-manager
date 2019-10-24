@@ -47,11 +47,17 @@ class Dashboard < ApplicationRecord
 
   def self.fetch_all(options = {})
     dashboards = Dashboard.all
+
+    # Deprecated: Please use the same filter options without nesting them in the `filter` param
     if options[:filter]
       dashboards = dashboards.by_published(options[:filter][:published]) if options[:filter][:published]
       dashboards = dashboards.by_private(options[:filter][:private]) if options[:filter][:private]
       dashboards = dashboards.by_user(options[:filter][:user]) if options[:filter][:user]
     end
+
+    dashboards = dashboards.by_published(options[:published]) if options[:published]
+    dashboards = dashboards.by_private(options[:private]) if options[:private]
+    dashboards = dashboards.by_user(options[:user]) if options[:user]
 
     if options[:env]
       environments = options[:env].split(',')
