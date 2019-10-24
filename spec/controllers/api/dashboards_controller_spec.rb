@@ -34,7 +34,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with private=false filter should return only non-private dashboards' do
-      get :index, params: {filter: {private: false}}
+      get :index, params: {private: false}
 
       data = json_response[:data]
 
@@ -44,7 +44,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with user=<userId> filter should return only dashboards associated with that user' do
-      get :index, params: {filter: {user: '57a1ff091ebc1ad91d089bdc'}}
+      get :index, params: {user: '57a1ff091ebc1ad91d089bdc'}
 
       data = json_response[:data]
 
@@ -54,7 +54,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with user=<userId> and private=true filters should return only private dashboards associated with that user' do
-      get :index, params: {filter: {user: '57a1ff091ebc1ad91d089bdc', private: true}}
+      get :index, params: {user: '57a1ff091ebc1ad91d089bdc', private: true}
 
       data = json_response[:data]
 
@@ -65,7 +65,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with user=<userId> and private=false filters should return only non-private dashboards associated with that user' do
-      get :index, params: {filter: {user: '57a1ff091ebc1ad91d089bdc', private: false}}
+      get :index, params: {user: '57a1ff091ebc1ad91d089bdc', private: false}
 
       data = json_response[:data]
 
@@ -76,7 +76,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with published=true and private=false filters should return only non-private, published dashboards' do
-      get :index, params: {filter: {published: 'true', private: false}}
+      get :index, params: {published: 'true', private: false}
 
       data = json_response[:data]
 
@@ -237,7 +237,7 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with user.role=ADMIN and filter by user id while not being logged in should return dashboards that match both criteria' do
       VCR.use_cassette("get_users_by_role_admin") do
-        get :index, params: {'user.role': 'ADMIN', filter: {user: '5c069855ccc46a6660a4be68'}}
+        get :index, params: {'user.role': 'ADMIN', user: '5c069855ccc46a6660a4be68'}
 
         data = json_response[:data]
 
@@ -249,7 +249,7 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with user.role=ADMIN and filter by user id while being logged in as ADMIN should return dashboards that match both criteria' do
       VCR.use_cassette("get_users_by_role_admin") do
-        get :index, params: {'user.role': 'ADMIN', filter: {user: '5c069855ccc46a6660a4be68'}, loggedUser: USERS[:ADMIN].to_json}
+        get :index, params: {'user.role': 'ADMIN', user: '5c069855ccc46a6660a4be68', loggedUser: USERS[:ADMIN].to_json}
 
         data = json_response[:data]
 
@@ -272,6 +272,95 @@ describe Api::DashboardsController, type: :controller do
 
       expect(body[:data]).to be_a(Array)
       expect(record.keys.size).to eq(3)
+    end
+  end
+
+  # Deprecated: this section tests filtering using the `filters[]` approach, which is deprecated. Use root level filters instead
+  describe 'GET #index using deprecated `filters` param' do
+    before(:each) do
+      FactoryBot.create :dashboard_private_user_1
+      FactoryBot.create :dashboard_not_private_user_1
+      FactoryBot.create :dashboard_private_user_2
+      FactoryBot.create :dashboard_not_private_user_2
+      FactoryBot.create :dashboard_not_private_user_3
+    end
+
+    # deprecated: use private=false instead of filter[private]=false
+    it 'with filter[private]=false filter should return only non-private dashboards' do
+      get :index, params: {filter: {private: false}}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(3)
+      expect(data.map { |dashboard| dashboard[:attributes][:private] }.uniq).to eq([false])
+    end
+
+    it 'with filter[user]=<userId> filter should return only dashboards associated with that user' do
+      get :index, params: {filter: {user: '57a1ff091ebc1ad91d089bdc'}}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(2)
+      expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(['57a1ff091ebc1ad91d089bdc'])
+    end
+
+    it 'with filter[user]=<userId> and filter[private]=true filters should return only private dashboards associated with that user' do
+      get :index, params: {filter: {user: '57a1ff091ebc1ad91d089bdc', private: true}}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(1)
+      expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }).to eq(['57a1ff091ebc1ad91d089bdc'])
+      expect(data.map { |dashboard| dashboard[:attributes][:private] }).to eq([true])
+    end
+
+    it 'with filter[user]=<userId> and filter[private]=false filters should return only non-private dashboards associated with that user' do
+      get :index, params: {filter: {user: '57a1ff091ebc1ad91d089bdc', private: false}}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(1)
+      expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }).to eq(['57a1ff091ebc1ad91d089bdc'])
+      expect(data.map { |dashboard| dashboard[:attributes][:private] }).to eq([false])
+    end
+
+    it 'with filter[published]=true and filter[private]=false filters should return only non-private, published dashboards' do
+      get :index, params: {filter: {published: 'true', private: false}}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(3)
+      expect(data.map { |dashboard| dashboard[:attributes][:published] }.uniq).to eq([true])
+      expect(data.map { |dashboard| dashboard[:attributes][:private] }.uniq).to eq([false])
+    end
+
+    it 'with user.role=ADMIN and filter by user id while not being logged in should return dashboards that match both criteria' do
+      VCR.use_cassette("get_users_by_role_admin") do
+        get :index, params: {'user.role': 'ADMIN', filter: {user: '5c069855ccc46a6660a4be68'}}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(1)
+        expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(["5c069855ccc46a6660a4be68"])
+      end
+    end
+
+    it 'with user.role=ADMIN and filter by user id while being logged in as ADMIN should return dashboards that match both criteria' do
+      VCR.use_cassette("get_users_by_role_admin") do
+        get :index, params: {'user.role': 'ADMIN', filter: {user: '5c069855ccc46a6660a4be68'}, loggedUser: USERS[:ADMIN].to_json}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(1)
+        expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(["5c069855ccc46a6660a4be68"])
+      end
     end
   end
 
