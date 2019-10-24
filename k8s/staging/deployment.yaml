@@ -6,6 +6,7 @@ metadata:
     name: {name}
   name: {name}
 spec:
+  minReadySeconds: 30
   revisionHistoryLimit: 0
   template:
     metadata:
@@ -108,7 +109,7 @@ spec:
               scheme: HTTP
               path: /health
               port: 3000
-            initialDelaySeconds: 120
+            initialDelaySeconds: 30
             timeoutSeconds: 5
             periodSeconds: 15
           livenessProbe:
@@ -117,7 +118,7 @@ spec:
               path: /health
               port: 3000
             failureThreshold: 3
-            initialDelaySeconds: 120
+            initialDelaySeconds: 30
             timeoutSeconds: 5
             periodSeconds: 15
       restartPolicy: Always
