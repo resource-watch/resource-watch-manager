@@ -95,6 +95,184 @@ describe Api::TopicsController, type: :controller do
       expect(data.map { |topic| topic[:attributes][:private] }.uniq).to eq([false])
     end
 
+    it 'with includes=user while not being logged in should return dashboards including user name and email address' do
+      VCR.use_cassette("include_user") do
+        get :index, params: {includes: 'user'}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(4)
+        expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
+        data.each do |dashboard|
+          expect(dashboard[:attributes][:user].keys).to eq([:name, :email])
+        end
+      end
+    end
+
+    it 'with includes=user while being logged in as USER should return dashboards including user name and email address' do
+      VCR.use_cassette("include_user") do
+        get :index, params: {includes: 'user', loggedUser: USERS[:USER].to_json}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(4)
+        expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
+        data.each do |dashboard|
+          expect(dashboard[:attributes][:user].keys).to eq([:name, :email])
+        end
+      end
+    end
+
+    it 'with includes=user while being logged in as MANAGER should return dashboards including user name and email address' do
+      VCR.use_cassette("include_user") do
+        get :index, params: {includes: 'user', loggedUser: USERS[:MANAGER].to_json}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(4)
+        expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
+        data.each do |dashboard|
+          expect(dashboard[:attributes][:user].keys).to eq([:name, :email])
+        end
+      end
+    end
+
+    it 'with includes=user while being logged in as ADMIN should return dashboards including user name, email address and role' do
+      VCR.use_cassette("include_user") do
+        get :index, params: {includes: 'user', loggedUser: USERS[:ADMIN].to_json}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(4)
+        expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
+        data.each do |dashboard|
+          expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :role])
+        end
+      end
+    end
+
+    it 'with includes=user while being logged in as ADMIN should return dashboards including user name, email address and role, even if only partial data is available' do
+      VCR.use_cassette("include_user_partial") do
+        get :index, params: {includes: 'user', loggedUser: USERS[:ADMIN].to_json}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(4)
+
+        responseDatasetOne = data.find { |dataset| dataset[:attributes]['user-id'.to_sym] == '57a1ff091ebc1ad91d089bdc' }
+        responseDatasetTwo = data.find { |dataset| dataset[:attributes]['user-id'.to_sym] == '5c143429f8d19932db9d06ea' }
+        responseDatasetThree = data.find { |dataset| dataset[:attributes]['user-id'.to_sym] == '5c069855ccc46a6660a4be68' }
+
+        expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
+
+        expect(responseDatasetOne[:attributes][:user][:name]).to eq('John Doe')
+        expect(responseDatasetOne[:attributes][:user][:role]).to eq('ADMIN')
+        expect(responseDatasetOne[:attributes][:user][:email]).to eq('john.doe@vizzuality.com')
+
+        expect(responseDatasetTwo[:attributes][:user][:name]).to eq(nil)
+        expect(responseDatasetTwo[:attributes][:user][:role]).to eq('USER')
+        expect(responseDatasetTwo[:attributes][:user][:email]).to eq('jane.poe@vizzuality.com')
+
+        expect(responseDatasetThree[:attributes][:user][:name]).to eq('mark')
+        expect(responseDatasetThree[:attributes][:user][:role]).to eq('USER')
+        expect(responseDatasetThree[:attributes][:user][:email]).to eq(nil)
+      end
+    end
+
+    it 'with includes=user while not being logged in should return topics including user name and email address' do
+      VCR.use_cassette("include_user") do
+        get :index, params: {includes: 'user'}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(4)
+        expect(data.map { |topic| topic[:attributes][:user].length }.uniq).not_to eq([0])
+        data.each do |topic|
+          expect(topic[:attributes][:user].keys).to eq([:name, :email])
+        end
+      end
+    end
+
+    it 'with includes=user while being logged in as USER should return topics including user name and email address' do
+      VCR.use_cassette("include_user") do
+        get :index, params: {includes: 'user', loggedUser: USERS[:USER].to_json}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(4)
+        expect(data.map { |topic| topic[:attributes][:user].length }.uniq).not_to eq([0])
+        data.each do |topic|
+          expect(topic[:attributes][:user].keys).to eq([:name, :email])
+        end
+      end
+    end
+
+    it 'with includes=user while being logged in as MANAGER should return topics including user name and email address' do
+      VCR.use_cassette("include_user") do
+        get :index, params: {includes: 'user', loggedUser: USERS[:MANAGER].to_json}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(4)
+        expect(data.map { |topic| topic[:attributes][:user].length }.uniq).not_to eq([0])
+        data.each do |topic|
+          expect(topic[:attributes][:user].keys).to eq([:name, :email])
+        end
+      end
+    end
+
+    it 'with includes=user while being logged in as ADMIN should return topics including user name, email address and role' do
+      VCR.use_cassette("include_user") do
+        get :index, params: {includes: 'user', loggedUser: USERS[:ADMIN].to_json}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(4)
+        expect(data.map { |topic| topic[:attributes][:user].length }.uniq).not_to eq([0])
+        data.each do |topic|
+          expect(topic[:attributes][:user].keys).to eq([:name, :email, :role])
+        end
+      end
+    end
+
+    it 'with includes=user while being logged in as ADMIN should return topics including user name, email address and role, even if only partial data is available' do
+      VCR.use_cassette("include_user_partial") do
+        get :index, params: {includes: 'user', loggedUser: USERS[:ADMIN].to_json}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(4)
+
+        responseDatasetOne = data.find { |dataset| dataset[:attributes]['user-id'.to_sym] == '57a1ff091ebc1ad91d089bdc' }
+        responseDatasetTwo = data.find { |dataset| dataset[:attributes]['user-id'.to_sym] == '5c143429f8d19932db9d06ea' }
+        responseDatasetThree = data.find { |dataset| dataset[:attributes]['user-id'.to_sym] == '5c069855ccc46a6660a4be68' }
+
+        expect(data.map { |topic| topic[:attributes][:user].length }.uniq).not_to eq([0])
+
+        expect(responseDatasetOne[:attributes][:user][:name]).to eq('John Doe')
+        expect(responseDatasetOne[:attributes][:user][:role]).to eq('ADMIN')
+        expect(responseDatasetOne[:attributes][:user][:email]).to eq('john.doe@vizzuality.com')
+
+        expect(responseDatasetTwo[:attributes][:user][:name]).to eq(nil)
+        expect(responseDatasetTwo[:attributes][:user][:role]).to eq('USER')
+        expect(responseDatasetTwo[:attributes][:user][:email]).to eq('jane.poe@vizzuality.com')
+
+        expect(responseDatasetThree[:attributes][:user][:name]).to eq('mark')
+        expect(responseDatasetThree[:attributes][:user][:role]).to eq('USER')
+        expect(responseDatasetThree[:attributes][:user][:email]).to eq(nil)
+      end
+    end
+
     it 'should return response in json api format' do
       get :index
 

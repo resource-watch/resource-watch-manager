@@ -2,6 +2,7 @@
 
 class Api::TopicsController < ApiController
   before_action :set_topic, only: %i[show update destroy clone clone_dashboard]
+  before_action :get_user, only: %i[index]
 
   def index
     topics = Topic.fetch_all(params)
@@ -9,7 +10,7 @@ class Api::TopicsController < ApiController
       if params['includes']&.include?('user')
         user_ids = topics.pluck(:user_id).reduce([], :<<)
         users = UserService.users(user_ids.compact.uniq)
-        UserSerializerHelper.list topics, users
+        UserSerializerHelper.list topics, users, @user&.dig('role').eql?('ADMIN')
       else
         topics
       end
@@ -80,6 +81,10 @@ class Api::TopicsController < ApiController
   end
 
   private
+
+  def get_user
+    @user = params['loggedUser'].present? ? JSON.parse(params['loggedUser']) : nil
+  end
 
   def set_topic
     @topic = Topic.friendly.find params[:id]
