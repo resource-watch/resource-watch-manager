@@ -7,12 +7,11 @@ class Api::DashboardsController < ApiController
   def index
     if params.include?('user.role') && @user&.dig('role').eql?('ADMIN')
       usersIdsByRole = UserService.usersByRole params['user.role']
-      if (params[:filter]&.include?('user'))
-        params[:filter]['user'].concat usersIdsByRole if params[:filter]['user'].kind_of?(Array)
-        params[:filter]['user'] = usersIdsByRole & [params[:filter]['user']] if params[:filter]['user'].kind_of?(String)
+      if (params.include?('user'))
+        params['user'].concat usersIdsByRole if params['user'].kind_of?(Array)
+        params['user'] = usersIdsByRole & [params['user']] if params['user'].kind_of?(String)
       else
-        params[:filter] = {} if params[:filter].nil?
-        params[:filter]['user'] = usersIdsByRole
+        params['user'] = usersIdsByRole
       end
     end
 
