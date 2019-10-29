@@ -1,0 +1,1 @@
+- Deprecate `filter[<param>]=<value>` in favor of `<param>=<value>` on GET topics endpoint.
