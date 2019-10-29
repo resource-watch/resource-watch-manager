@@ -47,6 +47,11 @@ class Topic < ApplicationRecord
       topics = topics.by_private(options[:filter][:private]) if options[:filter][:private]
       topics = topics.by_user(options[:filter][:user]) if options[:filter][:user]
     end
+
+    topics = topics.by_published(options[:published]) if options[:published]
+    topics = topics.by_private(options[:private]) if options[:private]
+    topics = topics.by_user(options[:user]) if options[:user]
+
     topics.order(get_order(options))
   end
 
