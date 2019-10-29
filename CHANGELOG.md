@@ -1,1 +1,2 @@
 - Deprecate `filter[<param>]=<value>` in favor of `<param>=<value>` on GET topics endpoint.
+- Add support for `includes=user` to GET topics endpoint.
