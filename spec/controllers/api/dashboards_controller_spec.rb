@@ -385,6 +385,75 @@ describe Api::DashboardsController, type: :controller do
     end
   end
 
+  describe 'GET #index with pagination' do
+    before(:each) do
+      FactoryBot.create :dashboard_private_user_1
+      FactoryBot.create :dashboard_private_user_1
+      FactoryBot.create :dashboard_private_user_1
+      FactoryBot.create :dashboard_not_private_user_1
+      FactoryBot.create :dashboard_not_private_user_1
+      FactoryBot.create :dashboard_not_private_user_1
+      FactoryBot.create :dashboard_not_private_user_1
+      FactoryBot.create :dashboard_private_user_2
+      FactoryBot.create :dashboard_private_user_2
+      FactoryBot.create :dashboard_private_user_2
+      FactoryBot.create :dashboard_private_user_2
+      FactoryBot.create :dashboard_not_private_user_2
+      FactoryBot.create :dashboard_not_private_user_2
+      FactoryBot.create :dashboard_not_private_user_2
+      FactoryBot.create :dashboard_not_private_user_2
+      FactoryBot.create :dashboard_not_private_user_3
+      FactoryBot.create :dashboard_not_private_user_3
+      FactoryBot.create :dashboard_not_private_user_3
+      FactoryBot.create :dashboard_not_private_user_3
+    end
+
+    it 'loads page 1 with 10 elements by default' do
+      get :index
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(10)
+    end
+
+    it 'accepts page[size] values' do
+      get :index, params: {page: {size: 15}}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(15)
+    end
+
+    it 'accepts page[number] and page[size] values' do
+      get :index, params: {page: {size: 15, number: 2}}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(4)
+    end
+
+    it 'accepts page[number] and page[size] values beyond available results, returning an empty result set' do
+      get :index, params: {page: {size: 15, number: 100}}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(0)
+    end
+
+    it 'prevents very high page sizes' do
+      get :index, params: {page: {size: 251}}
+
+      data = json_response
+
+      expect(response.status).to eq(400)
+      expect(data).to eq({errors: [{status: 400, title: "Invalid page size"}]})
+    end
+  end
+
   describe 'GET #show' do
     before(:each) do
       @dashboard = FactoryBot.create :dashboard_private_user_1
