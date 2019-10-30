@@ -15,7 +15,20 @@ class Api::DashboardsController < ApiController
       end
     end
 
+    if (params[:page])
+      page_number = params[:page][:number].to_i if params[:page][:number]
+      per_page = params[:page][:size].to_i if params[:page][:size]
+    end
+
+    if per_page and per_page > 100
+      render json: {errors: [{status: 400, title: "Invalid page size"}]}, status: 400
+      return
+    end
+
     dashboards = Dashboard.fetch_all(params)
+                   .page(page_number || 1)
+                   .per_page(per_page || 10)
+
     dashboards_json =
       if params['includes']&.include?('user')
         user_ids = dashboards.pluck(:user_id).reduce([], :<<)
