@@ -18,11 +18,12 @@
 #  photo_content_type :string
 #  photo_file_size    :integer
 #  photo_updated_at   :datetime
+#  application        :string           default(["\"rw\""]), not null, is an Array
 #
 
 class TopicSerializer < ActiveModel::Serializer
   attributes :id, :name, :slug, :summary, :description, :content,
-             :published, :photo, :user_id, :private, :user
+             :published, :photo, :user_id, :private, :user, :application
 
   def photo
     {

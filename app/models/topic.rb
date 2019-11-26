@@ -18,6 +18,7 @@
 #  photo_content_type :string
 #  photo_file_size    :integer
 #  photo_updated_at   :datetime
+#  application        :string           default(["\"rw\""]), not null, is an Array
 #
 
 class Topic < ApplicationRecord
@@ -35,6 +36,7 @@ class Topic < ApplicationRecord
   validates_attachment_content_type :photo, content_type: %r{^image\/.*}
   do_not_validate_attachment_file_type :photo
 
+  scope :by_application, ->(application) { where("?::varchar = ANY(application)", application) }
   scope :by_published, ->(published) { where(published: published) }
   scope :by_private, ->(is_private) { where(private: is_private) }
   scope :by_user, ->(user) { where(user_id: user) }
@@ -47,6 +49,7 @@ class Topic < ApplicationRecord
       topics = topics.by_user(options[:filter][:user]) if options[:filter][:user]
     end
 
+    topics = topics.by_application(options[:application]) if options[:application]
     topics = topics.by_published(options[:published]) if options[:published]
     topics = topics.by_private(options[:private]) if options[:private]
     topics = topics.by_user(options[:user]) if options[:user]

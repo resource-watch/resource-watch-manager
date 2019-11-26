@@ -2,10 +2,14 @@
 
 class Api::TopicsController < ApiController
   before_action :set_topic, only: %i[show update destroy clone clone_dashboard]
+  before_action :ensure_is_admin_or_owner_manager, only: :update
+  
   before_action :get_user, only: %i[index]
+  before_action :ensure_user_has_requested_apps, only: [:create, :update]
+  before_action :ensure_is_manager_or_admin, only: :update
 
   def index
-    topics = Topic.fetch_all(params)
+    topics = Topic.fetch_all(topic_params_get)
     topics_json =
       if params['includes']&.include?('user')
         user_ids = topics.pluck(:user_id).reduce([], :<<)
@@ -29,6 +33,10 @@ class Api::TopicsController < ApiController
   end
 
   def create
+    if request.params.dig('data', 'attributes', 'application').nil? and !@user.dig('extraUserData', 'apps').include? 'rw'
+      render json: {errors: [{status: '403', title: 'Your user account does not have permissions to use the default application(s)'}]}, status: 403 and return
+    end
+
     topic = Topic.new(topic_params_create)
     if topic.save
       topic.manage_content(request.base_url)
@@ -94,10 +102,21 @@ class Api::TopicsController < ApiController
     render_error(topic, 404) && return
   end
 
+  def ensure_is_admin_or_owner_manager
+    return false if @user.nil?
+    return true if @user[:role].eql? "ADMIN"
+    return true if @user[:role].eql? "MANAGER" and @topic[:user_id].eql? @user[:id]
+    render json: {errors: [{status: '403', title: 'You need to be either ADMIN or MANAGER and own the topic to update it'}]}, status: 403
+  end
+
+  def topic_params_get
+    params.permit(:name, :published, :private, :user, :application, user: [], :filter => [:published, :private, :user])
+  end
+
   def topic_params_create
     new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
     new_params = ActionController::Parameters.new(new_params)
-    new_params.permit(:name, :description, :content, :published, :summary, :photo, :user_id, :private)
+    new_params.permit(:name, :description, :content, :published, :summary, :photo, :user_id, :private, application:[])
   rescue
     nil
   end
@@ -105,7 +124,7 @@ class Api::TopicsController < ApiController
   def topic_params_update
     new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
     new_params = ActionController::Parameters.new(new_params)
-    new_params.permit(:name, :description, :content, :published, :summary, :photo, :private)
+    new_params.permit(:name, :description, :content, :published, :summary, :photo, :private, application:[])
   rescue
     nil
   end

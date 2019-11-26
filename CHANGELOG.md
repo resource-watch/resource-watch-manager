@@ -1,5 +1,6 @@
 # 26/11/2019
 - Add `application` field to dashboards
+- Add `application` field to topics
 
 # Previous
 - Add pagination to dashboards' GET endpoint
