@@ -9,7 +9,7 @@ describe Api::TopicsController, type: :controller do
     end
     it 'should perform the cloning' do
       VCR.use_cassette('dataset_widget') do
-        post 'clone', params: {id: Topic.first.id}
+        post 'clone', params: {id: Topic.first.id, loggedUser: USERS[:ADMIN]}
         expect(response.status).to eq(200)
       end
     end
@@ -21,7 +21,7 @@ describe Api::TopicsController, type: :controller do
     end
     it 'should perform the cloning' do
       VCR.use_cassette('dataset_widget') do
-        post 'clone_dashboard', params: {id: Topic.first.id}
+        post 'clone_dashboard', params: {id: Topic.first.id, loggedUser: USERS[:ADMIN]}
         expect(response.status).to eq(200)
       end
     end

@@ -1,4 +1,26 @@
 # frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: topics
+#
+#  id                 :bigint(8)        not null, primary key
+#  name               :string
+#  slug               :string
+#  description        :string
+#  content            :text
+#  published          :boolean
+#  summary            :string
+#  private            :boolean          default(TRUE)
+#  user_id            :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  photo_file_name    :string
+#  photo_content_type :string
+#  photo_file_size    :integer
+#  photo_updated_at   :datetime
+#
+
 FactoryBot.define do
   factory :topic_private_user_1, class: Topic do
     name { FFaker::Name.name }

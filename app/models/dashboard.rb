@@ -3,7 +3,7 @@
 #
 # Table name: dashboards
 #
-#  id                 :integer          not null, primary key
+#  id                 :bigint(8)        not null, primary key
 #  name               :string
 #  slug               :string
 #  description        :string
@@ -19,8 +19,9 @@
 #  user_id            :string
 #  private            :boolean          default(TRUE)
 #  production         :boolean          default(TRUE)
-#  pre_production     :boolean          default(FALSE)
+#  preproduction      :boolean          default(FALSE)
 #  staging            :boolean          default(FALSE)
+#  application        :string           default(["\"rw\""]), not null, is an Array
 #
 
 class Dashboard < ApplicationRecord
@@ -38,6 +39,7 @@ class Dashboard < ApplicationRecord
   validates_attachment_content_type :photo, content_type: %r{^image\/.*}
   do_not_validate_attachment_file_type :photo
 
+  scope :by_application, ->(application) { where("?::varchar = ANY(application)", application) }
   scope :by_published, ->(published) { where(published: published) }
   scope :by_private, ->(is_private) { where(private: is_private) }
   scope :by_user, ->(user) { where(user_id: user) }
@@ -56,6 +58,7 @@ class Dashboard < ApplicationRecord
       dashboards = dashboards.by_user(options[:filter][:user]) if options[:filter][:user]
     end
 
+    dashboards = dashboards.by_application(options[:application]) if options[:application]
     dashboards = dashboards.by_published(options[:published]) if options[:published]
     dashboards = dashboards.by_private(options[:private]) if options[:private]
     dashboards = dashboards.by_user(options[:user]) if options[:user]

@@ -1,10 +1,9 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: temporary_content_images
 #
-#  id                 :integer          not null, primary key
+#  id                 :bigint(8)        not null, primary key
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  image_file_name    :string

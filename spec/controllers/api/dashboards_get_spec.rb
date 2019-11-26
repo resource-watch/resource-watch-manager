@@ -5,18 +5,6 @@ require 'json'
 require 'constants'
 
 describe Api::DashboardsController, type: :controller do
-  describe 'POST #dashboard' do
-    before(:each) do
-      FactoryBot.create :dashboard_with_widgets
-    end
-    it 'should perform the cloning' do
-      VCR.use_cassette('dataset_widget') do
-        post 'clone', params: {id: '1'}
-        expect(response.status).to eq(200)
-      end
-    end
-  end
-
   describe 'GET #index' do
     before(:each) do
       @dashboard_private_user_1 = FactoryBot.create :dashboard_private_user_1
@@ -31,6 +19,11 @@ describe Api::DashboardsController, type: :controller do
 
       expect(response.status).to eq(200)
       expect(json_response[:data].size).to eq(5)
+
+
+      sampleDashboard = json_response[:data][0]
+
+      validate_dashboard_structure(sampleDashboard)
     end
 
     it 'with private=false filter should return only non-private dashboards' do
@@ -280,6 +273,40 @@ describe Api::DashboardsController, type: :controller do
       end
     end
 
+    it 'with filter by a single application value should return dashboards that belong to at least that application' do
+      VCR.use_cassette("get_users_by_role_admin") do
+        get :index, params: {application: 'rw'}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(3)
+        expect(data.map { |dashboard| dashboard[:attributes][:application] }.uniq).to eq([['rw'], %w(rw gfw)])
+      end
+    end
+
+    it 'with filter by an array with a single application value should return dashboards without being filtered (multiple filter values not supported)' do
+      VCR.use_cassette("get_users_by_role_admin") do
+        get :index, params: {application: ['rw']}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(5)
+      end
+    end
+
+    it 'with filter by multiple application should return dashboards without being filtered (multiple filter values not supported)' do
+      VCR.use_cassette("get_users_by_role_admin") do
+        get :index, params: {application: %w(rw gfw)}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(5)
+      end
+    end
+
     it 'should return a response in JSON API format' do
       get :index
 
@@ -451,25 +478,6 @@ describe Api::DashboardsController, type: :controller do
 
       expect(response.status).to eq(400)
       expect(data).to eq({errors: [{status: 400, title: "Invalid page size"}]})
-    end
-  end
-
-  describe 'GET #show' do
-    before(:each) do
-      @dashboard = FactoryBot.create :dashboard_private_user_1
-    end
-
-    it 'should return the information from this id' do
-      get :show, params: {id: @dashboard.id}
-
-      data = json_response[:data]
-
-      expect(response.status).to eq(200)
-      expect(data).to be_a(Hash)
-      expect(json_response[:data][:attributes][:name]).to eq(@dashboard.name)
-    end
-
-    it 'should return in json api format' do
     end
   end
 end
