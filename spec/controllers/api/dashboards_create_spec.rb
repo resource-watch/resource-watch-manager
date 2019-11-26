@@ -73,6 +73,38 @@ describe Api::DashboardsController, type: :controller do
       expect(sampleDashboard[:attributes][:application]).to eq(['rw'])
     end
 
+
+    it 'with role USER that doesn\'t belong to rw and no explicit application should produce a 403 error' do
+      spoofed_user = USERS[:USER].deep_dup
+      spoofed_user[:extraUserData][:apps] = ["fake-app"]
+
+      post :create, params: {
+        "data": {
+          "type": "dashboards",
+          "attributes": {
+            "name": "Cities",
+            "summary": "test dashboard one summary",
+            "description": "Dashboard that uses cities",
+            "content": "test dashboard one description",
+            "published": true,
+            "photo": {
+              "cover": "/photos/cover/missing.png",
+              "thumb": "/photos/thumb/missing.png",
+              "original": "/photos/original/missing.png"
+            },
+            "user-id": "57ac9f9e29309063404573a2",
+            "private": true,
+            "production": true,
+            "preproduction": false,
+            "staging": false,
+          }
+        },
+        loggedUser: spoofed_user
+      }
+
+      expect(response.status).to eq(403)
+    end
+
     it 'with role USER an non-matching applications should produce an 403 error' do
       post :create, params: {
         "data": {

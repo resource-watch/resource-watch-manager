@@ -51,6 +51,8 @@ class ApiController < ActionController::API
       render json: {errors: [{status: '401', title: 'Unauthorized'}]}, status: 401
     end
 
+    return if request.params.dig('data', 'attributes', 'application').nil?
+
     unless (request.params.dig('data', 'attributes', 'application') - @user.dig('extraUserData', 'apps')).empty?
       render json: {errors: [{status: '403', title: 'Your user account does not have permissions to use the requested application(s)'}]}, status: 403
     end
