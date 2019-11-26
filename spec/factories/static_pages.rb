@@ -1,10 +1,9 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: static_pages
 #
-#  id                 :integer          not null, primary key
+#  id                 :bigint(8)        not null, primary key
 #  title              :string           not null
 #  summary            :text
 #  description        :text
@@ -17,6 +16,9 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  published          :boolean
+#  production         :boolean          default(TRUE)
+#  preproduction      :boolean          default(FALSE)
+#  staging            :boolean          default(FALSE)
 #
 
 FactoryBot.define do

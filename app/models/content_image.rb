@@ -3,7 +3,7 @@
 #
 # Table name: content_images
 #
-#  id                 :integer          not null, primary key
+#  id                 :bigint(8)        not null, primary key
 #  imageable_id       :integer
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null

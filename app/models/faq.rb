@@ -1,10 +1,9 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: faqs
 #
-#  id         :integer          not null, primary key
+#  id         :bigint(8)        not null, primary key
 #  question   :string           not null
 #  answer     :text             not null
 #  order      :integer

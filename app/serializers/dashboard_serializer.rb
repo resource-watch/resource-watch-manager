@@ -3,7 +3,7 @@
 #
 # Table name: dashboards
 #
-#  id                 :integer          not null, primary key
+#  id                 :bigint(8)        not null, primary key
 #  name               :string
 #  slug               :string
 #  description        :string
@@ -19,14 +19,15 @@
 #  user_id            :string
 #  private            :boolean          default(TRUE)
 #  production         :boolean          default(TRUE)
-#  pre_production     :boolean          default(FALSE)
+#  preproduction      :boolean          default(FALSE)
 #  staging            :boolean          default(FALSE)
+#  application        :string           default(["\"rw\""]), not null, is an Array
 #
 
 class DashboardSerializer < ActiveModel::Serializer
   attributes :id, :name, :slug, :summary, :description,
              :content, :published, :photo, :user_id, :private,
-             :production, :preproduction, :staging, :user
+             :production, :preproduction, :staging, :user, :application
 
   def photo
     {

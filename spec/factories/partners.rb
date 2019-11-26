@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: partners
@@ -23,8 +22,8 @@
 #  icon_content_type       :string
 #  icon_file_size          :integer
 #  icon_updated_at         :datetime
-#  published               :boolean          default(FALSE)
-#  featured                :boolean          default(FALSE)
+#  published               :boolean
+#  featured                :boolean
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  cover_file_name         :string
@@ -33,6 +32,9 @@
 #  cover_updated_at        :datetime
 #  website                 :string
 #  partner_type            :string
+#  production              :boolean          default(TRUE)
+#  preproduction           :boolean          default(FALSE)
+#  staging                 :boolean          default(FALSE)
 #
 
 FactoryBot.define do

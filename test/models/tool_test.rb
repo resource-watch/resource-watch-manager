@@ -1,10 +1,9 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: tools
 #
-#  id                     :integer          not null, primary key
+#  id                     :bigint(8)        not null, primary key
 #  title                  :string
 #  slug                   :string
 #  summary                :string
@@ -18,6 +17,9 @@
 #  published              :boolean
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  production             :boolean          default(TRUE)
+#  preproduction          :boolean          default(FALSE)
+#  staging                :boolean          default(FALSE)
 #
 
 require 'test_helper'

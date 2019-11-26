@@ -2,7 +2,11 @@
 
 class Api::DashboardsController < ApiController
   before_action :set_dashboard, only: %i[show update destroy clone]
+  before_action :ensure_is_admin_or_owner_manager, only: :update
+
   before_action :get_user, only: %i[index]
+  before_action :ensure_user_has_requested_apps, only: [:create, :update]
+  before_action :ensure_is_manager_or_admin, only: :update
 
   def index
     if params.include?('user.role') && @user&.dig('role').eql?('ADMIN')
@@ -25,7 +29,7 @@ class Api::DashboardsController < ApiController
       return
     end
 
-    dashboards = Dashboard.fetch_all(params)
+    dashboards = Dashboard.fetch_all(dashboard_params_get)
                    .page(page_number || 1)
                    .per_page(per_page || 10)
 
@@ -110,15 +114,37 @@ class Api::DashboardsController < ApiController
     render_error(dashboard, 404) && return
   end
 
+  def ensure_is_admin_or_owner_manager
+    return false if @user.nil?
+
+    return true if @user[:role].eql? "ADMIN"
+
+    return true if @user[:role].eql? "MANAGER" and @dashboard[:user_id].eql? @user[:id]
+
+    render json: {errors: [{status: '403', title: 'You need to be either ADMIN or MANAGER and own the dashboard to update it'}]}, status: 403
+  end
+  #
+  # def ensure_is_admin_or_owner_manager
+  #   return false if @user.nil?
+  #
+  #   if (@user.dig('extraUserData', 'apps') & @dashboard[:application]).empty?
+  #     render json: {errors: [{status: '403', title: 'Dashboard and request applications don\'t match'}]}, status: 403
+  #   end
+  # end
+
   def get_user
     @user = params['loggedUser'].present? ? JSON.parse(params['loggedUser']) : nil
+  end
+
+  def dashboard_params_get
+    params.permit(:name, :published, :private, :user, :application, user: [], :filter => [:published, :private, :user])
   end
 
   def dashboard_params_create
     new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
     new_params = ActionController::Parameters.new(new_params)
     new_params.permit(:name, :description, :content, :published, :summary, :photo,
-                      :user_id, :private, :production, :preproduction, :staging)
+                      :user_id, :private, :production, :preproduction, :staging, application:[])
   rescue
     nil
   end
@@ -127,7 +153,7 @@ class Api::DashboardsController < ApiController
     new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
     new_params = ActionController::Parameters.new(new_params)
     new_params.permit(:name, :description, :content, :published, :summary,
-                      :photo, :private, :production, :preproduction, :staging)
+                      :photo, :private, :production, :preproduction, :staging, application:[])
   rescue
     nil
   end

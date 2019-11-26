@@ -1,10 +1,9 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: dashboards
 #
-#  id                 :integer          not null, primary key
+#  id                 :bigint(8)        not null, primary key
 #  name               :string
 #  slug               :string
 #  description        :string
@@ -19,13 +18,26 @@
 #  photo_updated_at   :datetime
 #  user_id            :string
 #  private            :boolean          default(TRUE)
+#  production         :boolean          default(TRUE)
+#  preproduction      :boolean          default(FALSE)
+#  staging            :boolean          default(FALSE)
+#  application        :string           default(["\"rw\""]), not null, is an Array
 #
 
 FactoryBot.define do
+  factory :dashboard_private_manager, class: Dashboard do
+    name { FFaker::Name.name }
+    published { true }
+    user_id { '1a10d7c6e0a37126611fd7a6' }
+    application { ['rw'] }
+    private { true }
+  end
+
   factory :dashboard_private_user_1, class: Dashboard do
     name { FFaker::Name.name }
     published { true }
     user_id { '57a1ff091ebc1ad91d089bdc' }
+    application { ['rw'] }
     private { true }
   end
 
@@ -33,6 +45,7 @@ FactoryBot.define do
     name { FFaker::Name.name }
     published { true }
     user_id { '5c143429f8d19932db9d06ea' }
+    application { ['rw'] }
     private { true }
   end
 
@@ -40,6 +53,7 @@ FactoryBot.define do
     name { FFaker::Name.name }
     published { true }
     user_id { '57a1ff091ebc1ad91d089bdc' }
+    application { %w(rw gfw) }
     private { false }
   end
 
@@ -47,6 +61,7 @@ FactoryBot.define do
     name { FFaker::Name.name }
     published { true }
     user_id { '5c143429f8d19932db9d06ea' }
+    application { ['gfw'] }
     private { false }
   end
 
@@ -54,6 +69,7 @@ FactoryBot.define do
     name { FFaker::Name.name }
     published { true }
     user_id { '5c069855ccc46a6660a4be68' }
+    application { ['gfw'] }
     private { false }
   end
 

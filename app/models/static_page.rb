@@ -3,7 +3,7 @@
 #
 # Table name: static_pages
 #
-#  id                 :integer          not null, primary key
+#  id                 :bigint(8)        not null, primary key
 #  title              :string           not null
 #  summary            :text
 #  description        :text
@@ -17,7 +17,7 @@
 #  updated_at         :datetime         not null
 #  published          :boolean
 #  production         :boolean          default(TRUE)
-#  pre_production     :boolean          default(FALSE)
+#  preproduction      :boolean          default(FALSE)
 #  staging            :boolean          default(FALSE)
 #
 
