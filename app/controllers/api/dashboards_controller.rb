@@ -56,6 +56,10 @@ class Api::DashboardsController < ApiController
   end
 
   def create
+    if request.params.dig('data', 'attributes', 'application').nil? and !@user.dig('extraUserData', 'apps').include? 'rw'
+      render json: {errors: [{status: '403', title: 'Your user account does not have permissions to use the default application(s)'}]}, status: 403 and return
+    end
+
     dashboard = Dashboard.new(dashboard_params_create)
     if dashboard.save
       dashboard.manage_content(request.base_url)
@@ -123,14 +127,6 @@ class Api::DashboardsController < ApiController
 
     render json: {errors: [{status: '403', title: 'You need to be either ADMIN or MANAGER and own the dashboard to update it'}]}, status: 403
   end
-  #
-  # def ensure_is_admin_or_owner_manager
-  #   return false if @user.nil?
-  #
-  #   if (@user.dig('extraUserData', 'apps') & @dashboard[:application]).empty?
-  #     render json: {errors: [{status: '403', title: 'Dashboard and request applications don\'t match'}]}, status: 403
-  #   end
-  # end
 
   def get_user
     @user = params['loggedUser'].present? ? JSON.parse(params['loggedUser']) : nil
