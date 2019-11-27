@@ -3,30 +3,6 @@
 require 'spec_helper'
 
 describe Api::TopicsController, type: :controller do
-  describe 'POST #clone' do
-    before(:each) do
-      FactoryBot.create :topic_with_widgets
-    end
-    it 'should perform the cloning' do
-      VCR.use_cassette('dataset_widget') do
-        post 'clone', params: {id: Topic.first.id, loggedUser: USERS[:ADMIN]}
-        expect(response.status).to eq(200)
-      end
-    end
-  end
-
-  describe 'POST #clone-dashboard' do
-    before(:each) do
-      FactoryBot.create :topic_with_widgets
-    end
-    it 'should perform the cloning' do
-      VCR.use_cassette('dataset_widget') do
-        post 'clone_dashboard', params: {id: Topic.first.id, loggedUser: USERS[:ADMIN]}
-        expect(response.status).to eq(200)
-      end
-    end
-  end
-
   describe 'GET #index' do
     before(:each) do
       FactoryBot.create :topic_private_user_1
@@ -40,6 +16,9 @@ describe Api::TopicsController, type: :controller do
 
       expect(response.status).to eq(200)
       expect(json_response[:data].size).to eq(4)
+
+      sampleTopic = json_response[:data][0]
+      validate_topic_structure(sampleTopic)
     end
 
     it 'with private=false filter should return only non-private topics' do
@@ -273,6 +252,40 @@ describe Api::TopicsController, type: :controller do
       end
     end
 
+    it 'with filter by a single application value should return topics that belong to at least that application' do
+      VCR.use_cassette("get_users_by_role_admin") do
+        get :index, params: {application: 'rw'}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(3)
+        expect(data.map { |topic| topic[:attributes][:application] }.uniq).to eq([['rw'], %w(rw gfw)])
+      end
+    end
+
+    it 'with filter by an array with a single application value should return topics without being filtered (multiple filter values not supported)' do
+      VCR.use_cassette("get_users_by_role_admin") do
+        get :index, params: {application: ['rw']}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(4)
+      end
+    end
+
+    it 'with filter by multiple application should return topics without being filtered (multiple filter values not supported)' do
+      VCR.use_cassette("get_users_by_role_admin") do
+        get :index, params: {application: %w(rw gfw)}
+
+        data = json_response[:data]
+
+        expect(response.status).to eq(200)
+        expect(data.size).to eq(4)
+      end
+    end
+
     it 'should return response in json api format' do
       get :index
 
@@ -349,25 +362,6 @@ describe Api::TopicsController, type: :controller do
       expect(data.size).to eq(2)
       expect(data.map { |topic| topic[:attributes][:published] }.uniq).to eq([true])
       expect(data.map { |topic| topic[:attributes][:private] }.uniq).to eq([false])
-    end
-  end
-
-  describe 'GET #show' do
-    before(:each) do
-      @topic = FactoryBot.create :topic_private_user_1
-    end
-
-    it 'should return the information from this id' do
-      get :show, params: {id: @topic.id}
-
-      data = json_response[:data]
-
-      expect(response.status).to eq(200)
-      expect(data).to be_a(Hash)
-      expect(json_response[:data][:attributes][:name]).to eq(@topic.name)
-    end
-
-    it 'should return in json api format' do
     end
   end
 end
