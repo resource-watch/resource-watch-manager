@@ -22,12 +22,14 @@
 #  preproduction      :boolean          default(FALSE)
 #  staging            :boolean          default(FALSE)
 #  application        :string           default(["\"rw\""]), not null, is an Array
+#  is_highlighted     :boolean          default(FALSE)
 #
 
 class DashboardSerializer < ActiveModel::Serializer
   attributes :id, :name, :slug, :summary, :description,
              :content, :published, :photo, :user_id, :private,
-             :production, :preproduction, :staging, :user, :application
+             :production, :preproduction, :staging, :user, :application,
+             :is_highlighted
 
   def photo
     {

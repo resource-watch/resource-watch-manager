@@ -19,4 +19,5 @@ def validate_dashboard_structure(expected)
   expect(expected[:attributes]).to have_key(:staging)
   expect(expected[:attributes]).to have_key(:user)
   expect(expected[:attributes]).to have_key(:application)
+  expect(expected[:attributes]).to have_key('is-highlighted'.to_sym)
 end
