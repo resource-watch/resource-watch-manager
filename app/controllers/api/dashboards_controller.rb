@@ -133,14 +133,14 @@ class Api::DashboardsController < ApiController
   end
 
   def dashboard_params_get
-    params.permit(:name, :published, :private, :user, :application, :is_highighted, user: [], :filter => [:published, :private, :user])
+    params.permit(:name, :published, :private, :user, :application, :is_highlighted, user: [], :filter => [:published, :private, :user])
   end
 
   def dashboard_params_create
     new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
     new_params = ActionController::Parameters.new(new_params)
     new_params.permit(:name, :description, :content, :published, :summary, :photo,
-                      :user_id, :private, :production, :preproduction, :staging, :is_highighted, application:[])
+                      :user_id, :private, :production, :preproduction, :staging, :is_highlighted, application:[])
   rescue
     nil
   end
@@ -149,7 +149,7 @@ class Api::DashboardsController < ApiController
     new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
     new_params = ActionController::Parameters.new(new_params)
     new_params.permit(:name, :description, :content, :published, :summary,
-                      :photo, :private, :production, :preproduction, :staging, :is_highighted, application:[])
+                      :photo, :private, :production, :preproduction, :staging, :is_highlighted, application:[])
   rescue
     nil
   end

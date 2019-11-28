@@ -19,10 +19,7 @@ describe Api::DashboardsController, type: :controller do
 
       expect(response.status).to eq(200)
       expect(json_response[:data].size).to eq(5)
-
-
       sampleDashboard = json_response[:data][0]
-
       validate_dashboard_structure(sampleDashboard)
     end
 
@@ -98,6 +95,26 @@ describe Api::DashboardsController, type: :controller do
       expect(data.size).to eq(3)
       expect(data.map { |dashboard| dashboard[:attributes][:published] }.uniq).to eq([true])
       expect(data.map { |dashboard| dashboard[:attributes][:private] }.uniq).to eq([false])
+    end
+
+    it 'with is_highlighted=true filter should return only highlighted dashboards' do
+      get :index, params: {is_highlighted: 'true'}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(1)
+      expect(data.map { |dashboard| dashboard[:attributes]['is-highlighted'.to_sym] }.uniq).to eq([true])
+    end
+
+    it 'with is_highlighted=false filter should return only non-highlighted dashboards' do
+      get :index, params: {is_highlighted: 'false'}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(4)
+      expect(data.map { |dashboard| dashboard[:attributes]['is-highlighted'.to_sym] }.uniq).to eq([false])
     end
 
     it 'with includes=user while not being logged in should return dashboards including user name and email address' do
