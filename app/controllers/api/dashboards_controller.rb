@@ -7,6 +7,7 @@ class Api::DashboardsController < ApiController
   before_action :get_user, only: %i[index]
   before_action :ensure_user_has_requested_apps, only: [:create, :update]
   before_action :ensure_is_manager_or_admin, only: :update
+  before_action :ensure_is_admin_for_highlighting, only: [:create, :update]
 
   def index
     if params.include?('user.role') && @user&.dig('role').eql?('ADMIN')
@@ -126,6 +127,12 @@ class Api::DashboardsController < ApiController
     return true if @user[:role].eql? "MANAGER" and @dashboard[:user_id].eql? @user[:id]
 
     render json: {errors: [{status: '403', title: 'You need to be either ADMIN or MANAGER and own the dashboard to update it'}]}, status: 403
+  end
+
+  def ensure_is_admin_for_highlighting
+    return true if !request.params.dig('data', 'attributes', 'is_highlighted').present?
+    return true if request.params.dig('data', 'attributes', 'is_highlighted').present? and @user[:role].eql? "ADMIN"
+    render json: {errors: [{status: '403', title: 'You need to an ADMIN to create/update the is_highlighted attribute of the dashboard'}]}, status: 403
   end
 
   def get_user
