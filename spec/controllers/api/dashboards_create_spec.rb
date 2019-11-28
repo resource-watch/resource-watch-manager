@@ -243,5 +243,95 @@ describe Api::DashboardsController, type: :controller do
 
       expect(sampleDashboard[:attributes][:application]).to eq(%w(rw gfw prep))
     end
+
+    it 'with role ADMIN should create the dashboard providing the is_highlighted attrbiute' do
+      post :create, params: {
+        "data": {
+          "type": "dashboards",
+          "attributes": {
+            "name": "Cities",
+            "summary": "test dashboard one summary",
+            "description": "Dashboard that uses cities",
+            "content": "test dashboard one description",
+            "published": true,
+            "photo": {
+              "cover": "/photos/cover/missing.png",
+              "thumb": "/photos/thumb/missing.png",
+              "original": "/photos/original/missing.png"
+            },
+            "user-id": "57ac9f9e29309063404573a2",
+            "private": true,
+            "application": [
+              "rw"
+            ],
+            "is_highlighted": true
+          }
+        },
+        loggedUser: USERS[:ADMIN]
+      }
+
+      expect(response.status).to eq(201)
+      sampleDashboard = json_response[:data]
+      validate_dashboard_structure(sampleDashboard)
+      expect(sampleDashboard[:attributes]['is-highlighted'.to_sym]).to eq(true)
+    end
+
+    it 'with role MANAGER should not create the dashboard providing the is_highlighted attrbiute' do
+      post :create, params: {
+        "data": {
+          "type": "dashboards",
+          "attributes": {
+            "name": "Cities",
+            "summary": "test dashboard one summary",
+            "description": "Dashboard that uses cities",
+            "content": "test dashboard one description",
+            "published": true,
+            "photo": {
+              "cover": "/photos/cover/missing.png",
+              "thumb": "/photos/thumb/missing.png",
+              "original": "/photos/original/missing.png"
+            },
+            "user-id": "57ac9f9e29309063404573a2",
+            "private": true,
+            "application": [
+              "rw"
+            ],
+            "is_highlighted": true
+          }
+        },
+        loggedUser: USERS[:MANAGER]
+      }
+
+      expect(response.status).to eq(403)
+    end
+
+    it 'with role USER should not create the dashboard providing the is_highlighted attrbiute' do
+      post :create, params: {
+        "data": {
+          "type": "dashboards",
+          "attributes": {
+            "name": "Cities",
+            "summary": "test dashboard one summary",
+            "description": "Dashboard that uses cities",
+            "content": "test dashboard one description",
+            "published": true,
+            "photo": {
+              "cover": "/photos/cover/missing.png",
+              "thumb": "/photos/thumb/missing.png",
+              "original": "/photos/original/missing.png"
+            },
+            "user-id": "57ac9f9e29309063404573a2",
+            "private": true,
+            "application": [
+              "rw"
+            ],
+            "is_highlighted": true
+          }
+        },
+        loggedUser: USERS[:USER]
+      }
+
+      expect(response.status).to eq(403)
+    end
   end
 end
