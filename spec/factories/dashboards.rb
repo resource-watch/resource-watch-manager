@@ -22,6 +22,7 @@
 #  preproduction      :boolean          default(FALSE)
 #  staging            :boolean          default(FALSE)
 #  application        :string           default(["\"rw\""]), not null, is an Array
+#  is_highlighted     :boolean          default(FALSE)
 #
 
 FactoryBot.define do

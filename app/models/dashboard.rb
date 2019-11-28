@@ -22,6 +22,7 @@
 #  preproduction      :boolean          default(FALSE)
 #  staging            :boolean          default(FALSE)
 #  application        :string           default(["\"rw\""]), not null, is an Array
+#  is_highlighted     :boolean          default(FALSE)
 #
 
 class Dashboard < ApplicationRecord
@@ -40,6 +41,7 @@ class Dashboard < ApplicationRecord
   do_not_validate_attachment_file_type :photo
 
   scope :by_application, ->(application) { where("?::varchar = ANY(application)", application) }
+  scope :by_is_highlighted, ->(is_highlighted) { where(is_highlighted: is_highlighted) }
   scope :by_published, ->(published) { where(published: published) }
   scope :by_private, ->(is_private) { where(private: is_private) }
   scope :by_user, ->(user) { where(user_id: user) }
@@ -59,6 +61,7 @@ class Dashboard < ApplicationRecord
     end
 
     dashboards = dashboards.by_application(options[:application]) if options[:application]
+    dashboards = dashboards.by_is_highlighted(options[:is_highlighted]) if options[:is_highlighted]
     dashboards = dashboards.by_published(options[:published]) if options[:published]
     dashboards = dashboards.by_private(options[:private]) if options[:private]
     dashboards = dashboards.by_user(options[:user]) if options[:user]
