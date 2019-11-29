@@ -97,8 +97,8 @@ describe Api::DashboardsController, type: :controller do
       expect(data.map { |dashboard| dashboard[:attributes][:private] }.uniq).to eq([false])
     end
 
-    it 'with is_highlighted=true filter should return only highlighted dashboards' do
-      get :index, params: {is_highlighted: 'true'}
+    it 'with is-highlighted=true filter should return only highlighted dashboards' do
+      get :index, params: {'is-highlighted': true}
 
       data = json_response[:data]
 
@@ -107,8 +107,8 @@ describe Api::DashboardsController, type: :controller do
       expect(data.map { |dashboard| dashboard[:attributes]['is-highlighted'.to_sym] }.uniq).to eq([true])
     end
 
-    it 'with is_highlighted=false filter should return only non-highlighted dashboards' do
-      get :index, params: {is_highlighted: 'false'}
+    it 'with is-highlighted=false filter should return only non-highlighted dashboards' do
+      get :index, params: {'is-highlighted': false}
 
       data = json_response[:data]
 
