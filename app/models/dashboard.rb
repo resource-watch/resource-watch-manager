@@ -61,7 +61,7 @@ class Dashboard < ApplicationRecord
     end
 
     dashboards = dashboards.by_application(options[:application]) if options[:application]
-    dashboards = dashboards.by_is_highlighted(options[:is_highlighted]) if options[:is_highlighted]
+    dashboards = dashboards.by_is_highlighted(options['is-highlighted'.to_sym]) if options['is-highlighted'.to_sym]
     dashboards = dashboards.by_published(options[:published]) if options[:published]
     dashboards = dashboards.by_private(options[:private]) if options[:private]
     dashboards = dashboards.by_user(options[:user]) if options[:user]
