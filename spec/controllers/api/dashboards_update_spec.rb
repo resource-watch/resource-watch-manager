@@ -242,7 +242,7 @@ describe Api::DashboardsController, type: :controller do
       expect(sampleDashboard[:attributes][:application]).to eq(%w(rw gfw prep))
     end
 
-    it 'with role ADMIN should update the dashboard providing the is-highlighted attrbiute' do
+    it 'with role ADMIN should update the dashboard providing the is-highlighted attribute' do
       patch :update, params: {
         id: @dashboard_private_manager[:id],
         "data": {
@@ -260,7 +260,7 @@ describe Api::DashboardsController, type: :controller do
       expect(sampleDashboard[:attributes]['is-highlighted'.to_sym]).to eq(true)
     end
 
-    it 'with role MANAGER should not create the dashboard providing the is-highlighted attrbiute' do
+    it 'with role MANAGER should not create the dashboard providing the is-highlighted attribute' do
       patch :update, params: {
         id: @dashboard_private_manager[:id],
         "data": {
@@ -275,7 +275,7 @@ describe Api::DashboardsController, type: :controller do
       expect(response.status).to eq(403)
     end
 
-    it 'with role USER should not create the dashboard providing the is-highlighted attrbiute' do
+    it 'with role USER should not create the dashboard providing the is-highlighted attribute' do
       patch :update, params: {
         id: @dashboard_private_manager[:id],
         "data": {
