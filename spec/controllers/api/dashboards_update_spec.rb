@@ -273,6 +273,13 @@ describe Api::DashboardsController, type: :controller do
       }
 
       expect(response.status).to eq(403)
+
+      expect(json_response).to have_key(:errors)
+      expect(json_response[:errors][0]).to have_key(:status)
+      expect(json_response[:errors][0]).to have_key(:title)
+
+      expect(json_response[:errors][0][:status]).to eq("403")
+      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the is-highlighted attribute of the dashboard")
     end
 
     it 'with role USER should not create the dashboard providing the is-highlighted attribute' do
@@ -288,6 +295,13 @@ describe Api::DashboardsController, type: :controller do
       }
 
       expect(response.status).to eq(403)
+
+      expect(json_response).to have_key(:errors)
+      expect(json_response[:errors][0]).to have_key(:status)
+      expect(json_response[:errors][0]).to have_key(:title)
+
+      expect(json_response[:errors][0][:status]).to eq("403")
+      expect(json_response[:errors][0][:title]).to eq("You need to be either ADMIN or MANAGER and own the dashboard to update it")
     end
   end
 end
