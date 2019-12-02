@@ -1,5 +1,5 @@
 # 28/11/2019
-- Add `is_highlighted` field to dashboards
+- Add `is-highlighted` field to dashboards
 
 # 26/11/2019
 - Add `application` field to dashboards
