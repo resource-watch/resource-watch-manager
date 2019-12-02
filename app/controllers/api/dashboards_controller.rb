@@ -130,7 +130,7 @@ class Api::DashboardsController < ApiController
   end
 
   def ensure_is_admin_for_highlighting
-    return true if !request.params.dig('data', 'attributes', 'is-highlighted').present?
+    return true unless request.params.dig('data', 'attributes', 'is-highlighted').present?
     return true if request.params.dig('data', 'attributes', 'is-highlighted').present? and @user[:role].eql? "ADMIN"
     render json: {errors: [{status: '403', title: 'You need to be an ADMIN to create/update the is-highlighted attribute of the dashboard'}]}, status: 403
   end
