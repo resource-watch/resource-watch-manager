@@ -496,5 +496,28 @@ describe Api::DashboardsController, type: :controller do
       expect(response.status).to eq(400)
       expect(data).to eq({errors: [{status: 400, title: "Invalid page size"}]})
     end
+
+    it 'includes meta and links objects with extra info for pagination' do
+      get :index
+
+      body = json_response
+
+      expect(body).to include(:data)
+      expect(body[:data]).to be_a(Array)
+
+      expect(body).to include(:links)
+      expect(body[:links]).to be_a(Object)
+      expect(body[:links][:self]).to be_a(String)
+      expect(body[:links][:first]).to be_a(String)
+      expect(body[:links][:last]).to be_a(String)
+      expect(body[:links][:prev]).to be_nil
+      expect(body[:links][:next]).to be_a(String)
+      
+      expect(body).to include(:meta)
+      expect(body[:meta]).to be_a(Object)
+      expect(body[:meta]['total-pages'.to_sym]).to be_a(Number)
+      expect(body[:meta]['total-items'.to_sym]).to be_a(Number)
+      expect(body[:meta][:size]).to be_a(Number)
+    end
   end
 end
