@@ -42,7 +42,10 @@ class Api::DashboardsController < ApiController
       else
         dashboards
       end
-    render json: dashboards_json
+
+    p dashboards
+    render json: dashboards_json,
+           meta: get_pagination_metadata(dashboards)
   end
 
   def show
