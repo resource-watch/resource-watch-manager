@@ -515,9 +515,9 @@ describe Api::DashboardsController, type: :controller do
       
       expect(body).to include(:meta)
       expect(body[:meta]).to be_a(Object)
-      expect(body[:meta]['total-pages'.to_sym]).to be_a(Number)
-      expect(body[:meta]['total-items'.to_sym]).to be_a(Number)
-      expect(body[:meta][:size]).to be_a(Number)
+      expect(body[:meta]['total-pages'.to_sym]).to be_a(Integer)
+      expect(body[:meta]['total-items'.to_sym]).to be_a(Integer)
+      expect(body[:meta][:size]).to be_a(Integer)
     end
   end
 end
