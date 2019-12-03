@@ -43,7 +43,6 @@ class Api::DashboardsController < ApiController
         dashboards
       end
 
-    p dashboards
     render json: dashboards_json,
            meta: get_pagination_metadata(dashboards)
   end
