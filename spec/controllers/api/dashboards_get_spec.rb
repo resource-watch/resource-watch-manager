@@ -520,29 +520,22 @@ describe Api::DashboardsController, type: :controller do
       expect(body[:meta][:size]).to be_a(Integer)
     end
 
-    it 'includes correctly formatter pagination links' do
+    def valid_link(url)
+      if url
+        expect(url).not_to include "loggedUser="
+        expect(url).to include "v1/dashboard?"
+      end
+    end
+
+    it 'includes correctly formatted pagination links' do
       get :index, params: { loggedUser: USERS[:ADMIN].to_json }
       body = json_response
 
-      if body[:links][:self]
-        expect(body[:links][:self]).not_to include "loggedUser="
-      end
-
-      if body[:links][:first]
-        expect(body[:links][:first]).not_to include "loggedUser="
-      end
-
-      if body[:links][:last]
-        expect(body[:links][:last]).not_to include "loggedUser="
-      end
-
-      if body[:links][:prev]
-        expect(body[:links][:prev]).not_to include "loggedUser="
-      end
-
-      if body[:links][:next]
-        expect(body[:links][:next]).not_to include "loggedUser="
-      end
+      valid_link(body[:links][:self])
+      valid_link(body[:links][:first])
+      valid_link(body[:links][:last])
+      valid_link(body[:links][:prev])
+      valid_link(body[:links][:next])
     end
   end
 end
