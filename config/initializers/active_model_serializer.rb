@@ -4,14 +4,23 @@ class CustomPaginationLinks < ActiveModelSerializers::Adapter::JsonApi
   def success_document
     res = super
 
-    if res[:links]
+    if !res[:links].nil?
       normalize_pagination_links(res[:links])
+      res[:meta] = append_pagination_meta_info(@serializer.object)
     end
 
     return res
   end
 
   private
+
+  def append_pagination_meta_info(collection)
+    {
+      'total-pages': collection.total_pages,
+      'total-items': collection.total_entries,
+      size: collection.per_page,
+    }
+  end
 
   def normalize_pagination_links(links)
     links[:self] = replace_dashboard_correct_url(replace_logged_user_query_param(links[:self]))
