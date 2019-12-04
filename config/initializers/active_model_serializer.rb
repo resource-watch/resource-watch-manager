@@ -4,9 +4,13 @@ class CustomPaginationLinks < ActiveModelSerializers::Adapter::JsonApi
   def success_document
     res = super
 
-    if !res[:links].nil?
+    unless res[:links].nil?
       normalize_pagination_links(res[:links])
-      res[:meta] = append_pagination_meta_info(@serializer.object)
+
+      # Only append pagination metadata if no data has been set yet
+      if res[:meta].nil?
+        res[:meta] = append_pagination_meta_info(@serializer.object)
+      end
     end
 
     return res
