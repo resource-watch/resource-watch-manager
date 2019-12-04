@@ -519,5 +519,30 @@ describe Api::DashboardsController, type: :controller do
       expect(body[:meta]['total-items'.to_sym]).to be_a(Integer)
       expect(body[:meta][:size]).to be_a(Integer)
     end
+
+    it 'includes correctly formatter pagination links' do
+      get :index, params: { loggedUser: USERS[:ADMIN].to_json }
+      body = json_response
+
+      if body[:links][:self]
+        expect(body[:links][:self]).not_to include "loggedUser="
+      end
+
+      if body[:links][:first]
+        expect(body[:links][:first]).not_to include "loggedUser="
+      end
+
+      if body[:links][:last]
+        expect(body[:links][:last]).not_to include "loggedUser="
+      end
+
+      if body[:links][:prev]
+        expect(body[:links][:prev]).not_to include "loggedUser="
+      end
+
+      if body[:links][:next]
+        expect(body[:links][:next]).not_to include "loggedUser="
+      end
+    end
   end
 end
