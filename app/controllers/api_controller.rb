@@ -68,12 +68,4 @@ class ApiController < ActionController::API
     render json: resource, status: status, adapter: :json_api,
            serializer: ActiveModel::Serializer::ErrorSerializer
   end
-
-  def get_pagination_metadata(collection)
-    {
-      'total-pages': collection.total_pages,
-      'total-items': collection.total_entries,
-      size: collection.per_page,
-    }
-  end
 end
