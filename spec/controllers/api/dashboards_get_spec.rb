@@ -522,17 +522,22 @@ describe Api::DashboardsController, type: :controller do
       expect(body[:links]).to be_a(Object)
 
       expect(body[:links][:self]).to be_a(String)
-      selfLinkQueryParams = CGI.parse(URI.parse(body[:links][:self]).query)
-      expect(selfLinkQueryParams['page[number]'][0]).to eq("1")
-      expect(selfLinkQueryParams['page[size]'][0]).to eq("10")
+      expect_pagination_info(body[:links][:self], "1", "10")
+
+      expect(body[:links][:first]).to be_a(String)
+      expect_pagination_info(body[:links][:first], "1", "10")
+
+      expect(body[:links][:last]).to be_a(String)
+      expect_pagination_info(body[:links][:last], "2", "10")
+
+      expect(body[:links][:prev]).to be_a(String)
+      expect_pagination_info(body[:links][:prev], "1", "10")
+
+      expect(body[:links][:next]).to be_a(String)
+      expect_pagination_info(body[:links][:next], "2", "10")
 
       expect(body[:links][:first]).to eq(body[:links][:self])
       expect(body[:links][:prev]).to eq(body[:links][:self])
-
-      lastLinkQueryParams = CGI.parse(URI.parse(body[:links][:last]).query)
-      expect(lastLinkQueryParams['page[number]'][0]).to eq("2")
-      expect(lastLinkQueryParams['page[size]'][0]).to eq("10")
-
       expect(body[:links][:next]).to eq(body[:links][:last])
     end
 
