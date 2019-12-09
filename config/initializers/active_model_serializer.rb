@@ -27,11 +27,11 @@ class CustomPaginationLinks < ActiveModelSerializers::Adapter::JsonApi
   end
 
   def normalize_pagination_links(links)
-    links[:self] = replace_dashboard_correct_url(replace_logged_user_query_param(links[:self]))
-    links[:first] = replace_dashboard_correct_url(replace_logged_user_query_param(links[:first]))
-    links[:last] = replace_dashboard_correct_url(replace_logged_user_query_param(links[:last]))
-    links[:prev] = replace_dashboard_correct_url(replace_logged_user_query_param(links[:prev]))
-    links[:next] = replace_dashboard_correct_url(replace_logged_user_query_param(links[:next]))
+    links.each do |key, link|
+      link = links[:self] if link.nil?
+
+      links[key] = replace_dashboard_correct_url(replace_logged_user_query_param(link))
+    end
   end
 
   def replace_logged_user_query_param(str)

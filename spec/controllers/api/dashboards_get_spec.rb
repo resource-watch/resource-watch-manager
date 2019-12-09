@@ -508,11 +508,20 @@ describe Api::DashboardsController, type: :controller do
       expect(body).to include(:links)
       expect(body[:links]).to be_a(Object)
       expect(body[:links][:self]).to be_a(String)
-      expect(body[:links][:first]).to be_a(String)
-      expect(body[:links][:last]).to be_a(String)
-      expect(body[:links][:prev]).to be_nil
-      expect(body[:links][:next]).to be_a(String)
-      
+
+      selfLinkQueryParams = CGI.parse(URI.parse(body[:links][:self]).query)
+      expect(selfLinkQueryParams['page[number]'][0]).to eq("1")
+      expect(selfLinkQueryParams['page[size]'][0]).to eq("10")
+
+      expect(body[:links][:first]).to eq(body[:links][:self])
+      expect(body[:links][:prev]).to eq(body[:links][:self])
+
+      lastLinkQueryParams = CGI.parse(URI.parse(body[:links][:last]).query)
+      expect(lastLinkQueryParams['page[number]'][0]).to eq("2")
+      expect(lastLinkQueryParams['page[size]'][0]).to eq("10")
+
+      expect(body[:links][:next]).to eq(body[:links][:last])
+
       expect(body).to include(:meta)
       expect(body[:meta]).to be_a(Object)
       expect(body[:meta]['total-pages'.to_sym]).to be_a(Integer)
