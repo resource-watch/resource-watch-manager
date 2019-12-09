@@ -35,11 +35,13 @@ class CustomPaginationLinks < ActiveModelSerializers::Adapter::JsonApi
   end
 
   def replace_logged_user_query_param(str)
-    return !str.nil? ? str.gsub(/loggedUser=[^&]*&/m, '') : str
+    return str if str.nil?
+    str.gsub(/loggedUser=[^&]*&/m, '')
   end
 
   def replace_dashboard_correct_url(str)
-    return !str.nil? ? str.gsub(/api\/dashboards/m, 'v1/dashboard') : str
+    return str if str.nil?
+    str.gsub(/api\/dashboards/m, 'v1/dashboard')
   end
 end
 
