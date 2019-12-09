@@ -4,6 +4,19 @@ require 'spec_helper'
 require 'json'
 require 'constants'
 
+def valid_link(url)
+  if url
+    expect(url).not_to include "loggedUser="
+    expect(url).to include "v1/dashboard?"
+  end
+end
+
+def expect_pagination_info(link, number, size)
+  linkQueryParams = CGI.parse(URI.parse(link).query)
+  expect(linkQueryParams['page[number]'][0]).to eq(number)
+  expect(linkQueryParams['page[size]'][0]).to eq(size)
+end
+
 describe Api::DashboardsController, type: :controller do
   describe 'GET #index' do
     before(:each) do
@@ -497,7 +510,7 @@ describe Api::DashboardsController, type: :controller do
       expect(data).to eq({errors: [{status: 400, title: "Invalid page size"}]})
     end
 
-    it 'includes meta and links objects with extra info for pagination' do
+    it 'includes links objects with links for self, prev, next, first and last pages' do
       get :index
 
       body = json_response
@@ -507,8 +520,8 @@ describe Api::DashboardsController, type: :controller do
 
       expect(body).to include(:links)
       expect(body[:links]).to be_a(Object)
-      expect(body[:links][:self]).to be_a(String)
 
+      expect(body[:links][:self]).to be_a(String)
       selfLinkQueryParams = CGI.parse(URI.parse(body[:links][:self]).query)
       expect(selfLinkQueryParams['page[number]'][0]).to eq("1")
       expect(selfLinkQueryParams['page[size]'][0]).to eq("10")
@@ -521,19 +534,18 @@ describe Api::DashboardsController, type: :controller do
       expect(lastLinkQueryParams['page[size]'][0]).to eq("10")
 
       expect(body[:links][:next]).to eq(body[:links][:last])
+    end
+
+    it 'includes meta objects with extra pagination info' do
+      get :index
+
+      body = json_response
 
       expect(body).to include(:meta)
       expect(body[:meta]).to be_a(Object)
       expect(body[:meta]['total-pages'.to_sym]).to be_a(Integer)
       expect(body[:meta]['total-items'.to_sym]).to be_a(Integer)
       expect(body[:meta][:size]).to be_a(Integer)
-    end
-
-    def valid_link(url)
-      if url
-        expect(url).not_to include "loggedUser="
-        expect(url).to include "v1/dashboard?"
-      end
     end
 
     it 'includes correctly formatted pagination links' do
@@ -545,6 +557,29 @@ describe Api::DashboardsController, type: :controller do
       valid_link(body[:links][:last])
       valid_link(body[:links][:prev])
       valid_link(body[:links][:next])
+    end
+
+    it 'pagination meta information adjusts according to query pagination data' do
+      get :index, params: {page: {size: 5, number: 2}}
+
+      body = json_response
+
+      expect(body).to include(:meta)
+      expect(body[:meta]).to be_a(Object)
+      expect(body[:meta]['total-pages'.to_sym]).to eq(4)
+      expect(body[:meta]['total-items'.to_sym]).to eq(19)
+      expect(body[:meta][:size]).to eq(5)
+    end
+
+    it 'pagination links adjusts according to query pagination data' do
+      get :index, params: {page: {size: 5, number: 3}}
+      body = json_response
+
+      expect_pagination_info(body[:links][:self], "3", "5")
+      expect_pagination_info(body[:links][:first], "1", "5")
+      expect_pagination_info(body[:links][:last], "4", "5")
+      expect_pagination_info(body[:links][:prev], "2", "5")
+      expect_pagination_info(body[:links][:next], "4", "5")
     end
   end
 end
