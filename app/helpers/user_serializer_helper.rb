@@ -20,6 +20,7 @@ module UserSerializerHelper
     result = {
         name: user['name'],
         email: user['email'],
+        photo: user['photo'],
     }
 
     result[:role] = user['role'] if isAdmin

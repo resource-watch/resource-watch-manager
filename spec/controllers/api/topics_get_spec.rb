@@ -74,7 +74,7 @@ describe Api::TopicsController, type: :controller do
       expect(data.map { |topic| topic[:attributes][:private] }.uniq).to eq([false])
     end
 
-    it 'with includes=user while not being logged in should return dashboards including user name and email address' do
+    it 'with includes=user while not being logged in should return dashboards including user name, email and photo' do
       VCR.use_cassette("include_user") do
         get :index, params: {includes: 'user'}
 
@@ -84,12 +84,12 @@ describe Api::TopicsController, type: :controller do
         expect(data.size).to eq(4)
         expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |dashboard|
-          expect(dashboard[:attributes][:user].keys).to eq([:name, :email])
+          expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :photo])
         end
       end
     end
 
-    it 'with includes=user while being logged in as USER should return dashboards including user name and email address' do
+    it 'with includes=user while being logged in as USER should return dashboards including user name, email and photo' do
       VCR.use_cassette("include_user") do
         get :index, params: {includes: 'user', loggedUser: USERS[:USER].to_json}
 
@@ -99,12 +99,12 @@ describe Api::TopicsController, type: :controller do
         expect(data.size).to eq(4)
         expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |dashboard|
-          expect(dashboard[:attributes][:user].keys).to eq([:name, :email])
+          expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :photo])
         end
       end
     end
 
-    it 'with includes=user while being logged in as MANAGER should return dashboards including user name and email address' do
+    it 'with includes=user while being logged in as MANAGER should return dashboards including user name, email and photo' do
       VCR.use_cassette("include_user") do
         get :index, params: {includes: 'user', loggedUser: USERS[:MANAGER].to_json}
 
@@ -114,12 +114,12 @@ describe Api::TopicsController, type: :controller do
         expect(data.size).to eq(4)
         expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |dashboard|
-          expect(dashboard[:attributes][:user].keys).to eq([:name, :email])
+          expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :photo])
         end
       end
     end
 
-    it 'with includes=user while being logged in as ADMIN should return dashboards including user name, email address and role' do
+    it 'with includes=user while being logged in as ADMIN should return dashboards including user name, email, photo and role' do
       VCR.use_cassette("include_user") do
         get :index, params: {includes: 'user', loggedUser: USERS[:ADMIN].to_json}
 
@@ -129,12 +129,12 @@ describe Api::TopicsController, type: :controller do
         expect(data.size).to eq(4)
         expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |dashboard|
-          expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :role])
+          expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :photo, :role])
         end
       end
     end
 
-    it 'with includes=user while being logged in as ADMIN should return dashboards including user name, email address and role, even if only partial data is available' do
+    it 'with includes=user while being logged in as ADMIN should return dashboards including user name, email, photo and role, even if only partial data is available' do
       VCR.use_cassette("include_user_partial") do
         get :index, params: {includes: 'user', loggedUser: USERS[:ADMIN].to_json}
 
@@ -163,7 +163,7 @@ describe Api::TopicsController, type: :controller do
       end
     end
 
-    it 'with includes=user while not being logged in should return topics including user name and email address' do
+    it 'with includes=user while not being logged in should return topics including user name, email and photo' do
       VCR.use_cassette("include_user") do
         get :index, params: {includes: 'user'}
 
@@ -173,12 +173,12 @@ describe Api::TopicsController, type: :controller do
         expect(data.size).to eq(4)
         expect(data.map { |topic| topic[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |topic|
-          expect(topic[:attributes][:user].keys).to eq([:name, :email])
+          expect(topic[:attributes][:user].keys).to eq([:name, :email, :photo])
         end
       end
     end
 
-    it 'with includes=user while being logged in as USER should return topics including user name and email address' do
+    it 'with includes=user while being logged in as USER should return topics including user name, email and photo' do
       VCR.use_cassette("include_user") do
         get :index, params: {includes: 'user', loggedUser: USERS[:USER].to_json}
 
@@ -188,12 +188,12 @@ describe Api::TopicsController, type: :controller do
         expect(data.size).to eq(4)
         expect(data.map { |topic| topic[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |topic|
-          expect(topic[:attributes][:user].keys).to eq([:name, :email])
+          expect(topic[:attributes][:user].keys).to eq([:name, :email, :photo])
         end
       end
     end
 
-    it 'with includes=user while being logged in as MANAGER should return topics including user name and email address' do
+    it 'with includes=user while being logged in as MANAGER should return topics including user name, email and photo' do
       VCR.use_cassette("include_user") do
         get :index, params: {includes: 'user', loggedUser: USERS[:MANAGER].to_json}
 
@@ -203,12 +203,12 @@ describe Api::TopicsController, type: :controller do
         expect(data.size).to eq(4)
         expect(data.map { |topic| topic[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |topic|
-          expect(topic[:attributes][:user].keys).to eq([:name, :email])
+          expect(topic[:attributes][:user].keys).to eq([:name, :email, :photo])
         end
       end
     end
 
-    it 'with includes=user while being logged in as ADMIN should return topics including user name, email address and role' do
+    it 'with includes=user while being logged in as ADMIN should return topics including user name, email, photo and role' do
       VCR.use_cassette("include_user") do
         get :index, params: {includes: 'user', loggedUser: USERS[:ADMIN].to_json}
 
@@ -218,12 +218,12 @@ describe Api::TopicsController, type: :controller do
         expect(data.size).to eq(4)
         expect(data.map { |topic| topic[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |topic|
-          expect(topic[:attributes][:user].keys).to eq([:name, :email, :role])
+          expect(topic[:attributes][:user].keys).to eq([:name, :email, :photo, :role])
         end
       end
     end
 
-    it 'with includes=user while being logged in as ADMIN should return topics including user name, email address and role, even if only partial data is available' do
+    it 'with includes=user while being logged in as ADMIN should return topics including user name, email, photo and role, even if only partial data is available' do
       VCR.use_cassette("include_user_partial") do
         get :index, params: {includes: 'user', loggedUser: USERS[:ADMIN].to_json}
 
