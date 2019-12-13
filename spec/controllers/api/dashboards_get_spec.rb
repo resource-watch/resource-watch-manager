@@ -17,6 +17,13 @@ def expect_pagination_info(link, number, size)
   expect(linkQueryParams['page[size]'][0]).to eq(size)
 end
 
+def validate_pagination_link_query_params(link, params)
+  query_params = CGI.parse(URI.parse(link).query)
+  params.each do |key, value|
+    expect(query_params["#{key}"][0]).to eq(value)
+  end
+end
+
 describe Api::DashboardsController, type: :controller do
   describe 'GET #index' do
     before(:each) do
@@ -630,6 +637,42 @@ describe Api::DashboardsController, type: :controller do
       expect_pagination_info(body[:links][:last], "4", "5")
       expect_pagination_info(body[:links][:prev], "2", "5")
       expect_pagination_info(body[:links][:next], "4", "5")
+    end
+
+    it 'when requesting user data for dashboards, get params are kept in the pagination links returned' do
+      get :index, params: {includes: 'user', page: {size: 5, number: 3}}
+      body = json_response
+      expect(body).to include(:links)
+
+      validate_pagination_link_query_params(body[:links][:self], {
+        'page[number]': '3',
+        'page[size]': '5',
+        'includes': 'user',
+      })
+
+      validate_pagination_link_query_params(body[:links][:first], {
+        'page[number]': '1',
+        'page[size]': '5',
+        'includes': 'user',
+      })
+
+      validate_pagination_link_query_params(body[:links][:last], {
+        'page[number]': '4',
+        'page[size]': '5',
+        'includes': 'user',
+      })
+
+      validate_pagination_link_query_params(body[:links][:prev], {
+        'page[number]': '2',
+        'page[size]': '5',
+        'includes': 'user',
+      })
+
+      validate_pagination_link_query_params(body[:links][:next], {
+        'page[number]': '4',
+        'page[size]': '5',
+        'includes': 'user',
+      })
     end
   end
 end
