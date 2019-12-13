@@ -9,6 +9,18 @@ class Api::DashboardsController < ApiController
   before_action :ensure_is_manager_or_admin, only: :update
   before_action :ensure_is_admin_for_restricted_attrs, only: [:create, :update]
 
+  def handmade_pagination_links(collection)
+    prev_page = collection.current_page <= 1 ? 1 : collection.current_page - 1
+    next_page = collection.current_page >= collection.total_pages ? collection.total_pages : collection.current_page + 1
+    {
+      self: "#{ENV['LOCAL_URL']}/v1/dashboard?page[number]=#{collection.current_page}&page[size]=#{collection.per_page}",
+      prev: "#{ENV['LOCAL_URL']}/v1/dashboard?page[number]=#{prev_page}&page[size]=#{collection.per_page}",
+      next: "#{ENV['LOCAL_URL']}/v1/dashboard?page[number]=#{next_page}&page[size]=#{collection.per_page}",
+      first: "#{ENV['LOCAL_URL']}/v1/dashboard?page[number]=1&page[size]=#{collection.per_page}",
+      last: "#{ENV['LOCAL_URL']}/v1/dashboard?page[number]=#{collection.total_pages}&page[size]=#{collection.per_page}",
+    }
+  end
+
   def index
     if params.include?('user.role') && @user&.dig('role').eql?('ADMIN')
       usersIdsByRole = UserService.usersByRole params['user.role']
@@ -42,7 +54,13 @@ class Api::DashboardsController < ApiController
       else
         dashboards
       end
-    render json: dashboards_json
+
+    render json: dashboards_json, meta: {
+      links: handmade_pagination_links(dashboards),
+      'total-pages': dashboards.total_pages,
+      'total-items': dashboards.total_entries,
+      size: dashboards.per_page,
+    }
   end
 
   def show

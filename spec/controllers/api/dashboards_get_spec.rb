@@ -613,5 +613,23 @@ describe Api::DashboardsController, type: :controller do
       expect_pagination_info(body[:links][:prev], "2", "5")
       expect_pagination_info(body[:links][:next], "4", "5")
     end
+
+    it 'when requesting user data for dashboards, includes meta objects with extra pagination info' do
+      get :index, params: {includes: 'user', page: {size: 5, number: 3}}
+
+      body = json_response
+      expect(body).to include(:meta)
+      expect(body[:meta]).to be_a(Object)
+      expect(body[:meta]['total-pages'.to_sym]).to be_a(Integer)
+      expect(body[:meta]['total-items'.to_sym]).to be_a(Integer)
+      expect(body[:meta][:size]).to be_a(Integer)
+
+      expect(body).to include(:links)
+      expect_pagination_info(body[:links][:self], "3", "5")
+      expect_pagination_info(body[:links][:first], "1", "5")
+      expect_pagination_info(body[:links][:last], "4", "5")
+      expect_pagination_info(body[:links][:prev], "2", "5")
+      expect_pagination_info(body[:links][:next], "4", "5")
+    end
   end
 end
