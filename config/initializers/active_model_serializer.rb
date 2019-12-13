@@ -13,6 +13,12 @@ class CustomPaginationLinks < ActiveModelSerializers::Adapter::JsonApi
       end
     end
 
+    # Links can be provided by the controller in the res[:meta][:links] property
+    # If that is the case, then res[:meta][:links] is deleted and its value replaces res[:links]
+    unless res[:meta].nil? || res[:meta][:links].nil?
+      res[:links] = res[:meta].delete(:links)
+    end
+
     return res
   end
 
@@ -29,7 +35,6 @@ class CustomPaginationLinks < ActiveModelSerializers::Adapter::JsonApi
   def normalize_pagination_links(links)
     links.each do |key, link|
       link = links[:self] if link.nil?
-
       links[key] = replace_dashboard_correct_url(replace_logged_user_query_param(link))
     end
   end
