@@ -4,6 +4,12 @@ class CustomPaginationLinks < ActiveModelSerializers::Adapter::JsonApi
   def success_document
     res = super
 
+    # Links can be provided by the controller in the res[:meta][:links] property
+    # If that is the case, then res[:meta][:links] is deleted and its value replaces res[:links]
+    unless res[:meta].nil? || res[:meta][:links].nil?
+      res[:links] = res[:meta].delete(:links)
+    end
+
     unless res[:links].nil?
       normalize_pagination_links(res[:links])
 
@@ -11,12 +17,6 @@ class CustomPaginationLinks < ActiveModelSerializers::Adapter::JsonApi
       if res[:meta].nil?
         res[:meta] = append_pagination_meta_info(@serializer.object)
       end
-    end
-
-    # Links can be provided by the controller in the res[:meta][:links] property
-    # If that is the case, then res[:meta][:links] is deleted and its value replaces res[:links]
-    unless res[:meta].nil? || res[:meta][:links].nil?
-      res[:links] = res[:meta].delete(:links)
     end
 
     return res
