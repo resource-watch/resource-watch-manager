@@ -40,7 +40,6 @@ module PaginationHelper
 
   def self.handmade_pagination_links(collection, params)
     query = params.except(:controller, :action, :format, :loggedUser, :user).clone.permit!
-    query['page[size]'] = collection.per_page unless query['page']&.has_key?('size')
     {
       self: get_self_link(collection, query),
       prev: get_prev_link(collection, query),
