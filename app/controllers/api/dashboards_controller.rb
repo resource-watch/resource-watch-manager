@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Api::DashboardsController < ApiController
+  include PaginationHelper
+
   before_action :set_dashboard, only: %i[show update destroy clone]
   before_action :ensure_is_admin_or_owner_manager, only: :update
 
@@ -8,57 +10,6 @@ class Api::DashboardsController < ApiController
   before_action :ensure_user_has_requested_apps, only: [:create, :update]
   before_action :ensure_is_manager_or_admin, only: :update
   before_action :ensure_is_admin_for_highlighting, only: [:create, :update]
-
-  def get_self_link(collection, query)
-    self_query = query.clone
-    self_query = query.except(:page).clone
-    self_query['page[number]'] = collection.current_page
-    self_query['page[size]'] = collection.per_page
-    "#{ENV['LOCAL_URL']}/v1/dashboard?#{self_query.to_query}"
-  end
-
-  def get_prev_link(collection, query)
-    current = collection.current_page
-    prev_query = query.except(:page).clone
-    prev_query['page[number]'] = current <= 1 ? 1 : current - 1
-    prev_query['page[size]'] = collection.per_page
-    "#{ENV['LOCAL_URL']}/v1/dashboard?#{prev_query.to_query}"
-  end
-
-  def get_next_link(collection, query)
-    total = collection.total_pages
-    current = collection.current_page
-    next_query = query.except(:page).clone
-    next_query['page[number]'] = current >= total ? total : current + 1
-    next_query['page[size]'] = collection.per_page
-    "#{ENV['LOCAL_URL']}/v1/dashboard?#{next_query.to_query}"
-  end
-
-  def get_first_link(collection, query)
-    first_query = query.except(:page).clone
-    first_query['page[number]'] = 1
-    first_query['page[size]'] = collection.per_page
-    "#{ENV['LOCAL_URL']}/v1/dashboard?#{first_query.to_query}"
-  end
-
-  def get_last_link(collection, query)
-    last_query = query.except(:page).clone
-    last_query['page[number]'] = collection.total_pages
-    last_query['page[size]'] = collection.per_page
-    "#{ENV['LOCAL_URL']}/v1/dashboard?#{last_query.to_query}"
-  end
-
-  def handmade_pagination_links(collection, params)
-    query = params.except(:controller, :action, :format, :loggedUser, :user).clone.permit!
-    query['page[size]'] = collection.per_page unless query['page']&.has_key?('size')
-    {
-      self: get_self_link(collection, query),
-      prev: get_prev_link(collection, query),
-      next: get_next_link(collection, query),
-      first: get_first_link(collection, query),
-      last: get_last_link(collection, query),
-    }
-  end
 
   def index
     if params.include?('user.role') && @user&.dig('role').eql?('ADMIN')
@@ -95,7 +46,7 @@ class Api::DashboardsController < ApiController
       end
 
     render json: dashboards_json, meta: {
-      links: handmade_pagination_links(dashboards, params),
+      links: PaginationHelper.handmade_pagination_links(dashboards, params),
       'total-pages': dashboards.total_pages,
       'total-items': dashboards.total_entries,
       size: dashboards.per_page,
