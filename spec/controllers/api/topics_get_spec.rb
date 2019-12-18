@@ -85,6 +85,7 @@ describe Api::TopicsController, type: :controller do
         expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |dashboard|
           expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :photo])
+          expect(dashboard[:attributes][:user][:photo]).to be_url()
         end
       end
     end
@@ -100,6 +101,7 @@ describe Api::TopicsController, type: :controller do
         expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |dashboard|
           expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :photo])
+          expect(dashboard[:attributes][:user][:photo]).to be_url()
         end
       end
     end
@@ -115,6 +117,7 @@ describe Api::TopicsController, type: :controller do
         expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |dashboard|
           expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :photo])
+          expect(dashboard[:attributes][:user][:photo]).to be_url()
         end
       end
     end
@@ -130,6 +133,7 @@ describe Api::TopicsController, type: :controller do
         expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |dashboard|
           expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :photo, :role])
+          expect(dashboard[:attributes][:user][:photo]).to be_url()
         end
       end
     end
@@ -152,14 +156,17 @@ describe Api::TopicsController, type: :controller do
         expect(responseDatasetOne[:attributes][:user][:name]).to eq('John Doe')
         expect(responseDatasetOne[:attributes][:user][:role]).to eq('ADMIN')
         expect(responseDatasetOne[:attributes][:user][:email]).to eq('john.doe@vizzuality.com')
+        expect(responseDatasetOne[:attributes][:user][:photo]).to be_url()
 
         expect(responseDatasetTwo[:attributes][:user][:name]).to eq(nil)
         expect(responseDatasetTwo[:attributes][:user][:role]).to eq('USER')
         expect(responseDatasetTwo[:attributes][:user][:email]).to eq('jane.poe@vizzuality.com')
+        expect(responseDatasetTwo[:attributes][:user][:photo]).to be_url()
 
         expect(responseDatasetThree[:attributes][:user][:name]).to eq('mark')
         expect(responseDatasetThree[:attributes][:user][:role]).to eq('USER')
         expect(responseDatasetThree[:attributes][:user][:email]).to eq(nil)
+        expect(responseDatasetThree[:attributes][:user][:photo]).to be_url()
       end
     end
 
@@ -174,6 +181,7 @@ describe Api::TopicsController, type: :controller do
         expect(data.map { |topic| topic[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |topic|
           expect(topic[:attributes][:user].keys).to eq([:name, :email, :photo])
+          expect(topic[:attributes][:user][:photo]).to be_url()
         end
       end
     end
@@ -189,6 +197,7 @@ describe Api::TopicsController, type: :controller do
         expect(data.map { |topic| topic[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |topic|
           expect(topic[:attributes][:user].keys).to eq([:name, :email, :photo])
+          expect(topic[:attributes][:user][:photo]).to be_url()
         end
       end
     end
@@ -204,6 +213,7 @@ describe Api::TopicsController, type: :controller do
         expect(data.map { |topic| topic[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |topic|
           expect(topic[:attributes][:user].keys).to eq([:name, :email, :photo])
+          expect(topic[:attributes][:user][:photo]).to be_url()
         end
       end
     end
@@ -219,6 +229,7 @@ describe Api::TopicsController, type: :controller do
         expect(data.map { |topic| topic[:attributes][:user].length }.uniq).not_to eq([0])
         data.each do |topic|
           expect(topic[:attributes][:user].keys).to eq([:name, :email, :photo, :role])
+          expect(topic[:attributes][:user][:photo]).to be_url()
         end
       end
     end
@@ -241,14 +252,17 @@ describe Api::TopicsController, type: :controller do
         expect(responseDatasetOne[:attributes][:user][:name]).to eq('John Doe')
         expect(responseDatasetOne[:attributes][:user][:role]).to eq('ADMIN')
         expect(responseDatasetOne[:attributes][:user][:email]).to eq('john.doe@vizzuality.com')
+        expect(responseDatasetOne[:attributes][:user][:photo]).to be_url()
 
         expect(responseDatasetTwo[:attributes][:user][:name]).to eq(nil)
         expect(responseDatasetTwo[:attributes][:user][:role]).to eq('USER')
         expect(responseDatasetTwo[:attributes][:user][:email]).to eq('jane.poe@vizzuality.com')
+        expect(responseDatasetTwo[:attributes][:user][:photo]).to be_url()
 
         expect(responseDatasetThree[:attributes][:user][:name]).to eq('mark')
         expect(responseDatasetThree[:attributes][:user][:role]).to eq('USER')
         expect(responseDatasetThree[:attributes][:user][:email]).to eq(nil)
+        expect(responseDatasetThree[:attributes][:user][:photo]).to be_url()
       end
     end
 
