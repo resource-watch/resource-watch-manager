@@ -130,6 +130,26 @@ describe Api::DashboardsController, type: :controller do
       expect(data.map { |dashboard| dashboard[:attributes]['is-highlighted'.to_sym] }.uniq).to eq([false])
     end
 
+    it 'with is-featured=true filter should return only featured dashboards' do
+      get :index, params: {'is-featured': true}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(1)
+      expect(data.map { |dashboard| dashboard[:attributes]['is-featured'.to_sym] }.uniq).to eq([true])
+    end
+
+    it 'with is-featured=false filter should return only non-featured dashboards' do
+      get :index, params: {'is-featured': false}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(4)
+      expect(data.map { |dashboard| dashboard[:attributes]['is-featured'.to_sym] }.uniq).to eq([false])
+    end
+
     it 'with includes=user while not being logged in should return dashboards including user name and email address' do
       VCR.use_cassette("include_user") do
         get :index, params: {includes: 'user'}

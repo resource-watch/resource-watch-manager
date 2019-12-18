@@ -346,5 +346,106 @@ describe Api::DashboardsController, type: :controller do
       expect(json_response[:errors][0][:status]).to eq("403")
       expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the is-highlighted attribute of the dashboard")
     end
+
+    it 'with role ADMIN should create the dashboard providing the is-featured attribute' do
+      post :create, params: {
+        "data": {
+          "type": "dashboards",
+          "attributes": {
+            "name": "Cities",
+            "summary": "test dashboard one summary",
+            "description": "Dashboard that uses cities",
+            "content": "test dashboard one description",
+            "published": true,
+            "photo": {
+              "cover": "/photos/cover/missing.png",
+              "thumb": "/photos/thumb/missing.png",
+              "original": "/photos/original/missing.png"
+            },
+            "user-id": "57ac9f9e29309063404573a2",
+            "private": true,
+            "application": [
+              "rw"
+            ],
+            "is-featured": true
+          }
+        },
+        loggedUser: USERS[:ADMIN]
+      }
+
+      expect(response.status).to eq(201)
+      sampleDashboard = json_response[:data]
+      validate_dashboard_structure(sampleDashboard)
+      expect(sampleDashboard[:attributes]['is-featured'.to_sym]).to eq(true)
+    end
+
+    it 'with role MANAGER should not create the dashboard providing the is-featured attribute' do
+      post :create, params: {
+        "data": {
+          "type": "dashboards",
+          "attributes": {
+            "name": "Cities",
+            "summary": "test dashboard one summary",
+            "description": "Dashboard that uses cities",
+            "content": "test dashboard one description",
+            "published": true,
+            "photo": {
+              "cover": "/photos/cover/missing.png",
+              "thumb": "/photos/thumb/missing.png",
+              "original": "/photos/original/missing.png"
+            },
+            "user-id": "57ac9f9e29309063404573a2",
+            "private": true,
+            "application": [
+              "rw"
+            ],
+            "is-featured": true
+          }
+        },
+        loggedUser: USERS[:MANAGER]
+      }
+
+      expect(response.status).to eq(403)
+      expect(json_response).to have_key(:errors)
+      expect(json_response[:errors][0]).to have_key(:status)
+      expect(json_response[:errors][0]).to have_key(:title)
+      expect(json_response[:errors][0][:status]).to eq("403")
+      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the is-featured attribute of the dashboard")
+
+    end
+
+    it 'with role USER should not create the dashboard providing the is-highlighted attribute' do
+      post :create, params: {
+        "data": {
+          "type": "dashboards",
+          "attributes": {
+            "name": "Cities",
+            "summary": "test dashboard one summary",
+            "description": "Dashboard that uses cities",
+            "content": "test dashboard one description",
+            "published": true,
+            "photo": {
+              "cover": "/photos/cover/missing.png",
+              "thumb": "/photos/thumb/missing.png",
+              "original": "/photos/original/missing.png"
+            },
+            "user-id": "57ac9f9e29309063404573a2",
+            "private": true,
+            "application": [
+              "rw"
+            ],
+            "is-featured": true
+          }
+        },
+        loggedUser: USERS[:USER]
+      }
+
+      expect(response.status).to eq(403)
+      expect(json_response).to have_key(:errors)
+      expect(json_response[:errors][0]).to have_key(:status)
+      expect(json_response[:errors][0]).to have_key(:title)
+      expect(json_response[:errors][0][:status]).to eq("403")
+      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the is-featured attribute of the dashboard")
+    end
   end
 end

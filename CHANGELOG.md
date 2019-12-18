@@ -1,3 +1,6 @@
+# 18/12/2019
+- Add `is-featured` field to dashboards
+
 # 28/11/2019
 - Add `is-highlighted` field to dashboards
 

@@ -260,7 +260,7 @@ describe Api::DashboardsController, type: :controller do
       expect(sampleDashboard[:attributes]['is-highlighted'.to_sym]).to eq(true)
     end
 
-    it 'with role MANAGER should not create the dashboard providing the is-highlighted attribute' do
+    it 'with role MANAGER should not update the dashboard providing the is-highlighted attribute' do
       patch :update, params: {
         id: @dashboard_private_manager[:id],
         "data": {
@@ -273,16 +273,14 @@ describe Api::DashboardsController, type: :controller do
       }
 
       expect(response.status).to eq(403)
-
       expect(json_response).to have_key(:errors)
       expect(json_response[:errors][0]).to have_key(:status)
       expect(json_response[:errors][0]).to have_key(:title)
-
       expect(json_response[:errors][0][:status]).to eq("403")
       expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the is-highlighted attribute of the dashboard")
     end
 
-    it 'with role USER should not create the dashboard providing the is-highlighted attribute' do
+    it 'with role USER should not update the dashboard providing the is-highlighted attribute' do
       patch :update, params: {
         id: @dashboard_private_manager[:id],
         "data": {
@@ -295,11 +293,67 @@ describe Api::DashboardsController, type: :controller do
       }
 
       expect(response.status).to eq(403)
-
       expect(json_response).to have_key(:errors)
       expect(json_response[:errors][0]).to have_key(:status)
       expect(json_response[:errors][0]).to have_key(:title)
+      expect(json_response[:errors][0][:status]).to eq("403")
+      expect(json_response[:errors][0][:title]).to eq("You need to be either ADMIN or MANAGER and own the dashboard to update it")
+    end
 
+    it 'with role ADMIN should update the dashboard providing the is-featured attribute' do
+      patch :update, params: {
+        id: @dashboard_private_manager[:id],
+        "data": {
+          "type": "dashboards",
+          "attributes": {
+            "is-featured": true
+          }
+        },
+        loggedUser: USERS[:ADMIN]
+      }
+
+      expect(response.status).to eq(200)
+      sampleDashboard = json_response[:data]
+      validate_dashboard_structure(sampleDashboard)
+      expect(sampleDashboard[:attributes]['is-featured'.to_sym]).to eq(true)
+    end
+
+    it 'with role MANAGER should not update the dashboard providing the is-featured attribute' do
+      patch :update, params: {
+        id: @dashboard_private_manager[:id],
+        "data": {
+          "type": "dashboards",
+          "attributes": {
+            "is-featured": true
+          }
+        },
+        loggedUser: USERS[:MANAGER]
+      }
+
+      expect(response.status).to eq(403)
+      expect(json_response).to have_key(:errors)
+      expect(json_response[:errors][0]).to have_key(:status)
+      expect(json_response[:errors][0]).to have_key(:title)
+      expect(json_response[:errors][0][:status]).to eq("403")
+      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the is-featured attribute of the dashboard")
+    end
+
+    it 'with role USER should not update the dashboard providing the is-featured attribute' do
+      patch :update, params: {
+        id: @dashboard_private_manager[:id],
+        "data": {
+          "type": "dashboards",
+          "attributes": {
+            "is-featured": true
+          }
+        },
+        loggedUser: USERS[:USER]
+      }
+
+      expect(response.status).to eq(403)
+      expect(json_response).to have_key(:errors)
+      expect(json_response[:errors][0]).to have_key(:status)
+      expect(json_response[:errors][0]).to have_key(:title)
       expect(json_response[:errors][0][:status]).to eq("403")
       expect(json_response[:errors][0][:title]).to eq("You need to be either ADMIN or MANAGER and own the dashboard to update it")
     end
