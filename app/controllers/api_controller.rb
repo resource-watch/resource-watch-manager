@@ -10,11 +10,10 @@ class ApiController < ActionController::API
 
   def load_user_from_request
     @user = {}
-    if request.get? && request.params[:loggedUser].present?
-      @user = JSON.parse(request.params[:loggedUser]) || {}
-    end
 
-    if request.post? or request.patch? or request.delete? or request.put?
+    if request.params[:loggedUser].present? and request.params[:loggedUser].is_a? String
+      @user = JSON.parse(request.params[:loggedUser]) || {}
+    else
       @user = request.params[:loggedUser] || {}
     end
 
