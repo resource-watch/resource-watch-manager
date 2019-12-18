@@ -308,7 +308,7 @@ describe Api::DashboardsController, type: :controller do
       expect(json_response[:errors][0]).to have_key(:title)
 
       expect(json_response[:errors][0][:status]).to eq("403")
-      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the is-highlighted attribute of the dashboard")
+      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the provided attribute of the dashboard")
 
     end
 
@@ -344,7 +344,7 @@ describe Api::DashboardsController, type: :controller do
       expect(json_response[:errors][0]).to have_key(:title)
 
       expect(json_response[:errors][0][:status]).to eq("403")
-      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the is-highlighted attribute of the dashboard")
+      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the provided attribute of the dashboard")
     end
 
     it 'with role ADMIN should create the dashboard providing the is-featured attribute' do
@@ -410,7 +410,7 @@ describe Api::DashboardsController, type: :controller do
       expect(json_response[:errors][0]).to have_key(:status)
       expect(json_response[:errors][0]).to have_key(:title)
       expect(json_response[:errors][0][:status]).to eq("403")
-      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the is-featured attribute of the dashboard")
+      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the provided attribute of the dashboard")
 
     end
 
@@ -445,7 +445,7 @@ describe Api::DashboardsController, type: :controller do
       expect(json_response[:errors][0]).to have_key(:status)
       expect(json_response[:errors][0]).to have_key(:title)
       expect(json_response[:errors][0][:status]).to eq("403")
-      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the is-featured attribute of the dashboard")
+      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the provided attribute of the dashboard")
     end
   end
 end

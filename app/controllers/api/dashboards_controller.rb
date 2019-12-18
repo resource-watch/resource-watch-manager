@@ -7,8 +7,7 @@ class Api::DashboardsController < ApiController
   before_action :get_user, only: %i[index]
   before_action :ensure_user_has_requested_apps, only: [:create, :update]
   before_action :ensure_is_manager_or_admin, only: :update
-  before_action :ensure_is_admin_for_highlighting, only: [:create, :update]
-  before_action :ensure_is_admin_for_featuring, only: [:create, :update]
+  before_action :ensure_is_admin_for_restricted_attrs, only: [:create, :update]
 
   def index
     if params.include?('user.role') && @user&.dig('role').eql?('ADMIN')
@@ -130,16 +129,12 @@ class Api::DashboardsController < ApiController
     render json: {errors: [{status: '403', title: 'You need to be either ADMIN or MANAGER and own the dashboard to update it'}]}, status: 403
   end
 
-  def ensure_is_admin_for_highlighting
-    return true unless request.params.dig('data', 'attributes', 'is-highlighted').present?
-    return true if request.params.dig('data', 'attributes', 'is-highlighted').present? and @user[:role].eql? "ADMIN"
-    render json: {errors: [{status: '403', title: 'You need to be an ADMIN to create/update the is-highlighted attribute of the dashboard'}]}, status: 403
-  end
-
-  def ensure_is_admin_for_featuring
-    return true unless request.params.dig('data', 'attributes', 'is-featured').present?
-    return true if request.params.dig('data', 'attributes', 'is-featured').present? and @user[:role].eql? "ADMIN"
-    render json: {errors: [{status: '403', title: 'You need to be an ADMIN to create/update the is-featured attribute of the dashboard'}]}, status: 403
+  def ensure_is_admin_for_restricted_attrs
+    highlighted_present = request.params.dig('data', 'attributes', 'is-highlighted').present?
+    featured_present = request.params.dig('data', 'attributes', 'is-featured').present?
+    return true unless highlighted_present or featured_present
+    return true if (highlighted_present or featured_present) and @user[:role].eql? "ADMIN"
+    render json: {errors: [{status: '403', title: 'You need to be an ADMIN to create/update the provided attribute of the dashboard'}]}, status: 403
   end
 
   def get_user
