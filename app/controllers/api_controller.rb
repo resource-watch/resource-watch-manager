@@ -9,13 +9,7 @@ class ApiController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def load_user_from_request
-    @user = {}
-
-    if request.params[:loggedUser].present? and request.params[:loggedUser].is_a? String
-      @user = JSON.parse(request.params[:loggedUser]) || {}
-    else
-      @user = request.params[:loggedUser] || {}
-    end
+    @user = get_user_from_request(request)
 
     has_valid_role = (@user.empty? or %w(ADMIN MANAGER USER).include? @user['role'])
     if (!has_valid_role)
@@ -66,5 +60,13 @@ class ApiController < ActionController::API
   def render_error(resource, status)
     render json: resource, status: status, adapter: :json_api,
            serializer: ActiveModel::Serializer::ErrorSerializer
+  end
+
+  def get_user_from_request(request)
+    if request.params[:loggedUser].present? and request.params[:loggedUser].is_a? String
+      JSON.parse(request.params[:loggedUser]) || {}
+    else
+      request.params[:loggedUser] || {}
+    end
   end
 end
