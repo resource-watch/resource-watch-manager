@@ -23,6 +23,7 @@
 #  staging            :boolean          default(FALSE)
 #  application        :string           default(["\"rw\""]), not null, is an Array
 #  is_highlighted     :boolean          default(FALSE)
+#  is_featured        :boolean          default(FALSE)
 #
 
 class Dashboard < ApplicationRecord
@@ -42,6 +43,7 @@ class Dashboard < ApplicationRecord
 
   scope :by_application, ->(application) { where("?::varchar = ANY(application)", application) }
   scope :by_is_highlighted, ->(is_highlighted) { where(is_highlighted: is_highlighted) }
+  scope :by_is_featured, ->(is_featured) { where(is_featured: is_featured) }
   scope :by_published, ->(published) { where(published: published) }
   scope :by_private, ->(is_private) { where(private: is_private) }
   scope :by_user, ->(user) { where(user_id: user) }
@@ -62,6 +64,7 @@ class Dashboard < ApplicationRecord
 
     dashboards = dashboards.by_application(options[:application]) if options[:application]
     dashboards = dashboards.by_is_highlighted(options['is-highlighted'.to_sym]) if options['is-highlighted'.to_sym]
+    dashboards = dashboards.by_is_featured(options['is-featured'.to_sym]) if options['is-featured'.to_sym]
     dashboards = dashboards.by_published(options[:published]) if options[:published]
     dashboards = dashboards.by_private(options[:private]) if options[:private]
     dashboards = dashboards.by_user(options[:user]) if options[:user]

@@ -7,7 +7,7 @@ class Api::DashboardsController < ApiController
   before_action :get_user, only: %i[index]
   before_action :ensure_user_has_requested_apps, only: [:create, :update]
   before_action :ensure_is_manager_or_admin, only: :update
-  before_action :ensure_is_admin_for_highlighting, only: [:create, :update]
+  before_action :ensure_is_admin_for_restricted_attrs, only: [:create, :update]
 
   def index
     if params.include?('user.role') && @user&.dig('role').eql?('ADMIN')
@@ -129,10 +129,12 @@ class Api::DashboardsController < ApiController
     render json: {errors: [{status: '403', title: 'You need to be either ADMIN or MANAGER and own the dashboard to update it'}]}, status: 403
   end
 
-  def ensure_is_admin_for_highlighting
-    return true unless request.params.dig('data', 'attributes', 'is-highlighted').present?
-    return true if request.params.dig('data', 'attributes', 'is-highlighted').present? and @user[:role].eql? "ADMIN"
-    render json: {errors: [{status: '403', title: 'You need to be an ADMIN to create/update the is-highlighted attribute of the dashboard'}]}, status: 403
+  def ensure_is_admin_for_restricted_attrs
+    highlighted_present = request.params.dig('data', 'attributes', 'is-highlighted').present?
+    featured_present = request.params.dig('data', 'attributes', 'is-featured').present?
+    return true unless highlighted_present or featured_present
+    return true if (highlighted_present or featured_present) and @user[:role].eql? "ADMIN"
+    render json: {errors: [{status: '403', title: 'You need to be an ADMIN to create/update the provided attribute of the dashboard'}]}, status: 403
   end
 
   def get_user
@@ -140,14 +142,16 @@ class Api::DashboardsController < ApiController
   end
 
   def dashboard_params_get
-    params.permit(:name, :published, :private, :user, :application, 'is-highlighted'.to_sym, user: [], :filter => [:published, :private, :user])
+    params.permit(:name, :published, :private, :user, :application, 'is-highlighted'.to_sym,
+                  'is-featured'.to_sym, user: [], :filter => [:published, :private, :user])
   end
 
   def dashboard_params_create
     new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
     new_params = ActionController::Parameters.new(new_params)
     new_params.permit(:name, :description, :content, :published, :summary, :photo,
-                      :user_id, :private, :production, :preproduction, :staging, :is_highlighted, application:[])
+                      :user_id, :private, :production, :preproduction, :staging,
+                      :is_highlighted, :is_featured, application:[])
   rescue
     nil
   end
@@ -156,7 +160,8 @@ class Api::DashboardsController < ApiController
     new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
     new_params = ActionController::Parameters.new(new_params)
     new_params.permit(:name, :description, :content, :published, :summary,
-                      :photo, :private, :production, :preproduction, :staging, :is_highlighted, application:[])
+                      :photo, :private, :production, :preproduction, :staging,
+                      :is_highlighted, :is_featured, application:[])
   rescue
     nil
   end
