@@ -297,7 +297,7 @@ describe Api::DashboardsController, type: :controller do
       expect(json_response[:errors][0]).to have_key(:status)
       expect(json_response[:errors][0]).to have_key(:title)
       expect(json_response[:errors][0][:status]).to eq("403")
-      expect(json_response[:errors][0][:title]).to eq("You need to be either ADMIN or MANAGER and own the dashboard to update it")
+      expect(json_response[:errors][0][:title]).to eq("You need to be either ADMIN or MANAGER and own the dashboard to update/delete it")
     end
 
     it 'with role ADMIN should update the dashboard providing the is-featured attribute' do
@@ -355,7 +355,7 @@ describe Api::DashboardsController, type: :controller do
       expect(json_response[:errors][0]).to have_key(:status)
       expect(json_response[:errors][0]).to have_key(:title)
       expect(json_response[:errors][0][:status]).to eq("403")
-      expect(json_response[:errors][0][:title]).to eq("You need to be either ADMIN or MANAGER and own the dashboard to update it")
+      expect(json_response[:errors][0][:title]).to eq("You need to be either ADMIN or MANAGER and own the dashboard to update/delete it")
     end
   end
 end

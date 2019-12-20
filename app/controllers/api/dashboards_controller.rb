@@ -4,7 +4,7 @@ class Api::DashboardsController < ApiController
   include PaginationHelper
 
   before_action :set_dashboard, only: %i[show update destroy clone]
-  before_action :ensure_is_admin_or_owner_manager, only: :update
+  before_action :ensure_is_admin_or_owner_manager, only: [:update, :destroy]
 
   before_action :get_user, only: %i[index]
   before_action :ensure_user_has_requested_apps, only: [:create, :update]
@@ -129,12 +129,9 @@ class Api::DashboardsController < ApiController
 
   def ensure_is_admin_or_owner_manager
     return false if @user.nil?
-
     return true if @user[:role].eql? "ADMIN"
-
     return true if @user[:role].eql? "MANAGER" and @dashboard[:user_id].eql? @user[:id]
-
-    render json: {errors: [{status: '403', title: 'You need to be either ADMIN or MANAGER and own the dashboard to update it'}]}, status: 403
+    render json: {errors: [{status: '403', title: 'You need to be either ADMIN or MANAGER and own the dashboard to update/delete it'}]}, status: 403
   end
 
   def ensure_is_admin_for_restricted_attrs
