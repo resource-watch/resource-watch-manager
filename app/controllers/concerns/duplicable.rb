@@ -26,11 +26,12 @@ module Duplicable
     new_widgets_list
   end
 
-  def clone_model(widgets = [])
+  def clone_model(widgets = [], override = {})
     new_model = self.dup
     new_content = self.content
     widgets.each { |x| new_content.gsub!(x[:old_id], x[:new_id]) }
     new_model.content = new_content
+    new_model.attributes = new_model.attributes.merge(override)
     new_model.save
     new_model
   end
