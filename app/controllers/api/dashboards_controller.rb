@@ -89,7 +89,7 @@ class Api::DashboardsController < ApiController
 
   def clone
     begin
-      if duplicated_dashboard = @dashboard.duplicate(params.dig('loggedUser', 'id'))
+      if duplicated_dashboard = @dashboard.duplicate(params.dig('loggedUser', 'id'), dashboard_params_create.to_h)
         @dashboard = duplicated_dashboard
         render json: @dashboard, status: :ok
       else

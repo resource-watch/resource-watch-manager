@@ -17,9 +17,17 @@ describe Api::DashboardsController, type: :controller do
       end
     end
 
-    it 'clones the dashboard changing the id of the user owner of the dashboard to the id of the user who requested the clone' do
+    it 'clones the dashboard overriding data provided in the request body' do
       VCR.use_cassette('dataset_widget') do
-        post 'clone', params: {id: @dashboard.id, loggedUser: USERS[:ADMIN]}
+        post 'clone', params: {
+          id: @dashboard.id,
+          loggedUser: USERS[:ADMIN],
+          data: {
+            "attributes": {
+              "user-id": USERS[:ADMIN][:id]
+            }
+          },
+        }
         expect(response.status).to eq(200)
         expect(JSON.parse(response.body)['data']['attributes']['user-id']).to eq(USERS[:ADMIN][:id])
       end

@@ -126,9 +126,9 @@ class Dashboard < ApplicationRecord
     update_column(:content, contents.to_json)
   end
 
-  def duplicate(user_id = nil)
+  def duplicate(user_id = nil, override = {})
     widgets = clone_widgets(user_id)
-    clone_model(widgets)
+    clone_model(widgets, override)
   end
 
   private
