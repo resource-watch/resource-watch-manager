@@ -130,8 +130,8 @@ class Api::DashboardsController < ApiController
 
   def ensure_is_admin_or_owner_manager
     return false if @user.nil?
-    return true if @user[:role].eql? "ADMIN"
-    return true if @user[:role].eql? "MANAGER" and @dashboard[:user_id].eql? @user[:id]
+    return true if @user['role'].eql? "ADMIN"
+    return true if @user['role'].eql? "MANAGER" and @dashboard[:user_id].eql? @user[:id]
     render json: {errors: [{status: '403', title: 'You need to be either ADMIN or MANAGER and own the dashboard to update/delete it'}]}, status: 403
   end
 
