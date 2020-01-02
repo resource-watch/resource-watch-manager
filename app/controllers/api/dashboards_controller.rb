@@ -90,7 +90,7 @@ class Api::DashboardsController < ApiController
 
   def clone
     begin
-      if duplicated_dashboard = @dashboard.duplicate(params.dig('loggedUser', 'id'), dashboard_params_create.to_h)
+      if duplicated_dashboard = @dashboard.duplicate(params.dig('loggedUser', 'id'), dashboard_params_clone.to_h)
         @dashboard = duplicated_dashboard
         render json: @dashboard, status: :ok
       else
@@ -176,6 +176,15 @@ class Api::DashboardsController < ApiController
     new_params.permit(:name, :description, :content, :published, :summary,
                       :photo, :private, :production, :preproduction, :staging,
                       :is_highlighted, :is_featured, application:[])
+  rescue
+    nil
+  end
+
+  def dashboard_params_clone
+    new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+    new_params = ActionController::Parameters.new(new_params)
+    new_params.permit(:name, :description, :content, :published, :summary, :photo,
+                      :user_id, :private, :production, :preproduction, :staging)
   rescue
     nil
   end
