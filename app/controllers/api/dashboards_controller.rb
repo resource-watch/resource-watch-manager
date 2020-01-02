@@ -157,34 +157,26 @@ class Api::DashboardsController < ApiController
 
   def dashboard_params_get
     params.permit(:name, :published, :private, :user, :application, 'is-highlighted'.to_sym,
-                  'is-featured'.to_sym, user: [], :filter => [:published, :private, :user])
+      'is-featured'.to_sym, user: [], :filter => [:published, :private, :user])
   end
 
   def dashboard_params_create
-    new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-    new_params = ActionController::Parameters.new(new_params)
-    new_params.permit(:name, :description, :content, :published, :summary, :photo,
-                      :user_id, :private, :production, :preproduction, :staging,
-                      :is_highlighted, :is_featured, application:[])
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :user_id, :private,
+      :production, :preproduction, :staging, :is_highlighted, :is_featured, application:[])
   rescue
     nil
   end
 
   def dashboard_params_update
-    new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-    new_params = ActionController::Parameters.new(new_params)
-    new_params.permit(:name, :description, :content, :published, :summary,
-                      :photo, :private, :production, :preproduction, :staging,
-                      :is_highlighted, :is_featured, application:[])
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :production,
+      :preproduction, :staging, :is_highlighted, :is_featured, application:[])
   rescue
     nil
   end
 
   def dashboard_params_clone
-    new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-    new_params = ActionController::Parameters.new(new_params)
-    new_params.permit(:name, :description, :content, :published, :summary, :photo,
-                      :user_id, :private, :production, :preproduction, :staging)
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo,
+      :user_id, :private, :production, :preproduction, :staging)
   rescue
     nil
   end

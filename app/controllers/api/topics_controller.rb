@@ -3,7 +3,7 @@
 class Api::TopicsController < ApiController
   before_action :set_topic, only: %i[show update destroy clone clone_dashboard]
   before_action :ensure_is_admin_or_owner_manager, only: :update
-  
+
   before_action :get_user, only: %i[index]
   before_action :ensure_user_has_requested_apps, only: [:create, :update]
   before_action :ensure_is_manager_or_admin, only: :update
@@ -114,17 +114,13 @@ class Api::TopicsController < ApiController
   end
 
   def topic_params_create
-    new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-    new_params = ActionController::Parameters.new(new_params)
-    new_params.permit(:name, :description, :content, :published, :summary, :photo, :user_id, :private, application:[])
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :user_id, :private, application:[])
   rescue
     nil
   end
 
   def topic_params_update
-    new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-    new_params = ActionController::Parameters.new(new_params)
-    new_params.permit(:name, :description, :content, :published, :summary, :photo, :private, application:[])
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, application:[])
   rescue
     nil
   end

@@ -41,9 +41,7 @@ module Api
     end
 
     def profile_params
-      new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-      new_params = ActionController::Parameters.new(new_params)
-      new_params.permit(:user_id, :avatar)
+      ParamsHelper.permit(params, :user_id, :avatar)
     rescue
       nil
     end
