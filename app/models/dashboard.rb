@@ -17,6 +17,8 @@
 #  photo_file_size    :integer
 #  photo_updated_at   :datetime
 #  user_id            :string
+#  user_name          :string
+#  user_role          :string
 #  private            :boolean          default(TRUE)
 #  production         :boolean          default(TRUE)
 #  preproduction      :boolean          default(FALSE)
@@ -85,19 +87,23 @@ class Dashboard < ApplicationRecord
     dashboards = dashboards.order(get_order(options))
   end
 
+  def self.process_sort_string(sort)
+    sort['user.name'] = 'user_name,id' if sort.include? 'user.name'
+    sort['user.role'] = 'user_role,id' if sort.include? 'user.role'
+    sort
+  end
+
   def self.get_order(options = {})
-    field = 'created_at'
-    direction = 'ASC'
+    sort_string = ''
     if options['sort']
-      f = options['sort'].split(',').first
-      field = f[0] == '-' ? f[1..-1] : f
-      if Dashboard.new.has_attribute?(field)
-        direction = f[0] == '-' ? 'DESC' : 'ASC'
-      else
-        field = 'created_at'
+      process_sort_string(options['sort']).split(',').each do |sort|
+        field_name = sort[0] == '-' ? sort[1..-1] : sort
+        direction = sort[0] == '-' ? 'DESC' : 'ASC'
+        field = Dashboard.new.has_attribute?(field_name) ? field_name : 'created_at'
+        sort_string = sort_string + (sort_string.empty? ? '' : ', ') + "#{field} #{direction}"
       end
     end
-    "#{field} #{direction}"
+    sort_string
   end
 
   def manage_content(base_url)
