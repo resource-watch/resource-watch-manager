@@ -7,9 +7,9 @@ require 'constants'
 describe Api::DashboardsController, type: :controller do
     describe 'GET #index sorted by user fields' do
         before(:each) do
-            FactoryBot.create :dashboard_not_private_user_3
-            FactoryBot.create :dashboard_not_private_user_2
-            FactoryBot.create :dashboard_not_private_user_1
+            @dashboard1 = FactoryBot.create :dashboard_not_private_user_3
+            @dashboard2 = FactoryBot.create :dashboard_not_private_user_2
+            @dashboard3 = FactoryBot.create :dashboard_not_private_user_1
         end
         
         it 'returns 403 Forbidden when trying to get dashboards sorted by user fields without authentication' do
@@ -116,6 +116,7 @@ describe Api::DashboardsController, type: :controller do
 
         it 'returns 200 OK with a deterministic list (sorted by id) when trying to get dashboards sorted by user name ASC as user with role ADMIN' do
             VCR.use_cassette("include_fake_users_2", :allow_playback_repeats => true) do
+                dashboard_ids = [@dashboard1.id.to_s, @dashboard2.id.to_s, @dashboard3.id.to_s].sort
                 get :index, params: {
                     includes: 'user',
                     sort: "user.name", 
@@ -125,7 +126,7 @@ describe Api::DashboardsController, type: :controller do
                 expect(response.status).to eq(200)
                 expect(data.size).to eq(3)
                 expect(data.map { |dashboard| dashboard.dig(:attributes, :user, :name) }).to eq(['aaa', 'aaa', 'aaa'])
-                expect(data.map { |dashboard| dashboard.dig(:id) }).to eq(['42', '43', '44'])
+                expect(data.map { |dashboard| dashboard.dig(:id) }).to eq(dashboard_ids)
             end
         end
     end
