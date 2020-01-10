@@ -71,6 +71,7 @@ class Api::DashboardsController < ApiController
     end
 
     dashboard = Dashboard.new(dashboard_params_create)
+    dashboard.user_id = @user.dig('id')
     if dashboard.save
       dashboard.manage_content(request.base_url)
       render json: dashboard, status: :created
@@ -90,7 +91,9 @@ class Api::DashboardsController < ApiController
 
   def clone
     begin
-      if duplicated_dashboard = @dashboard.duplicate(params.dig('loggedUser', 'id'), dashboard_params_clone.to_h)
+      override = dashboard_params_clone.to_h
+      override[:user_id] = @user.dig('id')
+      if duplicated_dashboard = @dashboard.duplicate(params.dig('loggedUser', 'id'), override)
         @dashboard = duplicated_dashboard
         render json: @dashboard, status: :ok
       else
@@ -161,8 +164,8 @@ class Api::DashboardsController < ApiController
   end
 
   def dashboard_params_create
-    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :user_id, :private,
-      :production, :preproduction, :staging, :is_highlighted, :is_featured, application:[])
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :production,
+      :preproduction, :staging, :is_highlighted, :is_featured, application:[])
   rescue
     nil
   end
@@ -175,8 +178,8 @@ class Api::DashboardsController < ApiController
   end
 
   def dashboard_params_clone
-    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo,
-      :user_id, :private, :production, :preproduction, :staging)
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :production,
+      :preproduction, :staging)
   rescue
     nil
   end

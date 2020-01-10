@@ -18,7 +18,6 @@ def get_new_dashboard_data(override = {})
         "thumb": "/photos/thumb/missing.png",
         "original": "/photos/original/missing.png"
       },
-      "user-id": "57ac9f9e29309063404573a2",
       "private": true,
       "production": true,
       "preproduction": false,
@@ -30,7 +29,7 @@ end
 describe Api::DashboardsController, type: :controller do
   describe 'POST #dashboard' do
     it 'with no user details should produce a 401 error' do
-      post :create, params: { 
+      post :create, params: {
         data: get_new_dashboard_data
       }
       expect(response.status).to eq(401)
@@ -46,8 +45,8 @@ describe Api::DashboardsController, type: :controller do
       sampleDashboard = json_response[:data]
       validate_dashboard_structure(sampleDashboard)
       expect(sampleDashboard[:attributes][:application]).to eq(['rw'])
+      expect(sampleDashboard[:attributes]["user-id".to_sym]).to eq(USERS[:USER][:id])
     end
-
 
     it 'with role USER that doesn\'t belong to rw and no explicit application should produce a 403 error' do
       spoofed_user = USERS[:USER].deep_dup
@@ -63,9 +62,9 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with role USER and non-matching applications should produce an 403 error' do
       post :create, params: {
-        data: get_new_dashboard_data({ 
+        data: get_new_dashboard_data({
           attributes: {
-            application: ["fake-app"] 
+            application: ["fake-app"]
           }
         }),
         loggedUser: USERS[:USER]
@@ -84,11 +83,12 @@ describe Api::DashboardsController, type: :controller do
       sampleDashboard = json_response[:data]
       validate_dashboard_structure(sampleDashboard)
       expect(sampleDashboard[:attributes][:application]).to eq(['rw'])
+      expect(sampleDashboard[:attributes]["user-id".to_sym]).to eq(USERS[:MANAGER][:id])
     end
 
     it 'with multiple application values should create the dashboard with the multiple application values' do
       post :create, params: {
-        data: get_new_dashboard_data({ 
+        data: get_new_dashboard_data({
           attributes: {
             application: %w(rw gfw prep)
           }
@@ -100,11 +100,26 @@ describe Api::DashboardsController, type: :controller do
       sampleDashboard = json_response[:data]
       validate_dashboard_structure(sampleDashboard)
       expect(sampleDashboard[:attributes][:application]).to eq(%w(rw gfw prep))
+      expect(sampleDashboard[:attributes]["user-id".to_sym]).to eq(USERS[:ADMIN][:id])
+    end
+
+    it 'returns 201 when providing a body containing a user_id and it matches the id of the user who created the dashboard' do
+      post :create, params: {
+        data: get_new_dashboard_data({
+          attributes: { user_id: "1" }
+        }),
+        loggedUser: USERS[:USER]
+      }
+
+      expect(response.status).to eq(201)
+      sampleDashboard = json_response[:data]
+      validate_dashboard_structure(sampleDashboard)
+      expect(sampleDashboard[:attributes]["user-id".to_sym]).to eq(USERS[:USER][:id])
     end
 
     it 'with role USER should not create the dashboard providing the is-highlighted attribute' do
       post :create, params: {
-        data: get_new_dashboard_data({ 
+        data: get_new_dashboard_data({
           attributes: {
             "is-highlighted": true
           }
@@ -122,7 +137,7 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with role MANAGER should not create the dashboard providing the is-highlighted attribute' do
       post :create, params: {
-        data: get_new_dashboard_data({ 
+        data: get_new_dashboard_data({
           attributes: {
             "is-highlighted": true
           }
@@ -140,7 +155,7 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with role ADMIN should create the dashboard providing the is-highlighted attribute' do
       post :create, params: {
-        data: get_new_dashboard_data({ 
+        data: get_new_dashboard_data({
           attributes: {
             "is-highlighted": true
           }
@@ -156,7 +171,7 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with role USER should not create the dashboard providing the is-featured attribute' do
       post :create, params: {
-        data: get_new_dashboard_data({ 
+        data: get_new_dashboard_data({
           attributes: {
             "is-featured": true
           }
@@ -174,7 +189,7 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with role MANAGER should not create the dashboard providing the is-featured attribute' do
       post :create, params: {
-        data: get_new_dashboard_data({ 
+        data: get_new_dashboard_data({
           attributes: {
             "is-featured": true
           }
@@ -192,7 +207,7 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with role ADMIN should create the dashboard providing the is-featured attribute' do
       post :create, params: {
-        data: get_new_dashboard_data({ 
+        data: get_new_dashboard_data({
           attributes: {
             "is-featured": true
           }
