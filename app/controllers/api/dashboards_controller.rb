@@ -11,6 +11,7 @@ class Api::DashboardsController < ApiController
   before_action :ensure_user_can_delete_dashboard, only: :destroy
   before_action :ensure_is_manager_or_admin, only: :update
   before_action :ensure_is_admin_for_restricted_attrs, only: [:create, :update]
+  before_action :ensure_user_has_at_least_rw_app, only: :create
 
   def index
     if params.include?('user.role') && @user&.dig('role').eql?('ADMIN')
@@ -66,10 +67,6 @@ class Api::DashboardsController < ApiController
   end
 
   def create
-    if request.params.dig('data', 'attributes', 'application').nil? and !@user.dig('extraUserData', 'apps').include? 'rw'
-      render json: {errors: [{status: '403', title: 'Your user account does not have permissions to use the default application(s)'}]}, status: 403 and return
-    end
-
     dashboard = Dashboard.new(dashboard_params_create)
     dashboard.user_id = @user.dig('id')
     if dashboard.save

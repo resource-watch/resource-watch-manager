@@ -7,6 +7,7 @@ class Api::TopicsController < ApiController
   before_action :get_user, only: %i[index]
   before_action :ensure_user_has_requested_apps, only: [:create, :update]
   before_action :ensure_is_manager_or_admin, only: :update
+  before_action :ensure_user_has_at_least_rw_app, only: :create
 
   def index
     topics = Topic.fetch_all(topic_params_get)
@@ -33,10 +34,6 @@ class Api::TopicsController < ApiController
   end
 
   def create
-    if request.params.dig('data', 'attributes', 'application').nil? and !@user.dig('extraUserData', 'apps').include? 'rw'
-      render json: {errors: [{status: '403', title: 'Your user account does not have permissions to use the default application(s)'}]}, status: 403 and return
-    end
-
     topic = Topic.new(topic_params_create)
     if topic.save
       topic.manage_content(request.base_url)
