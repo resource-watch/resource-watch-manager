@@ -51,6 +51,12 @@ class ApiController < ActionController::API
     end
   end
 
+  def ensure_user_has_at_least_rw_app
+    if request.params.dig('data', 'attributes', 'application').nil? and !@user.dig('extraUserData', 'apps').include? 'rw'
+      render json: {errors: [{status: '403', title: 'Your user account does not have permissions to use the default application(s)'}]}, status: 403 and return
+    end
+  end
+
   def record_not_found
     render json: {errors: [{status: '404', title: 'Record not found'}]}, status: 404
   end
