@@ -1,8 +1,16 @@
 # frozen_string_literal: true
 
 class Api::DashboardsController < ApiController
+  include PaginationHelper
+
   before_action :set_dashboard, only: %i[show update destroy clone]
+  before_action :ensure_is_admin_or_owner_manager, only: [:update, :destroy]
+
   before_action :get_user, only: %i[index]
+  before_action :ensure_user_has_requested_apps, only: [:create, :update]
+  before_action :ensure_user_can_delete_dashboard, only: :destroy
+  before_action :ensure_is_manager_or_admin, only: :update
+  before_action :ensure_is_admin_for_restricted_attrs, only: [:create, :update]
 
   def index
     if params.include?('user.role') && @user&.dig('role').eql?('ADMIN')
@@ -25,7 +33,7 @@ class Api::DashboardsController < ApiController
       return
     end
 
-    dashboards = Dashboard.fetch_all(params)
+    dashboards = Dashboard.fetch_all(dashboard_params_get)
                    .page(page_number || 1)
                    .per_page(per_page || 10)
 
@@ -37,7 +45,13 @@ class Api::DashboardsController < ApiController
       else
         dashboards
       end
-    render json: dashboards_json
+
+    render json: dashboards_json, meta: {
+      links: PaginationHelper.handmade_pagination_links(dashboards, params),
+      'total-pages': dashboards.total_pages,
+      'total-items': dashboards.total_entries,
+      size: dashboards.per_page,
+    }
   end
 
   def show
@@ -52,6 +66,10 @@ class Api::DashboardsController < ApiController
   end
 
   def create
+    if request.params.dig('data', 'attributes', 'application').nil? and !@user.dig('extraUserData', 'apps').include? 'rw'
+      render json: {errors: [{status: '403', title: 'Your user account does not have permissions to use the default application(s)'}]}, status: 403 and return
+    end
+
     dashboard = Dashboard.new(dashboard_params_create)
     if dashboard.save
       dashboard.manage_content(request.base_url)
@@ -72,7 +90,7 @@ class Api::DashboardsController < ApiController
 
   def clone
     begin
-      if duplicated_dashboard = @dashboard.duplicate(params.dig('loggedUser', 'id'))
+      if duplicated_dashboard = @dashboard.duplicate(params.dig('loggedUser', 'id'), dashboard_params_clone.to_h)
         @dashboard = duplicated_dashboard
         render json: @dashboard, status: :ok
       else
@@ -110,24 +128,55 @@ class Api::DashboardsController < ApiController
     render_error(dashboard, 404) && return
   end
 
+  def ensure_is_admin_or_owner_manager
+    return false if @user.nil?
+    return true if @user['role'].eql? "ADMIN"
+    return true if @user['role'].eql? "MANAGER" and @dashboard[:user_id].eql? @user[:id]
+    render json: {errors: [{status: '403', title: 'You need to be either ADMIN or MANAGER and own the dashboard to update/delete it'}]}, status: 403
+  end
+
+  def ensure_user_can_delete_dashboard
+    user_apps = @user.dig('extraUserData', 'apps')
+    dashboard_apps = @dashboard.application
+    unless (dashboard_apps - user_apps).empty?
+      render json: {errors: [{status: '403', title: 'Your user account does not have permissions to delete this dashboard'}]}, status: 403
+    end
+  end
+
+  def ensure_is_admin_for_restricted_attrs
+    highlighted_present = request.params.dig('data', 'attributes', 'is-highlighted').present?
+    featured_present = request.params.dig('data', 'attributes', 'is-featured').present?
+    return true unless highlighted_present or featured_present
+    return true if (highlighted_present or featured_present) and @user[:role].eql? "ADMIN"
+    render json: {errors: [{status: '403', title: 'You need to be an ADMIN to create/update the provided attribute of the dashboard'}]}, status: 403
+  end
+
   def get_user
     @user = params['loggedUser'].present? ? JSON.parse(params['loggedUser']) : nil
   end
 
+  def dashboard_params_get
+    params.permit(:name, :published, :private, :user, :application, 'is-highlighted'.to_sym,
+      'is-featured'.to_sym, user: [], :filter => [:published, :private, :user])
+  end
+
   def dashboard_params_create
-    new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-    new_params = ActionController::Parameters.new(new_params)
-    new_params.permit(:name, :description, :content, :published, :summary, :photo,
-                      :user_id, :private, :production, :preproduction, :staging)
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :user_id, :private,
+      :production, :preproduction, :staging, :is_highlighted, :is_featured, application:[])
   rescue
     nil
   end
 
   def dashboard_params_update
-    new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-    new_params = ActionController::Parameters.new(new_params)
-    new_params.permit(:name, :description, :content, :published, :summary,
-                      :photo, :private, :production, :preproduction, :staging)
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :production,
+      :preproduction, :staging, :is_highlighted, :is_featured, application:[])
+  rescue
+    nil
+  end
+
+  def dashboard_params_clone
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo,
+      :user_id, :private, :production, :preproduction, :staging)
   rescue
     nil
   end

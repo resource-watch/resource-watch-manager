@@ -57,10 +57,7 @@ module Api
     end
 
     def static_page_params
-      new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-      new_params = ActionController::Parameters.new(new_params)
-      new_params.permit(:title, :summary, :description, :content, :photo, :published,
-                        :production, :preproduction, :staging)
+      ParamsHelper.permit(params, :title, :summary, :description, :content, :photo, :published, :production, :preproduction, :staging)
     rescue
       nil
     end

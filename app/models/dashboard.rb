@@ -3,7 +3,7 @@
 #
 # Table name: dashboards
 #
-#  id                 :integer          not null, primary key
+#  id                 :bigint(8)        not null, primary key
 #  name               :string
 #  slug               :string
 #  description        :string
@@ -19,8 +19,11 @@
 #  user_id            :string
 #  private            :boolean          default(TRUE)
 #  production         :boolean          default(TRUE)
-#  pre_production     :boolean          default(FALSE)
+#  preproduction      :boolean          default(FALSE)
 #  staging            :boolean          default(FALSE)
+#  application        :string           default(["\"rw\""]), not null, is an Array
+#  is_highlighted     :boolean          default(FALSE)
+#  is_featured        :boolean          default(FALSE)
 #
 
 class Dashboard < ApplicationRecord
@@ -38,6 +41,9 @@ class Dashboard < ApplicationRecord
   validates_attachment_content_type :photo, content_type: %r{^image\/.*}
   do_not_validate_attachment_file_type :photo
 
+  scope :by_application, ->(application) { where("?::varchar = ANY(application)", application) }
+  scope :by_is_highlighted, ->(is_highlighted) { where(is_highlighted: is_highlighted) }
+  scope :by_is_featured, ->(is_featured) { where(is_featured: is_featured) }
   scope :by_published, ->(published) { where(published: published) }
   scope :by_private, ->(is_private) { where(private: is_private) }
   scope :by_user, ->(user) { where(user_id: user) }
@@ -56,6 +62,9 @@ class Dashboard < ApplicationRecord
       dashboards = dashboards.by_user(options[:filter][:user]) if options[:filter][:user]
     end
 
+    dashboards = dashboards.by_application(options[:application]) if options[:application]
+    dashboards = dashboards.by_is_highlighted(options['is-highlighted'.to_sym]) if options['is-highlighted'.to_sym]
+    dashboards = dashboards.by_is_featured(options['is-featured'.to_sym]) if options['is-featured'.to_sym]
     dashboards = dashboards.by_published(options[:published]) if options[:published]
     dashboards = dashboards.by_private(options[:private]) if options[:private]
     dashboards = dashboards.by_user(options[:user]) if options[:user]
@@ -117,9 +126,9 @@ class Dashboard < ApplicationRecord
     update_column(:content, contents.to_json)
   end
 
-  def duplicate(user_id = nil)
+  def duplicate(user_id = nil, override = {})
     widgets = clone_widgets(user_id)
-    clone_model(widgets)
+    clone_model(widgets, override)
   end
 
   private

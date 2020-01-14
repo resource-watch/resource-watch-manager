@@ -55,9 +55,7 @@ module Api
     end
 
     def faq_params
-      new_params = ActiveModelSerializers::Deserialization.jsonapi_parse(params)
-      new_params = ActionController::Parameters.new(new_params)
-      new_params.permit(:question, :answer, :order)
+      ParamsHelper.permit(params, :question, :answer, :order)
     rescue
       nil
     end

@@ -10,19 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180514143435) do
+ActiveRecord::Schema.define(version: 20191218122116) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "categories", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.string "slug"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["slug"], name: "index_categories_on_slug"
-  end
 
   create_table "content_images", force: :cascade do |t|
     t.integer "imageable_id"
@@ -54,35 +45,15 @@ ActiveRecord::Schema.define(version: 20180514143435) do
     t.boolean "production", default: true
     t.boolean "preproduction", default: false
     t.boolean "staging", default: false
-  end
-
-  create_table "dataset_subcategories", force: :cascade do |t|
-    t.bigint "subcategory_id"
-    t.string "dataset_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["subcategory_id"], name: "index_dataset_subcategories_on_subcategory_id"
+    t.string "application", default: ["rw"], null: false, array: true
+    t.boolean "is_highlighted", default: false
+    t.boolean "is_featured", default: false
   end
 
   create_table "faqs", force: :cascade do |t|
     t.string "question", null: false
     t.text "answer", null: false
     t.integer "order"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "insights", force: :cascade do |t|
-    t.string "title"
-    t.text "summary"
-    t.text "description"
-    t.text "content"
-    t.string "photo_file_name"
-    t.string "photo_content_type"
-    t.integer "photo_file_size"
-    t.datetime "photo_updated_at"
-    t.boolean "published"
-    t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -106,8 +77,8 @@ ActiveRecord::Schema.define(version: 20180514143435) do
     t.string "icon_content_type"
     t.integer "icon_file_size"
     t.datetime "icon_updated_at"
-    t.boolean "published"
-    t.boolean "featured"
+    t.boolean "published", default: false
+    t.boolean "featured", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "cover_file_name"
@@ -150,17 +121,6 @@ ActiveRecord::Schema.define(version: 20180514143435) do
     t.boolean "preproduction", default: false
     t.boolean "staging", default: false
     t.index ["slug"], name: "index_static_pages_on_slug"
-  end
-
-  create_table "subcategories", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.string "slug"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "category_id"
-    t.index ["category_id"], name: "index_subcategories_on_category_id"
-    t.index ["slug"], name: "index_subcategories_on_slug"
   end
 
   create_table "temporary_content_images", force: :cascade do |t|
@@ -206,8 +166,7 @@ ActiveRecord::Schema.define(version: 20180514143435) do
     t.string "photo_content_type"
     t.integer "photo_file_size"
     t.datetime "photo_updated_at"
+    t.string "application", default: ["rw"], null: false, array: true
   end
 
-  add_foreign_key "dataset_subcategories", "subcategories"
-  add_foreign_key "subcategories", "categories"
 end

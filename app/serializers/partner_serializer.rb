@@ -22,8 +22,8 @@
 #  icon_content_type       :string
 #  icon_file_size          :integer
 #  icon_updated_at         :datetime
-#  published               :boolean          default(FALSE)
-#  featured                :boolean          default(FALSE)
+#  published               :boolean
+#  featured                :boolean
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  cover_file_name         :string
@@ -33,7 +33,7 @@
 #  website                 :string
 #  partner_type            :string
 #  production              :boolean          default(TRUE)
-#  pre_production          :boolean          default(FALSE)
+#  preproduction           :boolean          default(FALSE)
 #  staging                 :boolean          default(FALSE)
 #
 

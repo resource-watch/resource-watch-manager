@@ -3,7 +3,7 @@
 #
 # Table name: tools
 #
-#  id                     :integer          not null, primary key
+#  id                     :bigint(8)        not null, primary key
 #  title                  :string
 #  slug                   :string
 #  summary                :string
@@ -18,7 +18,7 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  production             :boolean          default(TRUE)
-#  pre_production         :boolean          default(FALSE)
+#  preproduction          :boolean          default(FALSE)
 #  staging                :boolean          default(FALSE)
 #
 
