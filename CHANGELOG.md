@@ -1,3 +1,7 @@
+# 22/01/2020
+
+- Case insensitive search by name for dashboards.
+
 # v1.0.0
 
 ## 14/1/2020
