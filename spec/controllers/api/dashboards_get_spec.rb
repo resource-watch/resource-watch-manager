@@ -74,6 +74,16 @@ describe Api::DashboardsController, type: :controller do
       expect(data.map { |dashboard| dashboard[:attributes][:"name"] }.uniq).to eq([@dashboard_private_user_1.name])
     end
 
+    it 'with name=<string> filter should return dashboards with "string"/"String" in the name (case insensitivity)' do
+      get :index, params: {name: @dashboard_private_user_1.name.downcase}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to be >= 1
+      expect(data.map { |dashboard| dashboard[:attributes][:"name"] }.uniq).to eq([@dashboard_private_user_1.name])
+    end
+
     it 'with user=<userId> filter should return only dashboards associated with that user' do
       get :index, params: {user: '57a1ff091ebc1ad91d089bdc'}
 
