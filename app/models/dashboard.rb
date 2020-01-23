@@ -47,7 +47,7 @@ class Dashboard < ApplicationRecord
   scope :by_published, ->(published) { where(published: published) }
   scope :by_private, ->(is_private) { where(private: is_private) }
   scope :by_user, ->(user) { where(user_id: user) }
-  scope :by_name, ->(name) { where("lower(name) like ?", "%#{name.downcase}%") }
+  scope :by_name, ->(name) { where("name ilike ?", "%#{name}%") }
   scope :production, -> { where(production: true) }
   scope :pre_production, -> { where(pre_production: true) }
   scope :staging, -> { where(staging: true) }
