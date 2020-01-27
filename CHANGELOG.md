@@ -1,6 +1,9 @@
-# 22/01/2020
+# v1.1.0
 
-- Case insensitive search by name for dashboards.
+## 27/1/2020
+
+- Using the dashboard's user id on create/clone dashboards.
+- Allow case insensitive search for dashboards.
 
 # v1.0.0
 
