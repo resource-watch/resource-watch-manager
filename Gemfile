@@ -32,7 +32,7 @@ gem 'whenever', require: false
 gem 'active_model_serializers', '~> 0.10.6'
 # Use this gem when supported by Rails 5.1
 # gem 'activemodel-associations'
-gem 'pg', '~> 0.18'
+gem 'pg', '~> 1.2'
 
 # Pagination
 gem 'api-pagination'
