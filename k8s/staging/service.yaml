@@ -3,10 +3,10 @@ kind: Service
 metadata:
   namespace: rw
   labels:
-    name: {name}
-  name: {name}
+    name: resource-watch-manager
+  name: resource-watch-manager
 spec:
   ports:
     - port: 3000
   selector:
-    name: {name}
+    name: resource-watch-manager
