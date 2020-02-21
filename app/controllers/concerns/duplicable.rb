@@ -13,6 +13,7 @@ module Duplicable
   end
 
   def obtain_widget_list(content)
+    return [] if content == nil
     widgets_list = content.scan(/widgetId":"([^"]*)","datasetId":"([^"]*)"/)
     widgets_list.map { |w| {widget_id: w.first, dataset_id: w.last} }.uniq
   end
