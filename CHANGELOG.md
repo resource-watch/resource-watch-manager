@@ -1,10 +1,9 @@
-# 28/02/2020
+# v1.2.0
+
+## 28/02/2020
+
 - Fix problem cloning dashboards without content.
-
-# 27/01/2020
 - Add possibility of sorting dashboards by user fields (such as name or role).
-
-# 18/12/2019
 - Add `is-featured` field to dashboards
 
 # v1.1.0
