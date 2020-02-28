@@ -1,3 +1,6 @@
+# 28/02/2020
+- Fix problem cloning dashboards without content.
+
 # 27/01/2020
 - Add possibility of sorting dashboards by user fields (such as name or role).
 
