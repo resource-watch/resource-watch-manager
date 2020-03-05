@@ -24,6 +24,15 @@ class Api::DashboardsController < ApiController
       end
     end
 
+    if params.include?('sort') and (params['sort'].include?('user.role') or params['sort'].include?('user.name'))
+      return render json: {errors: [{status: '403', title: 'Sorting by user name or role not authorized.'}]}, status: 403 unless @user&.dig('role').eql?('ADMIN')
+      ids = Dashboard.select("user_id").fetch_all().pluck(:user_id).reduce([], :<<)
+      users = UserService.users(ids.compact.uniq)
+      users.each do |user|
+        Dashboard.where(:user_id => user['_id']).update_all(user_name: user['name']&.downcase, user_role: user['role']&.downcase)
+      end
+    end
+
     if (params[:page])
       page_number = params[:page][:number].to_i if params[:page][:number]
       per_page = params[:page][:size].to_i if params[:page][:size]
@@ -156,7 +165,7 @@ class Api::DashboardsController < ApiController
   end
 
   def dashboard_params_get
-    params.permit(:name, :published, :private, :user, :application, 'is-highlighted'.to_sym,
+    params.permit(:name, :published, :private, :user, :application, 'is-highlighted'.to_sym, :sort,
       'is-featured'.to_sym, user: [], :filter => [:published, :private, :user])
   end
 

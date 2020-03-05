@@ -4,10 +4,40 @@ require 'spec_helper'
 require 'json'
 require 'constants'
 
+def compare_cloned_with_existing(cloned_dash, initial_id, user_id, override_data = {})
+  get :show, params: { id: initial_id }
+  initial_dash = json_response[:data]
+  initial_dash[:attributes] = initial_dash[:attributes].merge(override_data)
+
+  # Id and slug must be different
+  expect(cloned_dash['id']).to satisfy { |new_id| new_id != initial_dash[:id] }
+  expect(cloned_dash['attributes']['slug']).to satisfy { |new_slug| new_slug != initial_dash[:attributes][:slug] }
+
+  # User id should match the id of the user who requested the clone
+  expect(cloned_dash['attributes']['user-id']).to eq(user_id)
+
+  # All other attributes should be the same, except for the ones which were overridden
+  expect(cloned_dash['attributes']['name']).to eq(initial_dash[:attributes][:name])
+  expect(cloned_dash['attributes']['summary']).to eq(initial_dash[:attributes][:summary])
+  expect(cloned_dash['attributes']['description']).to eq(initial_dash[:attributes][:description])
+  expect(cloned_dash['attributes']['published']).to eq(initial_dash[:attributes][:published])
+  expect(cloned_dash['attributes']['private']).to eq(initial_dash[:attributes][:private])
+  expect(cloned_dash['attributes']['production']).to eq(initial_dash[:attributes][:production])
+  expect(cloned_dash['attributes']['preproduction']).to eq(initial_dash[:attributes][:preproduction])
+  expect(cloned_dash['attributes']['staging']).to eq(initial_dash[:attributes][:staging])
+  expect(cloned_dash['attributes']['application']).to eq(initial_dash[:attributes][:application])
+  expect(cloned_dash['attributes']['is-highlighted']).to eq(initial_dash[:attributes][:"is-highlighted"])
+  expect(cloned_dash['attributes']['is-featured']).to eq(initial_dash[:attributes][:"is-featured"])
+  expect(cloned_dash['attributes']['photo']['cover']).to eq(initial_dash[:attributes][:photo][:cover])
+  expect(cloned_dash['attributes']['photo']['thumb']).to eq(initial_dash[:attributes][:photo][:thumb])
+  expect(cloned_dash['attributes']['photo']['original']).to eq(initial_dash[:attributes][:photo][:original])
+end
+
 describe Api::DashboardsController, type: :controller do
   describe 'POST #dashboard clone endpoint' do
     before(:each) do
       @dashboard = FactoryBot.create :dashboard_with_widgets
+      @dashboard_no_content = FactoryBot.create :dashboard_without_widgets
     end
 
     it 'returns 200 OK with the created dashboard data when providing no data in request body (happy case)' do
@@ -15,22 +45,7 @@ describe Api::DashboardsController, type: :controller do
         post 'clone', params: {id: @dashboard.id, loggedUser: USERS[:MANAGER]}
         expect(response.status).to eq(200)
         json_response = JSON.parse(response.body)
-
-        expect(json_response['data']['id']).to satisfy { |new_id| new_id != @dashboard['id'] }
-        expect(json_response['data']['attributes']['slug']).to satisfy { |new_slug| new_slug != @dashboard['slug'] }
-        expect(json_response['data']['attributes']['user-id']).to eq(USERS[:MANAGER][:id])
-
-        expect(json_response['data']['attributes']['name']).to eq(@dashboard['name'])
-        expect(json_response['data']['attributes']['summary']).to eq(@dashboard['summary'])
-        expect(json_response['data']['attributes']['description']).to eq(@dashboard['description'])
-        expect(json_response['data']['attributes']['published']).to eq(@dashboard['published'])
-        expect(json_response['data']['attributes']['private']).to eq(@dashboard['private'])
-        expect(json_response['data']['attributes']['production']).to eq(@dashboard['production'])
-        expect(json_response['data']['attributes']['preproduction']).to eq(@dashboard['preproduction'])
-        expect(json_response['data']['attributes']['staging']).to eq(@dashboard['staging'])
-        expect(json_response['data']['attributes']['application']).to eq(@dashboard['application'])
-        expect(json_response['data']['attributes']['is-highlighted']).to eq(@dashboard['is_highlighted'])
-        expect(json_response['data']['attributes']['is-featured']).to eq(@dashboard['is_featured'])
+        compare_cloned_with_existing(json_response['data'], @dashboard['id'], USERS[:MANAGER][:id])
       end
     end
 
@@ -55,23 +70,7 @@ describe Api::DashboardsController, type: :controller do
 
         expect(response.status).to eq(200)
         json_response = JSON.parse(response.body)
-
-        expect(json_response['data']['id']).to satisfy { |new_id| new_id != @dashboard['id'] }
-        expect(json_response['data']['attributes']['slug']).to satisfy { |new_slug| new_slug != @dashboard['slug'] }
-
-        expect(json_response['data']['attributes']['application']).to eq(@dashboard['application'])
-        expect(json_response['data']['attributes']['is-highlighted']).to eq(@dashboard['is_highlighted'])
-        expect(json_response['data']['attributes']['is-featured']).to eq(@dashboard['is_featured'])
-        expect(json_response['data']['attributes']['user-id']).to eq(USERS[:MANAGER][:id])
-
-        expect(json_response['data']['attributes']['name']).to eq(new_data[:name])
-        expect(json_response['data']['attributes']['summary']).to eq(new_data[:summary])
-        expect(json_response['data']['attributes']['description']).to eq(new_data[:description])
-        expect(json_response['data']['attributes']['published']).to eq(new_data[:published])
-        expect(json_response['data']['attributes']['private']).to eq(new_data[:private])
-        expect(json_response['data']['attributes']['production']).to eq(new_data[:production])
-        expect(json_response['data']['attributes']['preproduction']).to eq(new_data[:preproduction])
-        expect(json_response['data']['attributes']['staging']).to eq(new_data[:staging])
+        compare_cloned_with_existing(json_response['data'], @dashboard['id'], USERS[:MANAGER][:id], new_data)
       end
     end
 
@@ -94,12 +93,16 @@ describe Api::DashboardsController, type: :controller do
 
         expect(response.status).to eq(200)
         json_response = JSON.parse(response.body)
-        expect(json_response['data']['id']).to satisfy { |new_id| new_id != @dashboard['id'] and new_id != new_data[:id] }
-        expect(json_response['data']['attributes']['slug']).to satisfy { |new_slug| new_slug != @dashboard['slug'] and new_slug != new_data[:slug] }
-        expect(json_response['data']['attributes']['user-id']).to eq(USERS[:MANAGER][:id])
-        expect(json_response['data']['attributes']['application']).to eq(@dashboard['application'])
-        expect(json_response['data']['attributes']['is-highlighted']).to eq(@dashboard['is_highlighted'])
-        expect(json_response['data']['attributes']['is-featured']).to eq(@dashboard['is_featured'])
+        compare_cloned_with_existing(json_response['data'], @dashboard['id'], USERS[:MANAGER][:id])
+      end
+    end
+
+    it 'cloning a dashboard with no content works, returning 200 OK with the newly cloned dashboard' do
+      VCR.use_cassette('dataset_widget') do
+        post 'clone', params: { id: @dashboard_no_content.id, loggedUser: USERS[:MANAGER] }
+        expect(response.status).to eq(200)
+        json_response = JSON.parse(response.body)
+        compare_cloned_with_existing(json_response['data'], @dashboard_no_content['id'], USERS[:MANAGER][:id])
       end
     end
   end

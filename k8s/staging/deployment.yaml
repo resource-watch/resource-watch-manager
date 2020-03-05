@@ -3,8 +3,8 @@ kind: Deployment
 metadata:
   namespace: rw
   labels:
-    name: {name}
-  name: {name}
+    name: resource-watch-manager
+  name: resource-watch-manager
 spec:
   minReadySeconds: 30
   revisionHistoryLimit: 0
@@ -12,7 +12,7 @@ spec:
     metadata:
       namespace: rw
       labels:
-        name: {name}
+        name: resource-watch-manager
     spec:
       affinity:
         podAntiAffinity:
@@ -24,11 +24,11 @@ spec:
                     - key: name
                       operator: In
                       values:
-                        - {name}
+                        - resource-watch-manager
                 topologyKey: kubernetes.io/hostname
       containers:
-        - name: {name}
-          image: vizzuality/{name}
+        - name: resource-watch-manager
+          image: vizzuality/resource-watch-manager
           imagePullPolicy: Always
           args:
             - start
@@ -99,7 +99,7 @@ spec:
                   name: mssecrets
                   key: CT_TOKEN
             - name: LOCAL_URL
-              value: http://{name}.rw.svc.cluster.local:3000
+              value: http://resource-watch-manager.rw.svc.cluster.local:3000
             - name: RAILS_ENV
               value: "production"
           ports:
