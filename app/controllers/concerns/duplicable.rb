@@ -33,6 +33,7 @@ module Duplicable
     widgets.each { |x| new_content.gsub!(x[:old_id], x[:new_id]) }
     new_model.content = new_content
     new_model.attributes = new_model.attributes.merge(override)
+    new_model.image_base = self.photo
     new_model.save
     new_model
   end
