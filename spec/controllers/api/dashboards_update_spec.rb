@@ -4,6 +4,35 @@ require 'spec_helper'
 require 'json'
 require 'constants'
 
+def get_edit_dashboard_data(override = {})
+  {
+    "type": "dashboards",
+    "attributes": {
+      "name": "Cities",
+      "summary": "test dashboard one summary",
+      "description": "Dashboard that uses cities",
+      "content": "test dashboard one description",
+      "published": true,
+      "photo": {
+        "cover": "/photos/cover/missing.png",
+        "thumb": "/photos/thumb/missing.png",
+        "original": "/photos/original/missing.png"
+      },
+      "private": true,
+      "production": true,
+      "preproduction": false,
+      "staging": false,
+      "application": ["rw"],
+      "author_title": "Auhtor title",
+      "author_image": {
+        "cover": "/photos/cover/missing.png",
+        "thumb": "/photos/thumb/missing.png",
+        "original": "/photos/original/missing.png"
+      },
+    }
+  }.deep_merge(override)
+end
+
 describe Api::DashboardsController, type: :controller do
   describe 'PATCH #dashboard' do
     before(:each) do
@@ -13,28 +42,7 @@ describe Api::DashboardsController, type: :controller do
     it 'with no user details should produce a 401 error' do
       patch :update, params: {
         id: @dashboard_private_manager[:id],
-        "data": {
-          "type": "dashboards",
-          "attributes": {
-            "name": "Cities",
-            "summary": "test dashboard one summary",
-            "description": "Dashboard that uses cities",
-            "content": "test dashboard one description",
-            "published": true,
-            "photo": {
-              "cover": "/photos/cover/missing.png",
-              "thumb": "/photos/thumb/missing.png",
-              "original": "/photos/original/missing.png"
-            },
-            "private": true,
-            "production": true,
-            "preproduction": false,
-            "staging": false,
-            "application": [
-              "rw"
-            ]
-          }
-        }
+        data: get_edit_dashboard_data,
       }
 
       expect(response.status).to eq(401)
@@ -43,28 +51,11 @@ describe Api::DashboardsController, type: :controller do
     it 'with role USER should produce an 403 error' do
       patch :update, params: {
         id: @dashboard_private_manager[:id],
-        "data": {
-          "type": "dashboards",
-          "attributes": {
-            "name": "Cities",
-            "summary": "test dashboard one summary",
-            "description": "Dashboard that uses cities",
-            "content": "test dashboard one description",
-            "published": true,
-            "photo": {
-              "cover": "/photos/cover/missing.png",
-              "thumb": "/photos/thumb/missing.png",
-              "original": "/photos/original/missing.png"
-            },
-            "private": true,
-            "production": true,
-            "preproduction": false,
-            "staging": false,
-            "application": [
-              "fake-app"
-            ]
+        data: get_edit_dashboard_data({
+          attributes: {
+            application: ["fake-app"]
           }
-        },
+        }),
         loggedUser: USERS[:USER]
       }
 
@@ -74,28 +65,11 @@ describe Api::DashboardsController, type: :controller do
     it 'with role MANAGER and non-matching applications between request and dashboard should produce an 403 error' do
       patch :update, params: {
         id: @dashboard_private_manager[:id],
-        "data": {
-          "type": "dashboards",
-          "attributes": {
-            "name": "Cities",
-            "summary": "test dashboard one summary",
-            "description": "Dashboard that uses cities",
-            "content": "test dashboard one description",
-            "published": true,
-            "photo": {
-              "cover": "/photos/cover/missing.png",
-              "thumb": "/photos/thumb/missing.png",
-              "original": "/photos/original/missing.png"
-            },
-            "private": true,
-            "production": true,
-            "preproduction": false,
-            "staging": false,
-            "application": [
-              "fake-app"
-            ]
+        data: get_edit_dashboard_data({
+          attributes: {
+            application: ["fake-app"]
           }
-        },
+        }),
         loggedUser: USERS[:MANAGER]
       }
 
@@ -108,28 +82,7 @@ describe Api::DashboardsController, type: :controller do
 
       patch :update, params: {
         id: @dashboard_private_manager[:id],
-        "data": {
-          "type": "dashboards",
-          "attributes": {
-            "name": "Cities",
-            "summary": "test dashboard one summary",
-            "description": "Dashboard that uses cities",
-            "content": "test dashboard one description",
-            "published": true,
-            "photo": {
-              "cover": "/photos/cover/missing.png",
-              "thumb": "/photos/thumb/missing.png",
-              "original": "/photos/original/missing.png"
-            },
-            "private": true,
-            "production": true,
-            "preproduction": false,
-            "staging": false,
-            "application": [
-              "rw"
-            ]
-          }
-        },
+        data: get_edit_dashboard_data,
         loggedUser: spoofed_user
       }
 
@@ -142,26 +95,11 @@ describe Api::DashboardsController, type: :controller do
 
       patch :update, params: {
         id: @dashboard_private_manager[:id],
-        "data": {
-          "type": "dashboards",
-          "attributes": {
-            "name": "Cities",
-            "summary": "test dashboard one summary",
-            "description": "Dashboard that uses cities",
-            "content": "test dashboard one description",
-            "published": true,
-            "photo": {
-              "cover": "/photos/cover/missing.png",
-              "thumb": "/photos/thumb/missing.png",
-              "original": "/photos/original/missing.png"
-            },
-            "private": true,
-            "production": true,
-            "preproduction": false,
-            "staging": false,
-            "application": %w(rw gfw)
+        data: get_edit_dashboard_data({
+          attributes: {
+            application: %w(rw gfw)
           }
-        },
+        }),
         loggedUser: spoofed_user
       }
 
@@ -171,35 +109,17 @@ describe Api::DashboardsController, type: :controller do
     it 'that belongs to the user and with role MANAGER and at least one matching applications between user and dashboard should update the dashboard' do
       patch :update, params: {
         id: @dashboard_private_manager[:id],
-        "data": {
-          "type": "dashboards",
-          "attributes": {
-            "name": "Cities",
-            "summary": "test dashboard one summary",
-            "description": "Dashboard that uses cities",
-            "content": "test dashboard one description",
-            "published": true,
-            "photo": {
-              "cover": "/photos/cover/missing.png",
-              "thumb": "/photos/thumb/missing.png",
-              "original": "/photos/original/missing.png"
-            },
-            "private": true,
-            "production": true,
-            "preproduction": false,
-            "staging": false,
-            "application": %w(rw gfw)
+        data: get_edit_dashboard_data({
+          attributes: {
+            application: %w(rw gfw)
           }
-        },
+        }),
         loggedUser: USERS[:MANAGER]
       }
 
       expect(response.status).to eq(200)
-
       sampleDashboard = json_response[:data]
-
       validate_dashboard_structure(sampleDashboard)
-
       expect(sampleDashboard[:attributes][:application]).to eq(%w(rw gfw))
     end
 
@@ -209,43 +129,24 @@ describe Api::DashboardsController, type: :controller do
 
       patch :update, params: {
         id: @dashboard_private_manager[:id],
-        "data": {
-          "type": "dashboards",
-          "attributes": {
-            "name": "Cities",
-            "summary": "test dashboard one summary",
-            "description": "Dashboard that uses cities",
-            "content": "test dashboard one description",
-            "published": true,
-            "photo": {
-              "cover": "/photos/cover/missing.png",
-              "thumb": "/photos/thumb/missing.png",
-              "original": "/photos/original/missing.png"
-            },
-            "private": true,
-            "production": true,
-            "preproduction": false,
-            "staging": false,
-            "application": %w(rw gfw prep)
-
+        data: get_edit_dashboard_data({
+          attributes: {
+            application: %w(rw gfw prep)
           }
-        },
+        }),
         loggedUser: spoofed_user
       }
 
       expect(response.status).to eq(200)
-
       sampleDashboard = json_response[:data]
-
       validate_dashboard_structure(sampleDashboard)
-
       expect(sampleDashboard[:attributes][:application]).to eq(%w(rw gfw prep))
     end
 
     it 'with role ADMIN should update the dashboard providing the is-highlighted attribute' do
       patch :update, params: {
         id: @dashboard_private_manager[:id],
-        "data": {
+        data: {
           "type": "dashboards",
           "attributes": {
             "is-highlighted": true
@@ -263,7 +164,7 @@ describe Api::DashboardsController, type: :controller do
     it 'with role MANAGER should not update the dashboard providing the is-highlighted attribute' do
       patch :update, params: {
         id: @dashboard_private_manager[:id],
-        "data": {
+        data: {
           "type": "dashboards",
           "attributes": {
             "is-highlighted": true
@@ -283,7 +184,7 @@ describe Api::DashboardsController, type: :controller do
     it 'with role USER should not update the dashboard providing the is-highlighted attribute' do
       patch :update, params: {
         id: @dashboard_private_manager[:id],
-        "data": {
+        data: {
           "type": "dashboards",
           "attributes": {
             "is-highlighted": true
@@ -303,7 +204,7 @@ describe Api::DashboardsController, type: :controller do
     it 'with role ADMIN should update the dashboard providing the is-featured attribute' do
       patch :update, params: {
         id: @dashboard_private_manager[:id],
-        "data": {
+        data: {
           "type": "dashboards",
           "attributes": {
             "is-featured": true
@@ -321,7 +222,7 @@ describe Api::DashboardsController, type: :controller do
     it 'with role MANAGER should not update the dashboard providing the is-featured attribute' do
       patch :update, params: {
         id: @dashboard_private_manager[:id],
-        "data": {
+        data: {
           "type": "dashboards",
           "attributes": {
             "is-featured": true
@@ -341,7 +242,7 @@ describe Api::DashboardsController, type: :controller do
     it 'with role USER should not update the dashboard providing the is-featured attribute' do
       patch :update, params: {
         id: @dashboard_private_manager[:id],
-        "data": {
+        data: {
           "type": "dashboards",
           "attributes": {
             "is-featured": true

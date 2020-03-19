@@ -22,6 +22,7 @@ def get_new_dashboard_data(override = {})
       "production": true,
       "preproduction": false,
       "staging": false,
+      "application": ["rw"],
       "author_title": "Auhtor title",
       "author_image": {
         "cover": "/photos/cover/missing.png",
