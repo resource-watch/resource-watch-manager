@@ -31,6 +31,10 @@ def compare_cloned_with_existing(cloned_dash, initial_id, user_id, override_data
   expect(cloned_dash['attributes']['photo']['cover']).to eq(initial_dash[:attributes][:photo][:cover])
   expect(cloned_dash['attributes']['photo']['thumb']).to eq(initial_dash[:attributes][:photo][:thumb])
   expect(cloned_dash['attributes']['photo']['original']).to eq(initial_dash[:attributes][:photo][:original])
+  expect(cloned_dash['attributes']['author-title']).to eq(initial_dash[:attributes][:"author-title"])
+  expect(cloned_dash['attributes']['author-image']['cover']).to eq(initial_dash[:attributes][:"author-image"][:cover])
+  expect(cloned_dash['attributes']['author-image']['thumb']).to eq(initial_dash[:attributes][:"author-image"][:thumb])
+  expect(cloned_dash['attributes']['author-image']['original']).to eq(initial_dash[:attributes][:"author-image"][:original])
 end
 
 describe Api::DashboardsController, type: :controller do
@@ -60,6 +64,7 @@ describe Api::DashboardsController, type: :controller do
           production: false,
           preproduction: false,
           staging: false,
+          author_title: 'Example author title',
         }
 
         post 'clone', params: {

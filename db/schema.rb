@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200106113315) do
+ActiveRecord::Schema.define(version: 20200319105154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,11 @@ ActiveRecord::Schema.define(version: 20200106113315) do
     t.boolean "is_featured", default: false
     t.string "user_name"
     t.string "user_role"
+    t.string "author_title", default: ""
+    t.string "author_image_file_name"
+    t.string "author_image_content_type"
+    t.integer "author_image_file_size"
+    t.datetime "author_image_updated_at"
   end
 
   create_table "faqs", force: :cascade do |t|

@@ -84,6 +84,37 @@ describe Api::DashboardsController, type: :controller do
       expect(data.map { |dashboard| dashboard[:attributes][:"name"] }.uniq).to eq([@dashboard_private_user_1.name])
     end
 
+    it 'with author-title=<string> filter should return only dashboards with "string" in the author title (full match)' do
+      get :index, params: { "author-title": @dashboard_private_user_1.author_title }
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(1)
+
+      expect(data.map { |dashboard| dashboard[:attributes][:"author-title"] }.uniq).to eq([@dashboard_private_user_1.author_title])
+    end
+
+    it 'with author-title=<string> filter should return only dashboards with "string" in the author-title (partial match)' do
+      get :index, params: { "author-title": @dashboard_private_user_1.author_title.split()[1]}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to be >= 1
+      expect(data.map { |dashboard| dashboard[:attributes][:"author-title"] }.uniq).to eq([@dashboard_private_user_1.author_title])
+    end
+
+    it 'with author-title=<string> filter should return dashboards with "string"/"String" in the author-title (case insensitivity)' do
+      get :index, params: { "author-title": @dashboard_private_user_1.author_title.downcase}
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to be >= 1
+      expect(data.map { |dashboard| dashboard[:attributes][:"author-title"] }.uniq).to eq([@dashboard_private_user_1.author_title])
+    end
+
     it 'with user=<userId> filter should return only dashboards associated with that user' do
       get :index, params: {user: '57a1ff091ebc1ad91d089bdc'}
 
