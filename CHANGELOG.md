@@ -1,3 +1,7 @@
+# 19/03/2020
+
+- Add new fields to the dashboard model for `author_title` and `author_image`.
+
 # v1.2.0
 
 ## 28/02/2020
