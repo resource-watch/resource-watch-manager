@@ -21,4 +21,6 @@ def validate_dashboard_structure(expected)
   expect(expected[:attributes]).to have_key(:application)
   expect(expected[:attributes]).to have_key('is-highlighted'.to_sym)
   expect(expected[:attributes]).to have_key('is-featured'.to_sym)
+  expect(expected[:attributes]).to have_key('author-title'.to_sym)
+  expect(expected[:attributes]).to have_key('author-image'.to_sym)
 end

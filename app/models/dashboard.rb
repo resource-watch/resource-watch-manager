@@ -3,29 +3,34 @@
 #
 # Table name: dashboards
 #
-#  id                 :bigint(8)        not null, primary key
-#  name               :string
-#  slug               :string
-#  description        :string
-#  content            :text
-#  published          :boolean
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  summary            :string
-#  photo_file_name    :string
-#  photo_content_type :string
-#  photo_file_size    :integer
-#  photo_updated_at   :datetime
-#  user_id            :string
-#  user_name          :string
-#  user_role          :string
-#  private            :boolean          default(TRUE)
-#  production         :boolean          default(TRUE)
-#  preproduction      :boolean          default(FALSE)
-#  staging            :boolean          default(FALSE)
-#  application        :string           default(["\"rw\""]), not null, is an Array
-#  is_highlighted     :boolean          default(FALSE)
-#  is_featured        :boolean          default(FALSE)
+#  id                        :bigint(8)        not null, primary key
+#  name                      :string
+#  slug                      :string
+#  description               :string
+#  content                   :text
+#  published                 :boolean
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  summary                   :string
+#  photo_file_name           :string
+#  photo_content_type        :string
+#  photo_file_size           :integer
+#  photo_updated_at          :datetime
+#  user_id                   :string
+#  user_name                 :string
+#  user_role                 :string
+#  private                   :boolean          default(TRUE)
+#  production                :boolean          default(TRUE)
+#  preproduction             :boolean          default(FALSE)
+#  staging                   :boolean          default(FALSE)
+#  application               :string           default(["\"rw\""]), not null, is an Array
+#  is_highlighted            :boolean          default(FALSE)
+#  is_featured               :boolean          default(FALSE)
+#  author_title              :string           default('')
+#  author_image_file_name    :string
+#  author_image_content_type :string
+#  author_image_file_size    :integer
+#  author_image_updated_at   :datetime
 #
 
 class Dashboard < ApplicationRecord
@@ -43,6 +48,11 @@ class Dashboard < ApplicationRecord
   validates_attachment_content_type :photo, content_type: %r{^image\/.*}
   do_not_validate_attachment_file_type :photo
 
+  has_attached_file :author_image, styles: { cover: '1280x>', thumb: '110x>', medium: '500x' }
+  validates_attachment_content_type :author_image, content_type: %r{^image\/.*}
+  do_not_validate_attachment_file_type :author_image
+
+  scope :by_author_title, ->(author_title) { where("author_title ilike ?", "%#{author_title}%") }
   scope :by_application, ->(application) { where("?::varchar = ANY(application)", application) }
   scope :by_is_highlighted, ->(is_highlighted) { where(is_highlighted: is_highlighted) }
   scope :by_is_featured, ->(is_featured) { where(is_featured: is_featured) }
@@ -64,6 +74,7 @@ class Dashboard < ApplicationRecord
       dashboards = dashboards.by_user(options[:filter][:user]) if options[:filter][:user]
     end
 
+    dashboards = dashboards.by_author_title(options['author-title'.to_sym]) if options['author-title'.to_sym]
     dashboards = dashboards.by_application(options[:application]) if options[:application]
     dashboards = dashboards.by_is_highlighted(options['is-highlighted'.to_sym]) if options['is-highlighted'.to_sym]
     dashboards = dashboards.by_is_featured(options['is-featured'.to_sym]) if options['is-featured'.to_sym]

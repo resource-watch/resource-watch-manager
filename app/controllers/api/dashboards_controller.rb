@@ -165,27 +165,27 @@ class Api::DashboardsController < ApiController
   end
 
   def dashboard_params_get
-    params.permit(:name, :published, :private, :user, :application, 'is-highlighted'.to_sym, :sort,
+    params.permit(:name, :published, :private, :user, :application, 'is-highlighted'.to_sym, :sort, 'author-title'.to_sym,
       'is-featured'.to_sym, user: [], :filter => [:published, :private, :user])
   end
 
   def dashboard_params_create
     ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :production,
-      :preproduction, :staging, :is_highlighted, :is_featured, application:[])
+      :preproduction, :staging, :is_highlighted, :is_featured, :autor_title, :autor_image, application:[])
   rescue
     nil
   end
 
   def dashboard_params_update
     ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :production,
-      :preproduction, :staging, :is_highlighted, :is_featured, application:[])
+      :preproduction, :staging, :is_highlighted, :is_featured, :autor_title, :autor_image, application:[])
   rescue
     nil
   end
 
   def dashboard_params_clone
     ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :production,
-      :preproduction, :staging)
+      :preproduction, :staging, :autor_title, :autor_image)
   rescue
     nil
   end

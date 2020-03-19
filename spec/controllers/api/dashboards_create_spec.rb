@@ -21,7 +21,13 @@ def get_new_dashboard_data(override = {})
       "private": true,
       "production": true,
       "preproduction": false,
-      "staging": false
+      "staging": false,
+      "author_title": "Auhtor title",
+      "author_image": {
+        "cover": "/photos/cover/missing.png",
+        "thumb": "/photos/thumb/missing.png",
+        "original": "/photos/original/missing.png"
+      },
     }
   }.deep_merge(override)
 end
