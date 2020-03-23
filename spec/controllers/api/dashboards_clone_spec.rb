@@ -65,6 +65,7 @@ describe Api::DashboardsController, type: :controller do
           preproduction: false,
           staging: false,
           author_title: 'Example author title',
+          'author-title': 'Example author title',
         }
 
         post 'clone', params: {
