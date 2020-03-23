@@ -171,21 +171,21 @@ class Api::DashboardsController < ApiController
 
   def dashboard_params_create
     ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :production,
-      :preproduction, :staging, :is_highlighted, :is_featured, :autor_title, :autor_image, application:[])
+      :preproduction, :staging, :is_highlighted, :is_featured, :author_title, :author_image, application:[])
   rescue
     nil
   end
 
   def dashboard_params_update
     ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :production,
-      :preproduction, :staging, :is_highlighted, :is_featured, :autor_title, :autor_image, application:[])
+      :preproduction, :staging, :is_highlighted, :is_featured, :author_title, :author_image, application:[])
   rescue
     nil
   end
 
   def dashboard_params_clone
     ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :production,
-      :preproduction, :staging, :autor_title, :autor_image)
+      :preproduction, :staging, :author_title, :author_image)
   rescue
     nil
   end
