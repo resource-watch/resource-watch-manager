@@ -23,7 +23,7 @@ def get_edit_dashboard_data(override = {})
       "preproduction": false,
       "staging": false,
       "application": ["rw"],
-      "author_title": "Auhtor title",
+      "author_title": "Author title",
       "author_image": {
         "cover": "/photos/cover/missing.png",
         "thumb": "/photos/thumb/missing.png",
