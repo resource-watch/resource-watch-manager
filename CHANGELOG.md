@@ -1,6 +1,9 @@
-# 19/03/2020
+# v1.3.0
 
-- Add new fields to the dashboard model for `author_title` and `author_image`.
+## 19/03/2020
+
+- Add new fields to the dashboard model for `author_title` and `author_image`
+- Security update on the `json` gem
 
 # v1.2.0
 
