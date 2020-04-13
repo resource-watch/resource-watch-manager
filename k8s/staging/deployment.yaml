@@ -22,7 +22,7 @@ spec:
               - key: type
                 operator: In
                 values:
-                - webapps
+                - apps
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - weight: 100
