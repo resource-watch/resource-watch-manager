@@ -24,6 +24,11 @@ If you are looking for the RW dataset API, you can find it [here](https://github
 * [Docker](https://www.docker.com/)
 * [Docker compose](https://docs.docker.com/compose/)
 
+Dependencies on other Microservices:
+
+- [Widget](https://github.com/resource-watch/widget)
+- [Control Tower](https://github.com/resource-watch/control-tower)
+
 ## Installation process:
 
 ### Native execution 
