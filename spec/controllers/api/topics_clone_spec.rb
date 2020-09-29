@@ -34,6 +34,8 @@ describe Api::TopicsController, type: :controller do
         expect(clonedDashboard[:attributes][:description]).to eq(@topic.description)
         expect(clonedDashboard[:attributes][:published]).to eq(@topic.published)
         expect(clonedDashboard[:attributes][:application]).to eq(@topic.application)
+        expect(clonedDashboard[:attributes]["is-highlighted".to_sym]).to eq(false)
+        expect(clonedDashboard[:attributes]["is-featured".to_sym]).to eq(false)
         expect(clonedDashboard[:attributes]["user-id".to_sym]).to eq(USERS[:ADMIN][:id])
       end
     end

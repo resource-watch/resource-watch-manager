@@ -145,6 +145,8 @@ class Dashboard < ApplicationRecord
 
   def duplicate(user_id = nil, override = {})
     widgets = clone_widgets(user_id)
+    override[:is_highlighted] = false
+    override[:is_featured] = false
     clone_model(widgets, override)
   end
 
