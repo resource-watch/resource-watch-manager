@@ -1,13 +1,22 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: rw
   labels:
     name: resource-watch-manager
   name: resource-watch-manager
+  namespace: rw
 spec:
   minReadySeconds: 30
+  progressDeadlineSeconds: 2147483647
   revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      name: resource-watch-manager
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -17,116 +26,126 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-            - matchExpressions:
-              - key: type
-                operator: In
-                values:
-                - apps
+              - matchExpressions:
+                  - key: type
+                    operator: In
+                    values:
+                      - apps
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: name
-                  operator: In
-                  values:
-                  - resource-watch-manager
-              topologyKey: kubernetes.io/hostname
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: name
+                      operator: In
+                      values:
+                        - resource-watch-manager
+                topologyKey: kubernetes.io/hostname
+              weight: 100
       containers:
-      - name: resource-watch-manager
-        image: vizzuality/resource-watch-manager
-        imagePullPolicy: Always
-        args:
-          - start
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "1"
-        env:
-          - name: CONTACT_EMAIL
-            value: "resourcewatch@wri.org"
-          - name: SENDGRID_DOMAIN
-            value: "vizzuality.com"
-          - name: SENDGRID_API_KEY
-            valueFrom:
+        - args:
+            - start
+          env:
+            - name: CONTACT_EMAIL
+              value: resourcewatch@wri.org
+            - name: SENDGRID_DOMAIN
+              value: vizzuality.com
+            - name: SENDGRID_API_KEY
+              valueFrom:
                 secretKeyRef:
-                  name: appsecrets
                   key: RW_SENDGRID_API_KEY
-          - name: SENDGRID_USERNAME
-            valueFrom:
-                secretKeyRef:
                   name: appsecrets
+            - name: SENDGRID_USERNAME
+              valueFrom:
+                secretKeyRef:
                   key: RW_SENDGRID_USERNAME
-          - name: SENDGRID_PASSWORD
-            valueFrom:
-                secretKeyRef:
                   name: appsecrets
+            - name: SENDGRID_PASSWORD
+              valueFrom:
+                secretKeyRef:
                   key: RW_SENDGRID_PASSWORD
-          - name: RAILS_LOG_TO_STDOUT
-            value: "true"
-          - name: APIGATEWAY_URL
-            value: "https://api.resourcewatch.org"
-          - name: RW_API_URL
-            value: "https://api.resourcewatch.org"
-          - name: RAILS_SERVE_STATIC_FILES
-            value: "false"
-          - name: DATABASE_URL
-            valueFrom:
+                  name: appsecrets
+            - name: RAILS_LOG_TO_STDOUT
+              value: "true"
+            - name: APIGATEWAY_URL
+              value: https://api.resourcewatch.org
+            - name: RW_API_URL
+              value: https://api.resourcewatch.org
+            - name: RAILS_SERVE_STATIC_FILES
+              value: "false"
+            - name: DATABASE_URL
+              valueFrom:
                 secretKeyRef:
-                  name: dbsecrets
                   key: RESOURCE_WATCH_MANAGER_POSTGRESDB
-          - name: S3_BUCKET_NAME
-            value: "wri-api-backups"
-          - name: S3_PATH
-            value: "resourcewatch/staging"
-          - name: AWS_REGION
-            value: "us-east-1"
-          - name: AWS_ACCESS_KEY_ID
-            valueFrom:
+                  name: dbsecrets
+            - name: S3_BUCKET_NAME
+              value: wri-api-backups
+            - name: S3_PATH
+              value: resourcewatch/staging
+            - name: AWS_REGION
+              value: us-east-1
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
                 secretKeyRef:
-                  name: mssecrets
                   key: S3_ACCESS_KEY_ID
-          - name: AWS_SECRET_ACCESS_KEY
-            valueFrom:
-                secretKeyRef:
                   name: mssecrets
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
                   key: S3_SECRET_ACCESS_KEY
-          - name: CT_URL
-            valueFrom:
-              secretKeyRef:
-                name: mssecrets
-                key: CT_URL
-          - name: CT_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: mssecrets
-                key: CT_TOKEN
-          - name: LOCAL_URL
-            value: http://resource-watch-manager.rw.svc.cluster.local:3000
-          - name: RAILS_ENV
-            value: "production"
-
-        ports:
-          - containerPort: 3000
-        readinessProbe:
-          httpGet:
-            scheme: HTTP
-            path: /health
-            port: 3000
-          initialDelaySeconds: 30
-          timeoutSeconds: 5
-          periodSeconds: 15
-        livenessProbe:
-          httpGet:
-            scheme: HTTP
-            path: /health
-            port: 3000
-          failureThreshold: 3
-          initialDelaySeconds: 30
-          timeoutSeconds: 5
-          periodSeconds: 15
+                  name: mssecrets
+            - name: CT_URL
+              valueFrom:
+                secretKeyRef:
+                  key: CT_URL
+                  name: mssecrets
+            - name: CT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: CT_TOKEN
+                  name: mssecrets
+            - name: LOCAL_URL
+              value: http://resource-watch-manager.rw.svc.cluster.local:3000
+            - name: RAILS_ENV
+              value: production
+          image: vizzuality/resource-watch-manager
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: resource-watch-manager
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
       restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: { }
+      terminationGracePeriodSeconds: 30
+status: { }
