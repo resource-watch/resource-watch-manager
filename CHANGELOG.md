@@ -1,4 +1,6 @@
-## 29/09/2020
+# 1.3.2
+
+## 17/11/2020
 
 - Set dashboard's `is_featured` and `is_highlighted` to `false` on dashboard and topic clone 
 
