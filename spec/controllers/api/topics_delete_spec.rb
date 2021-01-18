@@ -20,12 +20,14 @@ describe Api::TopicsController, type: :controller do
     end
 
     it 'with ADMIN token should delete the topic and return 204 No Content' do
-      delete :destroy, params: {
-        id: @topic_private_manager[:id],
-        loggedUser: USERS[:ADMIN]
-      }
+      VCR.use_cassette('user_admin') do
+        request.headers["Authorization"] = "abd"
+        delete :destroy, params: {
+          id: @topic_private_manager[:id],
+        }
 
-      expect(response.status).to eq(204)
+        expect(response.status).to eq(204)
+      end
     end
   end
 end

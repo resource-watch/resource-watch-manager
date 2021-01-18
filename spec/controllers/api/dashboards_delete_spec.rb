@@ -20,78 +20,73 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with role USER should produce an 403 error' do
-      delete :destroy, params: {
-        id: @dashboard_private_manager[:id],
-        loggedUser: USERS[:USER]
-      }
+      VCR.use_cassette('user_user') do
+        request.headers["Authorization"] = "abd"
+        delete :destroy, params: {
+          id: @dashboard_private_manager[:id],
+        }
 
-      expect(response.status).to eq(403)
-      expect(response.body).to include "You need to be either ADMIN or MANAGER and own the dashboard to update/delete it"
+        expect(response.status).to eq(403)
+        expect(response.body).to include "You need to be either ADMIN or MANAGER and own the dashboard to update/delete it"
+      end
     end
 
     it 'with role MANAGER, NOT the owner of the dashboard, should produce an 403 error' do
-      spoofed_user = USERS[:MANAGER].deep_dup
-      spoofed_user[:id] = "123"
+      VCR.use_cassette('user_manager_fake_id') do
+        request.headers["Authorization"] = "abd"
+        delete :destroy, params: {
+          id: @dashboard_private_manager[:id],
+        }
 
-      delete :destroy, params: {
-        id: @dashboard_private_manager[:id],
-        loggedUser: spoofed_user
-      }
-
-      expect(response.status).to eq(403)
-      expect(response.body).to include "You need to be either ADMIN or MANAGER and own the dashboard to update/delete it"
+        expect(response.status).to eq(403)
+        expect(response.body).to include "You need to be either ADMIN or MANAGER and own the dashboard to update/delete it"
+      end
     end
 
     it 'with role MANAGER, owner of the dashboard, but non-matching applications between user and dashboard should produce an 403 error' do
-      spoofed_user = USERS[:MANAGER].deep_dup
-      spoofed_user[:extraUserData][:apps] = ["fake-app"]
+      VCR.use_cassette('user_manager_fake_app') do
+        request.headers["Authorization"] = "abd"
+        delete :destroy, params: {
+          id: @dashboard_private_manager[:id],
+        }
 
-      delete :destroy, params: {
-        id: @dashboard_private_manager[:id],
-        loggedUser: spoofed_user
-      }
-
-      expect(response.status).to eq(403)
-      expect(response.body).to include "Your user account does not have permissions to delete this dashboard"
+        expect(response.status).to eq(403)
+        expect(response.body).to include "Your user account does not have permissions to delete this dashboard"
+      end
     end
 
     it 'with role MANAGER, owner of the dashboard, and at least one matching application between user and dashboard should return 204 No Content' do
-      spoofed_user = USERS[:MANAGER].deep_dup
-      spoofed_user[:extraUserData][:apps] = ["rw", "gfw"]
+      VCR.use_cassette('user_manager') do
+        request.headers["Authorization"] = "abd"
+        delete :destroy, params: {
+          id: @dashboard_private_manager[:id],
+        }
 
-      delete :destroy, params: {
-        id: @dashboard_private_manager[:id],
-        loggedUser: spoofed_user
-      }
-
-      expect(response.status).to eq(204)
+        expect(response.status).to eq(204)
+      end
     end
 
     it 'with role ADMIN, NOT owner of the dashboard, but non-matching applications between user and dashboard should produce an 403 error' do
-      spoofed_user = USERS[:ADMIN].deep_dup
-      spoofed_user[:id] = "123"
-      spoofed_user[:extraUserData][:apps] = ["fake-app"]
+      VCR.use_cassette('user_admin_fake_id_app') do
+        request.headers["Authorization"] = "abd"
+        delete :destroy, params: {
+          id: @dashboard_private_manager[:id],
+        }
 
-      delete :destroy, params: {
-        id: @dashboard_private_manager[:id],
-        loggedUser: spoofed_user
-      }
-
-      expect(response.status).to eq(403)
-      expect(response.body).to include "Your user account does not have permissions to delete this dashboard"
+        expect(response.status).to eq(403)
+        expect(response.body).to include "Your user account does not have permissions to delete this dashboard"
+      end
     end
 
     it 'with role ADMIN, NOT owner of the dashboard, but at least one matching application between user and dashboard should return 204 No Content' do
-      spoofed_user = USERS[:ADMIN].deep_dup
-      spoofed_user[:id] = "123"
-      spoofed_user[:extraUserData][:apps] = ["rw", "gfw"]
+      VCR.use_cassette('user_admin_fake_id_rw_gfw') do
+        request.headers["Authorization"] = "abd"
+        delete :destroy, params: {
+          id: @dashboard_private_manager[:id],
+        }
 
-      delete :destroy, params: {
-        id: @dashboard_private_manager[:id],
-        loggedUser: spoofed_user
-      }
-
-      expect(response.status).to eq(204)
+        expect(response.status).to eq(204)
+      end
     end
   end
 end

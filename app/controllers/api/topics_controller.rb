@@ -4,7 +4,6 @@ class Api::TopicsController < ApiController
   before_action :set_topic, only: %i[show update destroy clone clone_dashboard]
   before_action :ensure_is_admin_or_owner_manager, only: :update
 
-  before_action :get_user, only: %i[index]
   before_action :ensure_user_has_requested_apps, only: [:create, :update]
   before_action :ensure_is_manager_or_admin, only: :update
   before_action :ensure_user_has_at_least_rw_app, only: :create
@@ -54,7 +53,7 @@ class Api::TopicsController < ApiController
 
   def clone
     begin
-      if duplicated_topic = @topic.duplicate(params.dig('loggedUser', 'id'))
+      if duplicated_topic = @topic.duplicate(@user.dig('id'))
         @topic = duplicated_topic
         render json: @topic, status: :ok
       else
@@ -68,7 +67,7 @@ class Api::TopicsController < ApiController
 
   def clone_dashboard
     begin
-      if dashboard = @topic.duplicate_dashboard(params.dig('loggedUser', 'id'))
+      if dashboard = @topic.duplicate_dashboard(@user.dig('id'))
         @dashboard = dashboard
         render json: @dashboard, status: :ok
       else
@@ -87,10 +86,6 @@ class Api::TopicsController < ApiController
 
   private
 
-  def get_user
-    @user = params['loggedUser'].present? ? JSON.parse(params['loggedUser']) : nil
-  end
-
   def set_topic
     @topic = Topic.friendly.find params[:id]
   rescue ActiveRecord::RecordNotFound
@@ -101,8 +96,8 @@ class Api::TopicsController < ApiController
 
   def ensure_is_admin_or_owner_manager
     return false if @user.nil?
-    return true if @user[:role].eql? "ADMIN"
-    return true if @user[:role].eql? "MANAGER" and @topic[:user_id].eql? @user[:id]
+    return true if @user['role'].eql? "ADMIN"
+    return true if @user['role'].eql? "MANAGER" and @topic[:user_id].eql? @user['id']
     render json: {errors: [{status: '403', title: 'You need to be either ADMIN or MANAGER and own the topic to update it'}]}, status: 403
   end
 
