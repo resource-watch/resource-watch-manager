@@ -1,3 +1,8 @@
+## 18/01/2021
+
+- Remove dependency on user data injected by Control Tower.
+- Set cache headers to private by default.
+
 # 1.3.2
 
 ## 17/11/2020

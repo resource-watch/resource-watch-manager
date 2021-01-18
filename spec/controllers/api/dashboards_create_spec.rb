@@ -43,189 +43,210 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with role USER should create the dashboard (happy case)' do
-      post :create, params: {
-        data: get_new_dashboard_data,
-        loggedUser: USERS[:USER]
-      }
+      VCR.use_cassette('user_user') do
+        request.headers["Authorization"] = "abd"
+        post :create, params: {
+          data: get_new_dashboard_data,
+        }
 
-      expect(response.status).to eq(201)
-      sampleDashboard = json_response[:data]
-      validate_dashboard_structure(sampleDashboard)
-      expect(sampleDashboard[:attributes][:application]).to eq(['rw'])
-      expect(sampleDashboard[:attributes]["user-id".to_sym]).to eq(USERS[:USER][:id])
+        expect(response.status).to eq(201)
+        sampleDashboard = json_response[:data]
+        validate_dashboard_structure(sampleDashboard)
+        expect(sampleDashboard[:attributes][:application]).to eq(['rw'])
+        expect(sampleDashboard[:attributes]["user-id".to_sym]).to eq(USERS[:USER][:id])
+      end
     end
 
     it 'with role USER that doesn\'t belong to rw and no explicit application should produce a 403 error' do
-      spoofed_user = USERS[:USER].deep_dup
-      spoofed_user[:extraUserData][:apps] = ["fake-app"]
+      VCR.use_cassette('user_user_fake_app') do
+        request.headers["Authorization"] = "abd"
+        post :create, params: {
+          data: get_new_dashboard_data,
+        }
 
-      post :create, params: {
-        data: get_new_dashboard_data,
-        loggedUser: spoofed_user
-      }
-
-      expect(response.status).to eq(403)
+        expect(response.status).to eq(403)
+      end
     end
 
     it 'with role USER and non-matching applications should produce an 403 error' do
-      post :create, params: {
-        data: get_new_dashboard_data({
-          attributes: {
-            application: ["fake-app"]
-          }
-        }),
-        loggedUser: USERS[:USER]
-      }
+      VCR.use_cassette('user_user') do
+        request.headers["Authorization"] = "abd"
+        post :create, params: {
+          data: get_new_dashboard_data({
+                                         attributes: {
+                                           application: ["fake-app"]
+                                         }
+                                       }),
+        }
 
-      expect(response.status).to eq(403)
+        expect(response.status).to eq(403)
+      end
     end
 
     it 'with role MANAGER should create the dashboard' do
-      post :create, params: {
-        "data": get_new_dashboard_data,
-        loggedUser: USERS[:MANAGER]
-      }
+      VCR.use_cassette('user_manager') do
+        request.headers["Authorization"] = "abd"
+        post :create, params: {
+          "data": get_new_dashboard_data,
+        }
 
-      expect(response.status).to eq(201)
-      sampleDashboard = json_response[:data]
-      validate_dashboard_structure(sampleDashboard)
-      expect(sampleDashboard[:attributes][:application]).to eq(['rw'])
-      expect(sampleDashboard[:attributes]["user-id".to_sym]).to eq(USERS[:MANAGER][:id])
+        expect(response.status).to eq(201)
+        sampleDashboard = json_response[:data]
+        validate_dashboard_structure(sampleDashboard)
+        expect(sampleDashboard[:attributes][:application]).to eq(['rw'])
+        expect(sampleDashboard[:attributes]["user-id".to_sym]).to eq(USERS[:MANAGER][:id])
+      end
     end
 
     it 'with multiple application values should create the dashboard with the multiple application values' do
-      post :create, params: {
-        data: get_new_dashboard_data({
-          attributes: {
-            application: %w(rw gfw prep)
-          }
-        }),
-        loggedUser: USERS[:ADMIN]
-      }
+      VCR.use_cassette('user_admin') do
+        request.headers["Authorization"] = "abd"
+        post :create, params: {
+          data: get_new_dashboard_data({
+                                         attributes: {
+                                           application: %w(rw gfw prep)
+                                         }
+                                       }),
+        }
 
-      expect(response.status).to eq(201)
-      sampleDashboard = json_response[:data]
-      validate_dashboard_structure(sampleDashboard)
-      expect(sampleDashboard[:attributes][:application]).to eq(%w(rw gfw prep))
-      expect(sampleDashboard[:attributes]["user-id".to_sym]).to eq(USERS[:ADMIN][:id])
+        expect(response.status).to eq(201)
+        sampleDashboard = json_response[:data]
+        validate_dashboard_structure(sampleDashboard)
+        expect(sampleDashboard[:attributes][:application]).to eq(%w(rw gfw prep))
+        expect(sampleDashboard[:attributes]["user-id".to_sym]).to eq(USERS[:ADMIN][:id])
+      end
     end
 
     it 'returns 201 when providing a body containing a user_id and it matches the id of the user who created the dashboard' do
-      post :create, params: {
-        data: get_new_dashboard_data({
-          attributes: { user_id: "1" }
-        }),
-        loggedUser: USERS[:USER]
-      }
+      VCR.use_cassette('user_user') do
+        request.headers["Authorization"] = "abd"
+        post :create, params: {
+          data: get_new_dashboard_data({
+                                         attributes: { user_id: "1" }
+                                       }),
+        }
 
-      expect(response.status).to eq(201)
-      sampleDashboard = json_response[:data]
-      validate_dashboard_structure(sampleDashboard)
-      expect(sampleDashboard[:attributes]["user-id".to_sym]).to eq(USERS[:USER][:id])
+        expect(response.status).to eq(201)
+        sampleDashboard = json_response[:data]
+        validate_dashboard_structure(sampleDashboard)
+        expect(sampleDashboard[:attributes]["user-id".to_sym]).to eq(USERS[:USER][:id])
+      end
     end
 
     it 'with role USER should not create the dashboard providing the is-highlighted attribute' do
-      post :create, params: {
-        data: get_new_dashboard_data({
-          attributes: {
-            "is-highlighted": true
-          }
-        }),
-        loggedUser: USERS[:USER]
-      }
+      VCR.use_cassette('user_user') do
+        request.headers["Authorization"] = "abd"
+        post :create, params: {
+          data: get_new_dashboard_data({
+                                         attributes: {
+                                           "is-highlighted": true
+                                         }
+                                       }),
+        }
 
-      expect(response.status).to eq(403)
-      expect(json_response).to have_key(:errors)
-      expect(json_response[:errors][0]).to have_key(:status)
-      expect(json_response[:errors][0]).to have_key(:title)
-      expect(json_response[:errors][0][:status]).to eq("403")
-      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the provided attribute of the dashboard")
+        expect(response.status).to eq(403)
+        expect(json_response).to have_key(:errors)
+        expect(json_response[:errors][0]).to have_key(:status)
+        expect(json_response[:errors][0]).to have_key(:title)
+        expect(json_response[:errors][0][:status]).to eq("403")
+        expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the provided attribute of the dashboard")
+      end
     end
 
     it 'with role MANAGER should not create the dashboard providing the is-highlighted attribute' do
-      post :create, params: {
-        data: get_new_dashboard_data({
-          attributes: {
-            "is-highlighted": true
-          }
-        }),
-        loggedUser: USERS[:MANAGER]
-      }
+      VCR.use_cassette('user_manager') do
+        request.headers["Authorization"] = "abd"
+        post :create, params: {
+          data: get_new_dashboard_data({
+                                         attributes: {
+                                           "is-highlighted": true
+                                         }
+                                       }),
+        }
 
-      expect(response.status).to eq(403)
-      expect(json_response).to have_key(:errors)
-      expect(json_response[:errors][0]).to have_key(:status)
-      expect(json_response[:errors][0]).to have_key(:title)
-      expect(json_response[:errors][0][:status]).to eq("403")
-      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the provided attribute of the dashboard")
+        expect(response.status).to eq(403)
+        expect(json_response).to have_key(:errors)
+        expect(json_response[:errors][0]).to have_key(:status)
+        expect(json_response[:errors][0]).to have_key(:title)
+        expect(json_response[:errors][0][:status]).to eq("403")
+        expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the provided attribute of the dashboard")
+      end
     end
 
     it 'with role ADMIN should create the dashboard providing the is-highlighted attribute' do
-      post :create, params: {
-        data: get_new_dashboard_data({
-          attributes: {
-            "is-highlighted": true
-          }
-        }),
-        loggedUser: USERS[:ADMIN]
-      }
+      VCR.use_cassette('user_admin') do
+        request.headers["Authorization"] = "abd"
+        post :create, params: {
+          data: get_new_dashboard_data({
+                                         attributes: {
+                                           "is-highlighted": true
+                                         }
+                                       }),
+        }
 
-      expect(response.status).to eq(201)
-      sampleDashboard = json_response[:data]
-      validate_dashboard_structure(sampleDashboard)
-      expect(sampleDashboard[:attributes]['is-highlighted'.to_sym]).to eq(true)
+        expect(response.status).to eq(201)
+        sampleDashboard = json_response[:data]
+        validate_dashboard_structure(sampleDashboard)
+        expect(sampleDashboard[:attributes]['is-highlighted'.to_sym]).to eq(true)
+      end
     end
 
     it 'with role USER should not create the dashboard providing the is-featured attribute' do
-      post :create, params: {
-        data: get_new_dashboard_data({
-          attributes: {
-            "is-featured": true
-          }
-        }),
-        loggedUser: USERS[:USER]
-      }
+      VCR.use_cassette('user_user') do
+        request.headers["Authorization"] = "abd"
+        post :create, params: {
+          data: get_new_dashboard_data({
+                                         attributes: {
+                                           "is-featured": true
+                                         }
+                                       }),
+        }
 
-      expect(response.status).to eq(403)
-      expect(json_response).to have_key(:errors)
-      expect(json_response[:errors][0]).to have_key(:status)
-      expect(json_response[:errors][0]).to have_key(:title)
-      expect(json_response[:errors][0][:status]).to eq("403")
-      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the provided attribute of the dashboard")
+        expect(response.status).to eq(403)
+        expect(json_response).to have_key(:errors)
+        expect(json_response[:errors][0]).to have_key(:status)
+        expect(json_response[:errors][0]).to have_key(:title)
+        expect(json_response[:errors][0][:status]).to eq("403")
+        expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the provided attribute of the dashboard")
+      end
     end
 
     it 'with role MANAGER should not create the dashboard providing the is-featured attribute' do
-      post :create, params: {
-        data: get_new_dashboard_data({
-          attributes: {
-            "is-featured": true
-          }
-        }),
-        loggedUser: USERS[:MANAGER]
-      }
+      VCR.use_cassette('user_manager') do
+        request.headers["Authorization"] = "abd"
+        post :create, params: {
+          data: get_new_dashboard_data({
+                                         attributes: {
+                                           "is-featured": true
+                                         }
+                                       }),
+        }
 
-      expect(response.status).to eq(403)
-      expect(json_response).to have_key(:errors)
-      expect(json_response[:errors][0]).to have_key(:status)
-      expect(json_response[:errors][0]).to have_key(:title)
-      expect(json_response[:errors][0][:status]).to eq("403")
-      expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the provided attribute of the dashboard")
+        expect(response.status).to eq(403)
+        expect(json_response).to have_key(:errors)
+        expect(json_response[:errors][0]).to have_key(:status)
+        expect(json_response[:errors][0]).to have_key(:title)
+        expect(json_response[:errors][0][:status]).to eq("403")
+        expect(json_response[:errors][0][:title]).to eq("You need to be an ADMIN to create/update the provided attribute of the dashboard")
+      end
     end
 
     it 'with role ADMIN should create the dashboard providing the is-featured attribute' do
-      post :create, params: {
-        data: get_new_dashboard_data({
-          attributes: {
-            "is-featured": true
-          }
-        }),
-        loggedUser: USERS[:ADMIN]
-      }
+      VCR.use_cassette('user_admin') do
+        request.headers["Authorization"] = "abd"
+        post :create, params: {
+          data: get_new_dashboard_data({
+                                         attributes: {
+                                           "is-featured": true
+                                         }
+                                       }),
+        }
 
-      expect(response.status).to eq(201)
-      sampleDashboard = json_response[:data]
-      validate_dashboard_structure(sampleDashboard)
-      expect(sampleDashboard[:attributes]['is-featured'.to_sym]).to eq(true)
+        expect(response.status).to eq(201)
+        sampleDashboard = json_response[:data]
+        validate_dashboard_structure(sampleDashboard)
+        expect(sampleDashboard[:attributes]['is-featured'.to_sym]).to eq(true)
+      end
     end
   end
 end

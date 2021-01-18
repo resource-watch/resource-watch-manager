@@ -44,7 +44,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with private=false filter should return only non-private dashboards' do
-      get :index, params: {private: false}
+      get :index, params: { private: false }
 
       data = json_response[:data]
 
@@ -54,7 +54,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with name=<string> filter should return only dashboards with "string" in the name (full match)' do
-      get :index, params: {name: @dashboard_private_user_1.name}
+      get :index, params: { name: @dashboard_private_user_1.name }
 
       data = json_response[:data]
 
@@ -65,7 +65,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with name=<string> filter should return only dashboards with "string" in the name (partial match)' do
-      get :index, params: {name: @dashboard_private_user_1.name.split()[1]}
+      get :index, params: { name: @dashboard_private_user_1.name.split()[1] }
 
       data = json_response[:data]
 
@@ -75,7 +75,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with name=<string> filter should return dashboards with "string"/"String" in the name (case insensitivity)' do
-      get :index, params: {name: @dashboard_private_user_1.name.downcase}
+      get :index, params: { name: @dashboard_private_user_1.name.downcase }
 
       data = json_response[:data]
 
@@ -93,7 +93,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with author-title=<string> filter should return only dashboards with "string" in the author-title (partial match)' do
-      get :index, params: { "author-title": @dashboard_private_user_1.author_title.split()[1]}
+      get :index, params: { "author-title": @dashboard_private_user_1.author_title.split()[1] }
       data = json_response[:data]
       expect(response.status).to eq(200)
       expect(data.size).to be >= 1
@@ -101,7 +101,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with author-title=<string> filter should return dashboards with "string"/"String" in the author-title (case insensitivity)' do
-      get :index, params: { "author-title": @dashboard_private_user_1.author_title.downcase}
+      get :index, params: { "author-title": @dashboard_private_user_1.author_title.downcase }
       data = json_response[:data]
       expect(response.status).to eq(200)
       expect(data.size).to be >= 1
@@ -114,7 +114,7 @@ describe Api::DashboardsController, type: :controller do
       expect(response.status).to eq(200)
       expect(data.size).to eq(5)
 
-      get :index, params: { "author-title": "0'; drop table dashboards; --"}
+      get :index, params: { "author-title": "0'; drop table dashboards; --" }
       data = json_response[:data]
       expect(response.status).to eq(200)
 
@@ -126,7 +126,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with user=<userId> filter should return only dashboards associated with that user' do
-      get :index, params: {user: '57a1ff091ebc1ad91d089bdc'}
+      get :index, params: { user: '57a1ff091ebc1ad91d089bdc' }
 
       data = json_response[:data]
 
@@ -136,7 +136,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with user=<userId> and private=true filters should return only private dashboards associated with that user' do
-      get :index, params: {user: '57a1ff091ebc1ad91d089bdc', private: true}
+      get :index, params: { user: '57a1ff091ebc1ad91d089bdc', private: true }
 
       data = json_response[:data]
 
@@ -147,7 +147,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with user=<userId> and private=false filters should return only non-private dashboards associated with that user' do
-      get :index, params: {user: '57a1ff091ebc1ad91d089bdc', private: false}
+      get :index, params: { user: '57a1ff091ebc1ad91d089bdc', private: false }
 
       data = json_response[:data]
 
@@ -158,7 +158,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with published=true and private=false filters should return only non-private, published dashboards' do
-      get :index, params: {published: 'true', private: false}
+      get :index, params: { published: 'true', private: false }
 
       data = json_response[:data]
 
@@ -169,7 +169,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with is-highlighted=true filter should return only highlighted dashboards' do
-      get :index, params: {'is-highlighted': true}
+      get :index, params: { 'is-highlighted': true }
 
       data = json_response[:data]
 
@@ -179,7 +179,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with is-highlighted=false filter should return only non-highlighted dashboards' do
-      get :index, params: {'is-highlighted': false}
+      get :index, params: { 'is-highlighted': false }
 
       data = json_response[:data]
 
@@ -189,7 +189,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with is-featured=true filter should return only featured dashboards' do
-      get :index, params: {'is-featured': true}
+      get :index, params: { 'is-featured': true }
 
       data = json_response[:data]
 
@@ -199,7 +199,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with is-featured=false filter should return only non-featured dashboards' do
-      get :index, params: {'is-featured': false}
+      get :index, params: { 'is-featured': false }
 
       data = json_response[:data]
 
@@ -210,7 +210,7 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with includes=user while not being logged in should return dashboards including user name, email and photo' do
       VCR.use_cassette("include_user") do
-        get :index, params: {includes: 'user'}
+        get :index, params: { includes: 'user' }
 
         data = json_response[:data]
 
@@ -226,87 +226,99 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with includes=user while being logged in as USER should return dashboards including user name, email and photo' do
       VCR.use_cassette("include_user") do
-        get :index, params: {includes: 'user', loggedUser: USERS[:USER].to_json}
+        VCR.use_cassette('user_user') do
+          request.headers["Authorization"] = "abd"
+          get :index, params: { includes: 'user' }
 
-        data = json_response[:data]
+          data = json_response[:data]
 
-        expect(response.status).to eq(200)
-        expect(data.size).to eq(5)
-        expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
-        data.each do |dashboard|
-          expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :photo])
-          expect(dashboard[:attributes][:user][:photo]).to be_url()
+          expect(response.status).to eq(200)
+          expect(data.size).to eq(5)
+          expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
+          data.each do |dashboard|
+            expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :photo])
+            expect(dashboard[:attributes][:user][:photo]).to be_url()
+          end
         end
       end
     end
 
     it 'with includes=user while being logged in as MANAGER should return dashboards including user name, email and photo' do
       VCR.use_cassette("include_user") do
-        get :index, params: {includes: 'user', loggedUser: USERS[:MANAGER].to_json}
+        VCR.use_cassette('user_manager') do
+          request.headers["Authorization"] = "abd"
+          get :index, params: { includes: 'user' }
 
-        data = json_response[:data]
+          data = json_response[:data]
 
-        expect(response.status).to eq(200)
-        expect(data.size).to eq(5)
-        expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
-        data.each do |dashboard|
-          expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :photo])
-          expect(dashboard[:attributes][:user][:photo]).to be_url()
+          expect(response.status).to eq(200)
+          expect(data.size).to eq(5)
+          expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
+          data.each do |dashboard|
+            expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :photo])
+            expect(dashboard[:attributes][:user][:photo]).to be_url()
+          end
         end
       end
     end
 
     it 'with includes=user while being logged in as ADMIN should return dashboards including user name, email, photo and role' do
       VCR.use_cassette("include_user") do
-        get :index, params: {includes: 'user', loggedUser: USERS[:ADMIN].to_json}
+        VCR.use_cassette('user_admin') do
+          request.headers["Authorization"] = "abd"
+          get :index, params: { includes: 'user' }
 
-        data = json_response[:data]
+          data = json_response[:data]
 
-        expect(response.status).to eq(200)
-        expect(data.size).to eq(5)
-        expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
-        data.each do |dashboard|
-          expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :photo, :role])
-          expect(dashboard[:attributes][:user][:photo]).to be_url()
+          expect(response.status).to eq(200)
+          expect(data.size).to eq(5)
+          expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
+          data.each do |dashboard|
+            expect(dashboard[:attributes][:user].keys).to eq([:name, :email, :photo, :role])
+            expect(dashboard[:attributes][:user][:photo]).to be_url()
+          end
         end
       end
     end
 
     it 'with includes=user while being logged in as ADMIN should return dashboards including user name, email, photo and role, even if only partial data is available' do
       VCR.use_cassette("include_user_partial") do
-        get :index, params: {includes: 'user', loggedUser: USERS[:ADMIN].to_json}
+        VCR.use_cassette('user_admin') do
+          request.headers["Authorization"] = "abd"
+          get :index, params: { includes: 'user' }
 
-        data = json_response[:data]
+          data = json_response[:data]
 
-        expect(response.status).to eq(200)
-        expect(data.size).to eq(5)
+          expect(response.status).to eq(200)
+          expect(data.size).to eq(5)
 
-        responseDatasetOne = data.find { |dataset| dataset[:attributes]['user-id'.to_sym] == '57a1ff091ebc1ad91d089bdc' }
-        responseDatasetTwo = data.find { |dataset| dataset[:attributes]['user-id'.to_sym] == '5c143429f8d19932db9d06ea' }
-        responseDatasetThree = data.find { |dataset| dataset[:attributes]['user-id'.to_sym] == '5c069855ccc46a6660a4be68' }
+          responseDatasetOne = data.find { |dataset| dataset[:attributes]['user-id'.to_sym] == '57a1ff091ebc1ad91d089bdc' }
+          responseDatasetTwo = data.find { |dataset| dataset[:attributes]['user-id'.to_sym] == '5c143429f8d19932db9d06ea' }
+          responseDatasetThree = data.find { |dataset| dataset[:attributes]['user-id'.to_sym] == '5c069855ccc46a6660a4be68' }
 
-        expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
+          expect(data.map { |dashboard| dashboard[:attributes][:user].length }.uniq).not_to eq([0])
 
-        expect(responseDatasetOne[:attributes][:user][:name]).to eq('John Doe')
-        expect(responseDatasetOne[:attributes][:user][:role]).to eq('ADMIN')
-        expect(responseDatasetOne[:attributes][:user][:email]).to eq('john.doe@vizzuality.com')
-        expect(responseDatasetOne[:attributes][:user][:photo]).to be_url()
+          expect(responseDatasetOne[:attributes][:user][:name]).to eq('John Doe')
+          expect(responseDatasetOne[:attributes][:user][:role]).to eq('ADMIN')
+          expect(responseDatasetOne[:attributes][:user][:email]).to eq('john.doe@vizzuality.com')
+          expect(responseDatasetOne[:attributes][:user][:photo]).to be_url()
 
-        expect(responseDatasetTwo[:attributes][:user][:name]).to eq(nil)
-        expect(responseDatasetTwo[:attributes][:user][:role]).to eq('USER')
-        expect(responseDatasetTwo[:attributes][:user][:email]).to eq('jane.poe@vizzuality.com')
-        expect(responseDatasetTwo[:attributes][:user][:photo]).to be_url()
+          expect(responseDatasetTwo[:attributes][:user][:name]).to eq(nil)
+          expect(responseDatasetTwo[:attributes][:user][:role]).to eq('USER')
+          expect(responseDatasetTwo[:attributes][:user][:email]).to eq('jane.poe@vizzuality.com')
+          expect(responseDatasetTwo[:attributes][:user][:photo]).to be_url()
 
-        expect(responseDatasetThree[:attributes][:user][:name]).to eq('mark')
-        expect(responseDatasetThree[:attributes][:user][:role]).to eq('USER')
-        expect(responseDatasetThree[:attributes][:user][:email]).to eq(nil)
-        expect(responseDatasetThree[:attributes][:user][:photo]).to be_url()
+          expect(responseDatasetThree[:attributes][:user][:name]).to eq('mark')
+          expect(responseDatasetThree[:attributes][:user][:role]).to eq('USER')
+          expect(responseDatasetThree[:attributes][:user][:email]).to eq(nil)
+          expect(responseDatasetThree[:attributes][:user][:photo]).to be_url()
+        end
       end
     end
 
     it 'with user.role=USER and not logged in should not filter by user role' do
       VCR.use_cassette("get_users_by_role_user") do
-        get :index, params: {'user.role': 'USER', loggedUser: nil}
+        get :index, params: { 'user.role': 'USER' }
 
         data = json_response[:data]
 
@@ -318,55 +330,67 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with user.role=USER while being logged in as USER should not filter by user role' do
       VCR.use_cassette("get_users_by_role_user") do
-        get :index, params: {'user.role': 'USER', loggedUser: USERS[:USER].to_json}
+        VCR.use_cassette('user_user') do
+          request.headers["Authorization"] = "abd"
+          get :index, params: { 'user.role': 'USER' }
 
-        data = json_response[:data]
+          data = json_response[:data]
 
-        expect(response.status).to eq(200)
-        expect(data.size).to eq(5)
-        expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(%w(57a1ff091ebc1ad91d089bdc 5c143429f8d19932db9d06ea 5c069855ccc46a6660a4be68))
+          expect(response.status).to eq(200)
+          expect(data.size).to eq(5)
+          expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(%w(57a1ff091ebc1ad91d089bdc 5c143429f8d19932db9d06ea 5c069855ccc46a6660a4be68))
+        end
       end
     end
 
     it 'with user.role=USER while being logged in as MANAGER should not filter by user role' do
       VCR.use_cassette("get_users_by_role_user") do
-        get :index, params: {'user.role': 'USER', loggedUser: USERS[:MANAGER].to_json}
+        VCR.use_cassette('user_manager') do
+          request.headers["Authorization"] = "abd"
+          get :index, params: { 'user.role': 'USER' }
 
-        data = json_response[:data]
+          data = json_response[:data]
 
-        expect(response.status).to eq(200)
-        expect(data.size).to eq(5)
-        expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(%w(57a1ff091ebc1ad91d089bdc 5c143429f8d19932db9d06ea 5c069855ccc46a6660a4be68))
+          expect(response.status).to eq(200)
+          expect(data.size).to eq(5)
+          expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(%w(57a1ff091ebc1ad91d089bdc 5c143429f8d19932db9d06ea 5c069855ccc46a6660a4be68))
+        end
       end
     end
 
     it 'with user.role=USER while being logged in as ADMIN should filter by user role' do
       VCR.use_cassette("get_users_by_role_user") do
-        get :index, params: {'user.role': 'USER', loggedUser: USERS[:ADMIN].to_json}
+        VCR.use_cassette('user_admin') do
+          request.headers["Authorization"] = "abd"
+          get :index, params: { 'user.role': 'USER' }
 
-        data = json_response[:data]
+          data = json_response[:data]
 
-        expect(response.status).to eq(200)
-        expect(data.size).to eq(2)
-        expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(['57a1ff091ebc1ad91d089bdc'])
+          expect(response.status).to eq(200)
+          expect(data.size).to eq(2)
+          expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(['57a1ff091ebc1ad91d089bdc'])
+        end
       end
     end
 
     it 'with user.role=ADMIN while being logged in as ADMIN should filter by user role' do
       VCR.use_cassette("get_users_by_role_admin") do
-        get :index, params: {'user.role': 'ADMIN', loggedUser: USERS[:ADMIN].to_json}
+        VCR.use_cassette('user_admin') do
+          request.headers["Authorization"] = "abd"
+          get :index, params: { 'user.role': 'ADMIN' }
 
-        data = json_response[:data]
+          data = json_response[:data]
 
-        expect(response.status).to eq(200)
-        expect(data.size).to eq(3)
-        expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to include("5c143429f8d19932db9d06ea", "5c069855ccc46a6660a4be68")
+          expect(response.status).to eq(200)
+          expect(data.size).to eq(3)
+          expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to include("5c143429f8d19932db9d06ea", "5c069855ccc46a6660a4be68")
+        end
       end
     end
 
     it 'with user.role=ADMIN and filter by user id while not being logged in should return dashboards that match both criteria' do
       VCR.use_cassette("get_users_by_role_admin") do
-        get :index, params: {'user.role': 'ADMIN', user: '5c069855ccc46a6660a4be68'}
+        get :index, params: { 'user.role': 'ADMIN', user: '5c069855ccc46a6660a4be68' }
 
         data = json_response[:data]
 
@@ -378,19 +402,22 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with user.role=ADMIN and filter by user id while being logged in as ADMIN should return dashboards that match both criteria' do
       VCR.use_cassette("get_users_by_role_admin") do
-        get :index, params: {'user.role': 'ADMIN', user: '5c069855ccc46a6660a4be68', loggedUser: USERS[:ADMIN].to_json}
+        VCR.use_cassette('user_admin') do
+          request.headers["Authorization"] = "abd"
+          get :index, params: { 'user.role': 'ADMIN', user: '5c069855ccc46a6660a4be68' }
 
-        data = json_response[:data]
+          data = json_response[:data]
 
-        expect(response.status).to eq(200)
-        expect(data.size).to eq(1)
-        expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(["5c069855ccc46a6660a4be68"])
+          expect(response.status).to eq(200)
+          expect(data.size).to eq(1)
+          expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(["5c069855ccc46a6660a4be68"])
+        end
       end
     end
 
     it 'with filter by a single application value should return dashboards that belong to at least that application' do
       VCR.use_cassette("get_users_by_role_admin") do
-        get :index, params: {application: 'rw'}
+        get :index, params: { application: 'rw' }
 
         data = json_response[:data]
 
@@ -402,7 +429,7 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with filter by an array with a single application value should return dashboards without being filtered (multiple filter values not supported)' do
       VCR.use_cassette("get_users_by_role_admin") do
-        get :index, params: {application: ['rw']}
+        get :index, params: { application: ['rw'] }
 
         data = json_response[:data]
 
@@ -413,7 +440,7 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with filter by multiple application should return dashboards without being filtered (multiple filter values not supported)' do
       VCR.use_cassette("get_users_by_role_admin") do
-        get :index, params: {application: %w(rw gfw)}
+        get :index, params: { application: %w(rw gfw) }
 
         data = json_response[:data]
 
@@ -450,7 +477,7 @@ describe Api::DashboardsController, type: :controller do
 
     # deprecated: use private=false instead of filter[private]=false
     it 'with filter[private]=false filter should return only non-private dashboards' do
-      get :index, params: {filter: {private: false}}
+      get :index, params: { filter: { private: false } }
 
       data = json_response[:data]
 
@@ -460,7 +487,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with filter[user]=<userId> filter should return only dashboards associated with that user' do
-      get :index, params: {filter: {user: '57a1ff091ebc1ad91d089bdc'}}
+      get :index, params: { filter: { user: '57a1ff091ebc1ad91d089bdc' } }
 
       data = json_response[:data]
 
@@ -470,7 +497,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with filter[user]=<userId> and filter[private]=true filters should return only private dashboards associated with that user' do
-      get :index, params: {filter: {user: '57a1ff091ebc1ad91d089bdc', private: true}}
+      get :index, params: { filter: { user: '57a1ff091ebc1ad91d089bdc', private: true } }
 
       data = json_response[:data]
 
@@ -481,7 +508,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with filter[user]=<userId> and filter[private]=false filters should return only non-private dashboards associated with that user' do
-      get :index, params: {filter: {user: '57a1ff091ebc1ad91d089bdc', private: false}}
+      get :index, params: { filter: { user: '57a1ff091ebc1ad91d089bdc', private: false } }
 
       data = json_response[:data]
 
@@ -492,7 +519,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'with filter[published]=true and filter[private]=false filters should return only non-private, published dashboards' do
-      get :index, params: {filter: {published: 'true', private: false}}
+      get :index, params: { filter: { published: 'true', private: false } }
 
       data = json_response[:data]
 
@@ -504,7 +531,7 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with user.role=ADMIN and filter by user id while not being logged in should return dashboards that match both criteria' do
       VCR.use_cassette("get_users_by_role_admin") do
-        get :index, params: {'user.role': 'ADMIN', filter: {user: '5c069855ccc46a6660a4be68'}}
+        get :index, params: { 'user.role': 'ADMIN', filter: { user: '5c069855ccc46a6660a4be68' } }
 
         data = json_response[:data]
 
@@ -516,13 +543,16 @@ describe Api::DashboardsController, type: :controller do
 
     it 'with user.role=ADMIN and filter by user id while being logged in as ADMIN should return dashboards that match both criteria' do
       VCR.use_cassette("get_users_by_role_admin") do
-        get :index, params: {'user.role': 'ADMIN', filter: {user: '5c069855ccc46a6660a4be68'}, loggedUser: USERS[:ADMIN].to_json}
+        VCR.use_cassette('user_admin') do
+          request.headers["Authorization"] = "abd"
+          get :index, params: { 'user.role': 'ADMIN', filter: { user: '5c069855ccc46a6660a4be68' } }
 
-        data = json_response[:data]
+          data = json_response[:data]
 
-        expect(response.status).to eq(200)
-        expect(data.size).to eq(1)
-        expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(["5c069855ccc46a6660a4be68"])
+          expect(response.status).to eq(200)
+          expect(data.size).to eq(1)
+          expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(["5c069855ccc46a6660a4be68"])
+        end
       end
     end
   end
@@ -560,7 +590,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'accepts page[size] values' do
-      get :index, params: {page: {size: 15}}
+      get :index, params: { page: { size: 15 } }
 
       data = json_response[:data]
 
@@ -569,7 +599,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'accepts page[number] and page[size] values' do
-      get :index, params: {page: {size: 15, number: 2}}
+      get :index, params: { page: { size: 15, number: 2 } }
 
       data = json_response[:data]
 
@@ -578,7 +608,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'accepts page[number] and page[size] values beyond available results, returning an empty result set' do
-      get :index, params: {page: {size: 15, number: 100}}
+      get :index, params: { page: { size: 15, number: 100 } }
 
       data = json_response[:data]
 
@@ -587,12 +617,12 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'prevents very high page sizes' do
-      get :index, params: {page: {size: 251}}
+      get :index, params: { page: { size: 251 } }
 
       data = json_response
 
       expect(response.status).to eq(400)
-      expect(data).to eq({errors: [{status: 400, title: "Invalid page size"}]})
+      expect(data).to eq({ errors: [{ status: 400, title: "Invalid page size" }] })
     end
 
     it 'includes links objects with links for self, prev, next, first and last pages' do
@@ -639,18 +669,21 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'includes correctly formatted pagination links' do
-      get :index, params: { loggedUser: USERS[:ADMIN].to_json }
-      body = json_response
+      VCR.use_cassette('user_admin') do
+        request.headers["Authorization"] = "abd"
+        get :index
+        body = json_response
 
-      valid_link(body[:links][:self])
-      valid_link(body[:links][:first])
-      valid_link(body[:links][:last])
-      valid_link(body[:links][:prev])
-      valid_link(body[:links][:next])
+        valid_link(body[:links][:self])
+        valid_link(body[:links][:first])
+        valid_link(body[:links][:last])
+        valid_link(body[:links][:prev])
+        valid_link(body[:links][:next])
+      end
     end
 
     it 'pagination meta information adjusts according to query pagination data' do
-      get :index, params: {page: {size: 5, number: 2}}
+      get :index, params: { page: { size: 5, number: 2 } }
 
       body = json_response
 
@@ -662,7 +695,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'pagination links adjusts according to query pagination data' do
-      get :index, params: {page: {size: 5, number: 3}}
+      get :index, params: { page: { size: 5, number: 3 } }
       body = json_response
 
       expect_pagination_info(body[:links][:self], "3", "5")
@@ -673,7 +706,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'when requesting user data for dashboards, includes meta objects with extra pagination info' do
-      get :index, params: {includes: 'user', page: {size: 5, number: 3}}
+      get :index, params: { includes: 'user', page: { size: 5, number: 3 } }
 
       body = json_response
       expect(body).to include(:meta)
@@ -691,7 +724,7 @@ describe Api::DashboardsController, type: :controller do
     end
 
     it 'when requesting user data for dashboards, get params are kept in the pagination links returned' do
-      get :index, params: {includes: 'user', page: {size: 5, number: 3}}
+      get :index, params: { includes: 'user', page: { size: 5, number: 3 } }
       body = json_response
       expect(body).to include(:links)
 

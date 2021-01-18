@@ -6,7 +6,6 @@ class Api::DashboardsController < ApiController
   before_action :set_dashboard, only: %i[show update destroy clone]
   before_action :ensure_is_admin_or_owner_manager, only: [:update, :destroy]
 
-  before_action :get_user, only: %i[index]
   before_action :ensure_user_has_requested_apps, only: [:create, :update]
   before_action :ensure_user_can_delete_dashboard, only: :destroy
   before_action :ensure_is_manager_or_admin, only: :update
@@ -99,7 +98,7 @@ class Api::DashboardsController < ApiController
     begin
       override = dashboard_params_clone.to_h
       override[:user_id] = @user.dig('id')
-      if duplicated_dashboard = @dashboard.duplicate(params.dig('loggedUser', 'id'), override)
+      if duplicated_dashboard = @dashboard.duplicate(@user.dig('id'), override)
         @dashboard = duplicated_dashboard
         render json: @dashboard, status: :ok
       else
@@ -140,7 +139,7 @@ class Api::DashboardsController < ApiController
   def ensure_is_admin_or_owner_manager
     return false if @user.nil?
     return true if @user['role'].eql? "ADMIN"
-    return true if @user['role'].eql? "MANAGER" and @dashboard[:user_id].eql? @user[:id]
+    return true if @user['role'].eql? "MANAGER" and @dashboard[:user_id].eql? @user['id']
     render json: {errors: [{status: '403', title: 'You need to be either ADMIN or MANAGER and own the dashboard to update/delete it'}]}, status: 403
   end
 
@@ -156,12 +155,8 @@ class Api::DashboardsController < ApiController
     highlighted_present = request.params.dig('data', 'attributes', 'is-highlighted').present?
     featured_present = request.params.dig('data', 'attributes', 'is-featured').present?
     return true unless highlighted_present or featured_present
-    return true if (highlighted_present or featured_present) and @user[:role].eql? "ADMIN"
+    return true if (highlighted_present or featured_present) and @user['role'].eql? "ADMIN"
     render json: {errors: [{status: '403', title: 'You need to be an ADMIN to create/update the provided attribute of the dashboard'}]}, status: 403
-  end
-
-  def get_user
-    @user = params['loggedUser'].present? ? JSON.parse(params['loggedUser']) : nil
   end
 
   def dashboard_params_get
