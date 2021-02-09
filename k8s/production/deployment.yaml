@@ -108,7 +108,7 @@ spec:
               value: http://resource-watch-manager.rw.svc.cluster.local:3000
             - name: RAILS_ENV
               value: production
-          image: vizzuality/resource-watch-manager
+          image: gfwdockerhub/resource-watch-manager
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
