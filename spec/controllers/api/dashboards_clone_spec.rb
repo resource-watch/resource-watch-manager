@@ -44,6 +44,13 @@ describe Api::DashboardsController, type: :controller do
       @dashboard_no_content = FactoryBot.create :dashboard_without_widgets
     end
 
+    it 'with no user details should produce a 401 error' do
+      post 'clone', params: { id: @dashboard.id }
+
+      expect(response.status).to eq(401)
+      expect(response.body).to include "Unauthorized"
+    end
+
     it 'returns 200 OK with the created dashboard data when providing no data in request body (happy case)' do
       VCR.use_cassette('user_manager') do
         VCR.use_cassette('dataset_widget') do

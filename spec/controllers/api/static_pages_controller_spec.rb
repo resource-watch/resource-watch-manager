@@ -45,6 +45,13 @@ describe Api::StaticPagesController, type: :controller do
   describe 'POST #create' do
     let!(:error) { { errors: [{ status: 422, title: "title can't be blank" }] } }
 
+    it 'with no user details should produce a 401 error' do
+      post :create
+
+      expect(response.status).to eq(401)
+      expect(response.body).to include "Unauthorized"
+    end
+
     it 'Valid static page' do
       VCR.use_cassette('user_admin') do
         request.headers["Authorization"] = "abd"
@@ -57,6 +64,14 @@ describe Api::StaticPagesController, type: :controller do
   describe 'PUT #update' do
     before(:each) do
       @static_page = FactoryBot.create(:static_page)
+    end
+
+    it 'with no user details should produce a 401 error' do
+      title = 'new title'
+      put :update, params: { 'id' => @static_page.id, 'data' => { 'attributes': { 'title' => title } } }
+
+      expect(response.status).to eq(401)
+      expect(response.body).to include "Unauthorized"
     end
 
     it 'Edits a static page' do
@@ -72,6 +87,15 @@ describe Api::StaticPagesController, type: :controller do
   describe 'DELETE #destroy' do
     before(:each) do
       @static_page = FactoryBot.create(:static_page)
+    end
+
+    it 'with no user details should produce a 401 error' do
+      delete :destroy, params: {
+        id: @static_page[:id]
+      }
+
+      expect(response.status).to eq(401)
+      expect(response.body).to include "Unauthorized"
     end
 
     it 'Delete valid page' do

@@ -1,3 +1,7 @@
+## 12/02/2021
+
+- Remove dependency on CT's `authenticated` functionality
+
 ## 18/01/2021
 
 - Remove dependency on user data injected by Control Tower.
