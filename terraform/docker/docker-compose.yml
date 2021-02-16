@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  terraform:
+    image: globalforestwatch/terraform:1.2.2
+    volumes:
+      - ../../:/usr/local/src
+      - $HOME/.aws:/root/.aws:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - ENV
+      - PROJECT=wri-api
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_REGION
+      - DEBUG=1
+      - CLOUDFLARE_EMAIL
+      - CLOUDFLARE_API_KEY
+    working_dir: /usr/local/src
+    entrypoint: infra
