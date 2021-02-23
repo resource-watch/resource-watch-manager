@@ -1,3 +1,7 @@
+## 23/02/2021
+
+- Fix issue with CT legacy support on user data injection
+
 ## 12/02/2021
 
 - Remove dependency on CT's `authenticated` functionality
