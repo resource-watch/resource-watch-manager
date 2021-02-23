@@ -1,3 +1,7 @@
+## 23/02/2021
+
+- Fix issue with CT legacy support on user data injection 
+
 ## 18/01/2021
 
 - Remove dependency on user data injected by Control Tower.

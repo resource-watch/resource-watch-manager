@@ -74,6 +74,15 @@ class ApiController < ActionController::API
   end
 
   def get_user_from_request(request)
+    # TODO: this block can be removed once CT is fully removed
+    if request.params[:loggedUser].present?
+      if request.params[:loggedUser].is_a? String
+        return JSON.parse(request.params[:loggedUser]) || {}
+      else
+        return request.params[:loggedUser] || {}
+      end
+    end
+
     if request.headers["authorization"].nil?
       return {}
     end
