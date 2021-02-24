@@ -649,6 +649,7 @@ describe Api::DashboardsController, type: :controller do
       expect_pagination_info(body[:links][:prev], "1", "10")
 
       expect(body[:links][:next]).to be_a(String)
+<<<<<<< Updated upstream
       expect_pagination_info(body[:links][:next], "2", "10")
 
       expect(body[:links][:first]).to eq(body[:links][:self])
@@ -660,6 +661,8 @@ describe Api::DashboardsController, type: :controller do
       get :index
 
       body = json_response
+=======
+>>>>>>> Stashed changes
 
       expect(body).to include(:meta)
       expect(body[:meta]).to be_a(Object)
@@ -668,6 +671,7 @@ describe Api::DashboardsController, type: :controller do
       expect(body[:meta][:size]).to be_a(Integer)
     end
 
+<<<<<<< Updated upstream
     it 'includes correctly formatted pagination links' do
       VCR.use_cassette('user_admin') do
         request.headers["Authorization"] = "abd"
@@ -709,6 +713,24 @@ describe Api::DashboardsController, type: :controller do
       get :index, params: { includes: 'user', page: { size: 5, number: 3 } }
 
       body = json_response
+=======
+    it 'includes meta and links objects with extra info for pagination' do
+      get :index
+
+      body = json_response
+
+      expect(body).to include(:data)
+      expect(body[:data]).to be_a(Array)
+
+      expect(body).to include(:links)
+      expect(body[:links]).to be_a(Object)
+      expect(body[:links][:self]).to be_a(String)
+      expect(body[:links][:first]).to be_a(String)
+      expect(body[:links][:last]).to be_a(String)
+      expect(body[:links][:prev]).to be_nil
+      expect(body[:links][:next]).to be_a(String)
+
+>>>>>>> Stashed changes
       expect(body).to include(:meta)
       expect(body[:meta]).to be_a(Object)
       expect(body[:meta]['total-pages'.to_sym]).to be_a(Integer)
