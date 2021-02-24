@@ -12,6 +12,8 @@ class ApiController < ActionController::API
   def load_user_from_request
     @user = get_user_from_request(request)
 
+    return false unless @user
+
     has_valid_role = (@user.empty? or %w(ADMIN MANAGER USER).include? @user['role'])
     if (!has_valid_role)
       logger.debug 'Dashboard MS auth request: user has no valid roles, failing auth challenge'
@@ -92,6 +94,11 @@ class ApiController < ActionController::API
       "Content-Type": 'application/json'
     }
     response = HTTParty.get(ENV.fetch('CT_URL') + '/auth/user/me', headers: headers, format: :json)
+
+    if (response.code >= 400)
+      render json: response.parsed_response, status: response.code
+      return false
+    end
 
     request.params[:loggedUser] = response.parsed_response
     response.parsed_response

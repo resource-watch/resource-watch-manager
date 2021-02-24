@@ -1,0 +1,42 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:9000/auth/user/me
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - localhost:9000
+      Authorization:
+      - Bearer abc
+  response:
+    status:
+      code: 401
+      message: Unauthorized
+    headers:
+      Vary:
+      - Origin
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '301'
+      Date:
+      - Fri, 15 Jan 2021 09:44:15 GMT
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - timeout=5
+    body:
+      encoding: UTF-8
+      string: '{"errors":[{"status":401,"detail":"Your token is outdated. Please use /auth/login to login and /auth/generate-token to generate a new token."}]}'
+    http_version:
+  recorded_at: Fri, 15 Jan 2021 09:44:15 GMT
+recorded_with: VCR 4.0.0
