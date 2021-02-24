@@ -42,6 +42,19 @@ describe Api::DashboardsController, type: :controller do
       expect(response.status).to eq(401)
     end
 
+    it 'with invalid token should return a meaningful message' do
+      VCR.use_cassette('user_invalid_token') do
+        request.headers["Authorization"] = "abd"
+        post :create, params: {
+          data: get_new_dashboard_data,
+        }
+
+        expect(response.status).to eq(401)
+        expect(json_response[:errors][0][:status]).to eq(401)
+        expect(json_response[:errors][0][:detail]).to eq('Your token is outdated. Please use /auth/login to login and /auth/generate-token to generate a new token.')
+      end
+    end
+
     it 'with role USER should create the dashboard (happy case)' do
       VCR.use_cassette('user_user') do
         request.headers["Authorization"] = "abd"
