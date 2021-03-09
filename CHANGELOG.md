@@ -1,3 +1,7 @@
+## 09/03/2021
+
+- Update `ct-register-microservice` to fix issue with authentication headers when making calls to other microservices.
+
 ## 23/02/2021
 
 - Fix issue with CT legacy support on user data injection 

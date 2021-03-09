@@ -45,7 +45,7 @@ gem 'jwt'
 # Friendly id
 gem 'friendly_id'
 
-gem 'ct-register-microservice'
+gem 'ct-register-microservice', '>= 1.4.0'
 
 group :development, :test do
   gem 'annotate'
