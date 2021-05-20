@@ -1,3 +1,7 @@
+## 20/05/2021
+
+- Update `mimemagic` following removal of older versions
+
 ## 23/02/2021
 
 - Fix issue with CT legacy support on user data injection
