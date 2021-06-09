@@ -22,6 +22,7 @@ RUN apk update && \
       libxslt-dev \
       postgresql-dev \
       imagemagick-dev \
+      shared-mime-info \
     && rm -rf /var/cache/apk/*
 
 RUN bundle config build.nokogiri --use-system-libraries

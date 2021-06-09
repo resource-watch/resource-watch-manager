@@ -1,10 +1,18 @@
+## 20/05/2021
+
+- Update `mimemagic` following removal of older versions
+
 ## 09/03/2021
 
 - Update `ct-register-microservice` to fix issue with authentication headers when making calls to other microservices.
 
 ## 23/02/2021
 
-- Fix issue with CT legacy support on user data injection 
+- Fix issue with CT legacy support on user data injection
+
+## 12/02/2021
+
+- Remove dependency on CT's `authenticated` functionality
 
 ## 18/01/2021
 

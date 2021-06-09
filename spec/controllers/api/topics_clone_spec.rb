@@ -10,6 +10,20 @@ describe Api::TopicsController, type: :controller do
       @topic = FactoryBot.create :topic_with_widgets
     end
 
+    it 'with no user details should produce a 401 error' do
+      post 'clone', params: { id: @topic.id }
+
+      expect(response.status).to eq(401)
+      expect(response.body).to include "Unauthorized"
+    end
+
+    it 'with no user details should produce a 401 error' do
+      post 'clone_dashboard', params: { id: @topic.id }
+
+      expect(response.status).to eq(401)
+      expect(response.body).to include "Unauthorized"
+    end
+
     it 'should perform the cloning' do
       VCR.use_cassette('dataset_widget') do
         VCR.use_cassette('user_admin') do
