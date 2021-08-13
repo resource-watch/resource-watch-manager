@@ -28,10 +28,10 @@ describe Api::FaqsController, type: :controller do
       expect(faq_ids).to eq([@staging_faq.id])
     end
 
-    it 'ignores bogus env filter' do
-      get :index, params: {environment: 'ZONK,,,'}
+    it 'returns no results if completely messed up env filter' do
+      get :index, params: {environment: 'pre-production'}
       faq_ids = assigns(:faqs).map(&:id)
-      expect(faq_ids).to eq([@production_faq.id])
+      expect(faq_ids).to eq([])
     end
 
     it 'returns list filtered by multiple envs' do

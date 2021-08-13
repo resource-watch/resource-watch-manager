@@ -6,10 +6,10 @@ module Environment
   STAGING = 'staging'.freeze
   PRODUCTION = 'production'.freeze
   PREPRODUCTION = 'preproduction'.freeze
-  OPTIONS = [STAGING, PRODUCTION, PREPRODUCTION].freeze
 
   included do
-    # TODO: should this be just set to production if not provided?
-    validates :environment, presence: true, inclusion: OPTIONS
+    # default to production if environment not specified
+    before_validation(on: :create) { self.environment ||= PRODUCTION }
+    validates :environment, presence: true
   end
 end
