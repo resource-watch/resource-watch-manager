@@ -10,10 +10,10 @@ describe Api::FaqsController, type: :controller do
       @preproduction_faq = FactoryBot.create(:faq_preproduction)
     end
 
-    it 'returns unfiltered list' do
+    it 'filters by production env when no env filter specified' do
       get :index, params: {}
       faq_ids = assigns(:faqs).map(&:id)
-      expect(faq_ids).to eq([@staging_faq.id, @production_faq.id, @preproduction_faq.id])
+      expect(faq_ids).to eq([@production_faq.id])
     end
 
     it 'filters by single env' do
@@ -31,7 +31,7 @@ describe Api::FaqsController, type: :controller do
     it 'ignores bogus env filter' do
       get :index, params: {environment: 'ZONK,,,'}
       faq_ids = assigns(:faqs).map(&:id)
-      expect(faq_ids).to eq([@staging_faq.id, @production_faq.id, @preproduction_faq.id])
+      expect(faq_ids).to eq([@production_faq.id])
     end
 
     it 'returns list filtered by multiple envs' do

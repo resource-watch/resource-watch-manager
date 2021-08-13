@@ -8,7 +8,7 @@ module Api
 
     def index
       @faqs = Faq.all
-      @faqs = @faqs.where(environment: @environments) if defined? @environments
+      @faqs = @faqs.where(environment: @environments)
       render json: @faqs
     end
 
