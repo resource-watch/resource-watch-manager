@@ -3,9 +3,7 @@ require 'active_support/concern'
 module Environment
   extend ActiveSupport::Concern
 
-  STAGING = 'staging'.freeze
   PRODUCTION = 'production'.freeze
-  PREPRODUCTION = 'preproduction'.freeze
 
   included do
     # default to production if environment not specified
