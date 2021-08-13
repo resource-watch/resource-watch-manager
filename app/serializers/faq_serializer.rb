@@ -13,5 +13,5 @@
 
 # Faq serializer
 class FaqSerializer < ActiveModel::Serializer
-  attributes :id, :question, :answer, :order
+  attributes :id, :question, :answer, :order, :environment
 end
