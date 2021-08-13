@@ -58,7 +58,7 @@ module Api
     end
 
     def faq_params
-      ParamsHelper.permit(params, :question, :answer, :order)
+      ParamsHelper.permit(params, :question, :answer, :order, :environment)
     rescue
       nil
     end

@@ -40,4 +40,64 @@ describe Api::FaqsController, type: :controller do
       expect(faq_ids).to eq([])
     end
   end
+
+  describe 'POST #create' do
+    it 'with no user details should produce a 401 error' do
+      post :create
+
+      expect(response.status).to eq(401)
+      expect(response.body).to include 'Unauthorized'
+    end
+
+    context 'environment' do
+      it 'sets environment to default if not specified' do
+        VCR.use_cassette('user_user') do
+          request.headers["Authorization"] = "abd"
+          post :create, params: {data: {attributes: {question: 'foo', answer: 'bar'}}}
+          faq = Faq.find_by_question('foo')
+          expect(faq.environment).to eq(Environment::PRODUCTION)
+        end
+      end
+
+      it 'sets environment if specified' do
+        VCR.use_cassette('user_user') do
+          request.headers["Authorization"] = "abd"
+          post :create, params: {data: {attributes: {question: 'foo', answer: 'bar', environment: 'potato'}}}
+          faq = Faq.find_by_question('foo')
+          expect(faq.environment).to eq('potato')
+        end
+      end
+    end
+  end
+
+  describe 'PUT #update' do
+    before(:each) do
+      @staging_faq = FactoryBot.create(:faq, environment: 'staging')
+    end
+
+    it 'with no user details should produce a 401 error' do
+      patch :update, params: {id: @staging_faq.id}
+
+      expect(response.status).to eq(401)
+      expect(response.body).to include "Unauthorized"
+    end
+
+    context 'environment' do
+      it "doesn't update environment if not specified" do
+        VCR.use_cassette('user_user') do
+          request.headers["Authorization"] = "abd"
+          put :update, params: {id: @staging_faq.id, data: {attributes: {answer: 'zonk'}}}
+          expect(@staging_faq.reload.environment).to eq('staging')
+        end
+      end
+
+      it "updates environment if specified" do
+        VCR.use_cassette('user_user') do
+          request.headers["Authorization"] = "abd"
+          put :update, params: {id: @staging_faq.id, data: {attributes: {environment: Environment::PRODUCTION}}}
+          expect(@staging_faq.reload.environment).to eq(Environment::PRODUCTION)
+        end
+      end
+    end
+  end
 end
