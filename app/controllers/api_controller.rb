@@ -64,6 +64,15 @@ class ApiController < ActionController::API
     render json: { errors: [{ status: '404', title: 'Record not found' }] }, status: 404
   end
 
+  def set_environment
+    return true unless params[:environment]
+
+    environments = params[:environment].split(',').map(&:downcase).map(&:strip) & Environment::OPTIONS
+    return true unless environments.compact.any?
+
+    @environments = environments
+  end
+
   def set_private_cache_header
     expires_in 24.hours
   end
