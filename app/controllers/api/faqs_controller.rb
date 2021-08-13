@@ -4,9 +4,12 @@ module Api
   # API class for the Faqs Resource
   class FaqsController < ApiController
     before_action :set_faq, only: %i[show update destroy]
+    before_action :set_environment, only: [:index]
 
     def index
-      render json: Faq.all
+      @faqs = Faq.all
+      @faqs = @faqs.where(environment: @environments) if defined? @environments
+      render json: @faqs
     end
 
     def show

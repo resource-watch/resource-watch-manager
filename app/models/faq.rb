@@ -13,6 +13,8 @@
 
 # Model for Partner
 class Faq < ApplicationRecord
+  include Environment
+
   validates_presence_of :question
   validates_presence_of :answer
 
