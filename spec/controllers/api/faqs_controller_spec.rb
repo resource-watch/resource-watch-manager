@@ -5,9 +5,9 @@ require 'spec_helper'
 describe Api::FaqsController, type: :controller do
   describe 'GET #index' do
     before(:each) do
-      @staging_faq = FactoryBot.create(:faq_staging)
       @production_faq = FactoryBot.create(:faq_production)
-      @preproduction_faq = FactoryBot.create(:faq_preproduction)
+      @staging_faq = FactoryBot.create(:faq, environment: 'staging')
+      @preproduction_faq = FactoryBot.create(:faq, environment: 'preproduction')
     end
 
     it 'filters by production env when no env filter specified' do
@@ -17,9 +17,15 @@ describe Api::FaqsController, type: :controller do
     end
 
     it 'filters by single env' do
-      get :index, params: {environment: Environment::STAGING}
+      get :index, params: {environment: 'staging'}
       faq_ids = assigns(:faqs).map(&:id)
       expect(faq_ids).to eq([@staging_faq.id])
+    end
+
+    it 'filters by multiple envs' do
+      get :index, params: {environment: [Environment::PRODUCTION, 'preproduction'].join(',')}
+      faq_ids = assigns(:faqs).map(&:id)
+      expect(faq_ids).to eq([@production_faq.id, @preproduction_faq.id])
     end
 
     it 'filters by env with weird spellings' do
@@ -28,16 +34,10 @@ describe Api::FaqsController, type: :controller do
       expect(faq_ids).to eq([@staging_faq.id])
     end
 
-    it 'returns no results if completely messed up env filter' do
+    it "returns no results if specified env doesn't match anything" do
       get :index, params: {environment: 'pre-production'}
       faq_ids = assigns(:faqs).map(&:id)
       expect(faq_ids).to eq([])
-    end
-
-    it 'returns list filtered by multiple envs' do
-      get :index, params: {environment: [Environment::PRODUCTION, Environment::PREPRODUCTION].join(',')}
-      faq_ids = assigns(:faqs).map(&:id)
-      expect(faq_ids).to eq([@production_faq.id, @preproduction_faq.id])
     end
   end
 end
