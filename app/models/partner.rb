@@ -39,6 +39,7 @@
 
 # Model for Partner
 class Partner < ApplicationRecord
+  include Environment
   extend FriendlyId
   friendly_id :name, use: %i[slugged finders]
 
@@ -79,9 +80,6 @@ class Partner < ApplicationRecord
   scope :by_published, ->(published) { where(published: published) }
   scope :by_featured, ->(featured) { where(featured: featured) }
   scope :by_partner_type, ->(by_partner_type) { where(by_partner_type: by_partner_type) }
-  scope :production, -> { where(production: true) }
-  scope :pre_production, -> { where(pre_production: true) }
-  scope :staging, -> { where(staging: true) }
 
   def self.fetch_all(options = {})
     partners = Partner.all
@@ -90,19 +88,6 @@ class Partner < ApplicationRecord
       partners = partners.by_featured(options[:filter][:featured]) if options[:filter][:featured]
       partners = partners.by_partner_type(options[:filter][:by_partner_type]) if options[:filter][:by_partner_type]
     end
-
-    if options[:env]
-      environments = options[:env].split(',')
-
-      ids = environments.map do |env|
-        Partner.where(env => true)
-      end.flatten.uniq.pluck(:id)
-
-      partners = partners.where(id: ids)
-    else
-      partners = partners.production
-    end
-    
     partners = partners.order(get_order(options))
   end
 

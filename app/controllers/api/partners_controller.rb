@@ -4,9 +4,11 @@ module Api
   # API class for the Partners Resource
   class PartnersController < ApiController
     before_action :set_partner, only: %i[show update destroy]
+    before_action :set_environment, only: %i[index]
 
     def index
-      render json: Partner.fetch_all(params)
+      @partners = Partner.where(environment: @environments).fetch_all(params)
+      render json: @partners
     end
 
     def show
@@ -38,18 +40,7 @@ module Api
     private
 
     def set_partner
-      environments = params[:env].present? ? params[:env].split(',') : ['production']
-      partner = Partner.friendly.find params[:id]
-
-      matches = environments.map do |env|
-        partner.public_send(env)
-      end
-
-      if matches.include?(true)
-        @partner = partner
-      else
-        raise ActiveRecord::RecordNotFound
-      end
+      @partner = Partner.friendly.find params[:id]
     rescue ActiveRecord::RecordNotFound
       partner = Partner.new
       partner.errors.add(:id, 'Wrong ID provided')
@@ -59,7 +50,7 @@ module Api
     def partner_params
       ParamsHelper.permit(params, :name, :contact_email, :contact_name, :body, :partner_type, :summary,
         :logo, :white_logo, :icon, :cover, :published, :featured, :website, :partner_type,
-        :production, :preproduction, :staging)
+        :environment)
     rescue
       nil
     end

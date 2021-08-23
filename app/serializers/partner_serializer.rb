@@ -42,7 +42,7 @@ class PartnerSerializer < ActiveModel::Serializer
   attributes :id, :name, :slug, :summary, :body,
              :contact_email, :contact_name, :website, :featured,
              :logo, :white_logo, :cover, :icon, :partner_type, :published,
-             :production, :preproduction, :staging
+             :environment
 
   link(:self) { api_partner_path(object) }
 

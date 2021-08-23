@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210813061800) do
+ActiveRecord::Schema.define(version: 20210823094212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,9 +95,7 @@ ActiveRecord::Schema.define(version: 20210813061800) do
     t.datetime "cover_updated_at"
     t.string "website"
     t.string "partner_type"
-    t.boolean "production", default: true
-    t.boolean "preproduction", default: false
-    t.boolean "staging", default: false
+    t.text "environment", default: "production", null: false
     t.index ["slug"], name: "index_partners_on_slug"
   end
 
