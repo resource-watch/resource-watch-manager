@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: tools
@@ -20,16 +19,19 @@
 #  updated_at             :datetime         not null
 #
 
-# Tool Serializer
-class ToolSerializer < ActiveModel::Serializer
-  attributes :id, :title, :summary, :description, :content, :url,
-             :thumbnail, :slug, :published, :created_at, :updated_at,
-             :environment
+FactoryBot.define do
+  factory :tool do
+    title { FFaker::Name.name }
+    summary { FFaker::Lorem.paragraph }
+    description { FFaker::Lorem.paragraph }
+    content { FFaker::Lorem.paragraph }
+    url { FFaker::Internet.http_url }
+    published { FFaker::Boolean.sample }
 
-  def thumbnail
-    {
-      medium: object.thumbnail.url(:medium),
-      original: object.thumbnail.url(:original)
-    }
+    trait :production do
+      environment { Environment::PRODUCTION }
+    end
+
+    factory :tool_production, traits: [:production]
   end
 end
