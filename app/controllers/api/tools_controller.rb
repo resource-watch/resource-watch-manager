@@ -4,9 +4,11 @@ module Api
   # API class for the Partners Resource
   class ToolsController < ApiController
     before_action :set_tool, only: %i[show update destroy]
+    before_action :set_environment, only: %i[index]
 
     def index
-      render json: Tool.fetch_all(params)
+      @tools = Tool.where(environment: @environments).fetch_all(params)
+      render json: @tools
     end
 
     def show
@@ -38,18 +40,7 @@ module Api
     private
 
     def set_tool
-      environments = params[:env].present? ? params[:env].split(',') : ['production']
-      tool = Tool.friendly.find params[:id]
-
-      matches = environments.map do |env|
-        tool.public_send(env)
-      end
-
-      if matches.include?(true)
-        @tool = tool
-      else
-        raise ActiveRecord::RecordNotFound
-      end
+      @tool = Tool.friendly.find params[:id]
     rescue ActiveRecord::RecordNotFound
       tool = Tool.new
       tool.errors.add(:id, 'Wrong ID provided')
@@ -58,7 +49,7 @@ module Api
 
     def tool_params
       ParamsHelper.permit(params, :title, :slug, :summary, :description, :content,
-        :thumbnail, :url, :published, :production, :preproduction, :staging)
+        :thumbnail, :url, :published, :environment)
     rescue
       nil
     end

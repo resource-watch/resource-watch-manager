@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: tools
@@ -20,16 +19,24 @@
 #  updated_at             :datetime         not null
 #
 
-# Tool Serializer
-class ToolSerializer < ActiveModel::Serializer
-  attributes :id, :title, :summary, :description, :content, :url,
-             :thumbnail, :slug, :published, :created_at, :updated_at,
-             :environment
+require 'rails_helper'
 
-  def thumbnail
-    {
-      medium: object.thumbnail.url(:medium),
-      original: object.thumbnail.url(:original)
-    }
+RSpec.describe Tool, type: :model do
+  describe :create do
+    context 'environment given' do
+      let(:subject) { FactoryBot.create(:tool, environment: 'potato') }
+
+      it 'saves specified environment' do
+        expect(subject.environment).to eq('potato')
+      end
+    end
+
+    context 'environment not given' do
+      let(:subject) { FactoryBot.create(:tool, environment: nil) }
+
+      it 'saves production environment' do
+        expect(subject.environment).to eq(Environment::PRODUCTION)
+      end
+    end
   end
 end
