@@ -66,9 +66,9 @@ class ApiController < ActionController::API
 
   def set_environment
     @environments = [Environment::PRODUCTION]
-    return true unless params[:environment]
+    return true unless params[:env]
 
-    environments = params[:environment].split(',').map(&:downcase).map(&:strip)
+    environments = params[:env].split(',').map(&:downcase).map(&:strip)
     return true unless environments.compact.any?
 
     @environments = environments
