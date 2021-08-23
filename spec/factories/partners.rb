@@ -47,5 +47,11 @@ FactoryBot.define do
     published { FFaker::Boolean.sample }
     featured { FFaker::Boolean.sample }
     website { FFaker::Internet.http_url }
+
+    trait :production do
+      environment { Environment::PRODUCTION }
+    end
+
+    factory :partner_production, traits: [:production]
   end
 end
