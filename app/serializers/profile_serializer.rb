@@ -3,14 +3,18 @@
 #
 # Table name: profiles
 #
-#  id                  :bigint(8)        not null, primary key
-#  user_id             :string
-#  avatar_file_name    :string
+#  id                  :bigint           not null, primary key
 #  avatar_content_type :string
+#  avatar_file_name    :string
 #  avatar_file_size    :integer
 #  avatar_updated_at   :datetime
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  user_id             :string
+#
+# Indexes
+#
+#  index_profiles_on_user_id  (user_id)
 #
 
 # Profile Serializer
