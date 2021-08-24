@@ -3,38 +3,37 @@
 #
 # Table name: dashboards
 #
-#  id                        :bigint(8)        not null, primary key
-#  name                      :string
-#  slug                      :string
-#  description               :string
-#  content                   :text
-#  published                 :boolean
-#  created_at                :datetime         not null
-#  updated_at                :datetime         not null
-#  summary                   :string
-#  photo_file_name           :string
-#  photo_content_type        :string
-#  photo_file_size           :integer
-#  photo_updated_at          :datetime
-#  user_id                   :string
-#  user_name                 :string
-#  user_role                 :string
-#  private                   :boolean          default(TRUE)
-#  production                :boolean          default(TRUE)
-#  preproduction             :boolean          default(FALSE)
-#  staging                   :boolean          default(FALSE)
+#  id                        :bigint           not null, primary key
 #  application               :string           default(["\"rw\""]), not null, is an Array
-#  is_highlighted            :boolean          default(FALSE)
-#  is_featured               :boolean          default(FALSE)
-#  author_title              :string           default('')
-#  author_image_file_name    :string
 #  author_image_content_type :string
+#  author_image_file_name    :string
 #  author_image_file_size    :integer
 #  author_image_updated_at   :datetime
+#  author_title              :string           default("")
+#  content                   :text
+#  description               :string
+#  environment               :text             default("production"), not null
+#  is_featured               :boolean          default(FALSE)
+#  is_highlighted            :boolean          default(FALSE)
+#  name                      :string
+#  photo_content_type        :string
+#  photo_file_name           :string
+#  photo_file_size           :integer
+#  photo_updated_at          :datetime
+#  private                   :boolean          default(TRUE)
+#  published                 :boolean
+#  slug                      :string
+#  summary                   :string
+#  user_name                 :string
+#  user_role                 :string
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  user_id                   :string
 #
 
 class Dashboard < ApplicationRecord
   include Duplicable
+  include Environment
   extend FriendlyId
   friendly_id :name, use: %i[slugged finders]
   validates_presence_of :name
@@ -60,9 +59,6 @@ class Dashboard < ApplicationRecord
   scope :by_private, ->(is_private) { where(private: is_private) }
   scope :by_user, ->(user) { where(user_id: user) }
   scope :by_name, ->(name) { where("name ilike ?", "%#{name}%") }
-  scope :production, -> { where(production: true) }
-  scope :pre_production, -> { where(pre_production: true) }
-  scope :staging, -> { where(staging: true) }
 
   def self.fetch_all(options = {})
     dashboards = Dashboard.all
@@ -82,18 +78,6 @@ class Dashboard < ApplicationRecord
     dashboards = dashboards.by_private(options[:private]) if options[:private]
     dashboards = dashboards.by_user(options[:user]) if options[:user]
     dashboards = dashboards.by_name(options[:name]) if options[:name]
-
-    if options[:env]
-      environments = options[:env].split(',')
-
-      ids = environments.map do |env|
-        Dashboard.where(env => true)
-      end.flatten.uniq.pluck(:id)
-
-      dashboards = dashboards.where(id: ids)
-    else
-      dashboards = dashboards.production
-    end
 
     dashboards = dashboards.order(get_order(options))
   end

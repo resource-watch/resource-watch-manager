@@ -4,6 +4,7 @@ class Api::DashboardsController < ApiController
   include PaginationHelper
 
   before_action :set_dashboard, only: %i[show update destroy clone]
+  before_action :set_environment, only: [:index]
   before_action :ensure_is_admin_or_owner_manager, only: [:update, :destroy]
 
   before_action :ensure_user_has_requested_apps, only: [:create, :update]
@@ -42,24 +43,25 @@ class Api::DashboardsController < ApiController
       return
     end
 
-    dashboards = Dashboard.fetch_all(dashboard_params_get)
+    @dashboards = Dashboard.where(environment: @environments)
+                   .fetch_all(dashboard_params_get)
                    .page(page_number || 1)
                    .per_page(per_page || 10)
 
     dashboards_json =
       if params['includes']&.include?('user')
-        user_ids = dashboards.pluck(:user_id).reduce([], :<<)
+        user_ids = @dashboards.pluck(:user_id).reduce([], :<<)
         users = UserService.users(user_ids.compact.uniq)
-        UserSerializerHelper.list dashboards, users, @user&.dig('role').eql?('ADMIN')
+        UserSerializerHelper.list @dashboards, users, @user&.dig('role').eql?('ADMIN')
       else
-        dashboards
+        @dashboards
       end
 
     render json: dashboards_json, meta: {
-      links: PaginationHelper.handmade_pagination_links(dashboards, params),
-      'total-pages': dashboards.total_pages,
-      'total-items': dashboards.total_entries,
-      size: dashboards.per_page,
+      links: PaginationHelper.handmade_pagination_links(@dashboards, params),
+      'total-pages': @dashboards.total_pages,
+      'total-items': @dashboards.total_entries,
+      size: @dashboards.per_page,
     }
   end
 
@@ -118,18 +120,7 @@ class Api::DashboardsController < ApiController
   private
 
   def set_dashboard
-    environments = params[:env].present? ? params[:env].split(',') : ['production']
-    dashboard = Dashboard.friendly.find params[:id]
-
-    matches = environments.map do |env|
-      dashboard.public_send(env)
-    end
-
-    if matches.include?(true)
-      @dashboard = dashboard
-    else
-      raise ActiveRecord::RecordNotFound
-    end
+    @dashboard = Dashboard.friendly.find params[:id]
   rescue ActiveRecord::RecordNotFound
     dashboard = Dashboard.new
     dashboard.errors.add(:id, 'Wrong ID provided')
@@ -165,22 +156,22 @@ class Api::DashboardsController < ApiController
   end
 
   def dashboard_params_create
-    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :production,
-      :preproduction, :staging, :is_highlighted, :is_featured, :author_title, :author_image, application:[])
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :environment,
+      :is_highlighted, :is_featured, :author_title, :author_image, application:[])
   rescue
     nil
   end
 
   def dashboard_params_update
-    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :production,
-      :preproduction, :staging, :is_highlighted, :is_featured, :author_title, :author_image, application:[])
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :environment,
+      :is_highlighted, :is_featured, :author_title, :author_image, application:[])
   rescue
     nil
   end
 
   def dashboard_params_clone
-    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :production,
-      :preproduction, :staging, :author_title, :author_image)
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :environment,
+      :author_title, :author_image)
   rescue
     nil
   end
