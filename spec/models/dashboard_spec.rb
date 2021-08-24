@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: dashboards
@@ -31,31 +30,24 @@
 #  user_id                   :string
 #
 
-class DashboardSerializer < ActiveModel::Serializer
-  attributes :id, :name, :slug, :summary, :description,
-             :content, :published, :photo, :user_id, :private,
-             :environment, :user, :application,
-             :is_highlighted, :is_featured, :author_title, :author_image
+require 'rails_helper'
 
-  def photo
-    {
-      cover: object.photo.url(:cover),
-      thumb: object.photo.url(:thumb),
-      original: object.photo.url(:original)
-    }
-  end
+RSpec.describe Dashboard, type: :model do
+  describe :create do
+    context 'environment given' do
+      let(:subject) { FactoryBot.create(:dashboard, environment: 'potato') }
 
-  def author_image
-    {
-      cover: object.author_image.url(:cover),
-      thumb: object.author_image.url(:thumb),
-      original: object.author_image.url(:original)
-    }
-  end
+      it 'saves specified environment' do
+        expect(subject.environment).to eq('potato')
+      end
+    end
 
-  def user
-    return unless object.public_methods.include?(:user)
+    context 'environment not given' do
+      let(:subject) { FactoryBot.create(:dashboard, environment: nil) }
 
-    object.user
+      it 'saves production environment' do
+        expect(subject.environment).to eq(Environment::PRODUCTION)
+      end
+    end
   end
 end

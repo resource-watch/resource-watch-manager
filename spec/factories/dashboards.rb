@@ -3,27 +3,32 @@
 #
 # Table name: dashboards
 #
-#  id                 :bigint(8)        not null, primary key
-#  name               :string
-#  slug               :string
-#  description        :string
-#  content            :text
-#  published          :boolean
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  summary            :string
-#  photo_file_name    :string
-#  photo_content_type :string
-#  photo_file_size    :integer
-#  photo_updated_at   :datetime
-#  user_id            :string
-#  private            :boolean          default(TRUE)
-#  production         :boolean          default(TRUE)
-#  preproduction      :boolean          default(FALSE)
-#  staging            :boolean          default(FALSE)
-#  application        :string           default(["\"rw\""]), not null, is an Array
-#  is_highlighted     :boolean          default(FALSE)
-#  is_featured        :boolean          default(FALSE)
+#  id                        :bigint           not null, primary key
+#  application               :string           default(["\"rw\""]), not null, is an Array
+#  author_image_content_type :string
+#  author_image_file_name    :string
+#  author_image_file_size    :integer
+#  author_image_updated_at   :datetime
+#  author_title              :string           default("")
+#  content                   :text
+#  description               :string
+#  environment               :text             default("production"), not null
+#  is_featured               :boolean          default(FALSE)
+#  is_highlighted            :boolean          default(FALSE)
+#  name                      :string
+#  photo_content_type        :string
+#  photo_file_name           :string
+#  photo_file_size           :integer
+#  photo_updated_at          :datetime
+#  private                   :boolean          default(TRUE)
+#  published                 :boolean
+#  slug                      :string
+#  summary                   :string
+#  user_name                 :string
+#  user_role                 :string
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  user_id                   :string
 #
 
 FactoryBot.define do
@@ -33,6 +38,7 @@ FactoryBot.define do
     author_title { FFaker::Name.name }
     is_highlighted { false }
     is_featured { false }
+    environment { Environment::PRODUCTION }
 
     trait :private do
       private { true }
@@ -94,5 +100,6 @@ FactoryBot.define do
     factory :dashboard_without_widgets, traits: [:not_private, :user2] do
       content { nil }
     end
+    factory :dashboard_production, traits: [:production]
   end
 end

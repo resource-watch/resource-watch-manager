@@ -36,7 +36,7 @@ end
 describe Api::DashboardsController, type: :controller do
   describe 'PATCH #dashboard' do
     before(:each) do
-      @dashboard_private_manager = FactoryBot.create :dashboard_private_manager
+      @dashboard_private_manager = FactoryBot.create :dashboard_private_manager, environment: 'staging'
     end
 
     it 'with no user details should produce a 401 error' do
@@ -272,6 +272,24 @@ describe Api::DashboardsController, type: :controller do
         expect(json_response[:errors][0]).to have_key(:title)
         expect(json_response[:errors][0][:status]).to eq("403")
         expect(json_response[:errors][0][:title]).to eq("You need to be either ADMIN or MANAGER and own the dashboard to update/delete it")
+      end
+    end
+
+    context 'environment' do
+      it "doesn't update environment if not specified" do
+        VCR.use_cassette('user_manager') do
+          request.headers["Authorization"] = "abd"
+          put :update, params: {id: @dashboard_private_manager.id, data: {attributes: {name: 'zonk'}}}
+          expect(@dashboard_private_manager.reload.environment).to eq('staging')
+        end
+      end
+
+      it "updates environment if specified" do
+        VCR.use_cassette('user_manager') do
+          request.headers["Authorization"] = "abd"
+          put :update, params: {id: @dashboard_private_manager.id, data: {attributes: {environment: Environment::PRODUCTION}}}
+          expect(@dashboard_private_manager.reload.environment).to eq(Environment::PRODUCTION)
+        end
       end
     end
   end

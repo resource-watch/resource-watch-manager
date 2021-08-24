@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210824094010) do
+ActiveRecord::Schema.define(version: 20210824112037) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,9 +42,6 @@ ActiveRecord::Schema.define(version: 20210824094010) do
     t.datetime "photo_updated_at"
     t.string "user_id"
     t.boolean "private", default: true
-    t.boolean "production", default: true
-    t.boolean "preproduction", default: false
-    t.boolean "staging", default: false
     t.string "application", default: ["rw"], null: false, array: true
     t.boolean "is_highlighted", default: false
     t.boolean "is_featured", default: false
@@ -55,6 +52,7 @@ ActiveRecord::Schema.define(version: 20210824094010) do
     t.string "author_image_content_type"
     t.integer "author_image_file_size"
     t.datetime "author_image_updated_at"
+    t.text "environment", default: "production", null: false
   end
 
   create_table "faqs", force: :cascade do |t|

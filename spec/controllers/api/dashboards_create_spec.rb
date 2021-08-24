@@ -261,5 +261,25 @@ describe Api::DashboardsController, type: :controller do
         expect(sampleDashboard[:attributes]['is-featured'.to_sym]).to eq(true)
       end
     end
+
+    context 'environment' do
+      it 'sets environment to default if not specified' do
+        VCR.use_cassette('user_user') do
+          request.headers["Authorization"] = "abd"
+          post :create, params: {data: {attributes: {name: 'foo'}}}
+          dashboard = Dashboard.find_by_name('foo')
+          expect(dashboard.environment).to eq(Environment::PRODUCTION)
+        end
+      end
+
+      it 'sets environment if specified' do
+        VCR.use_cassette('user_user') do
+          request.headers["Authorization"] = "abd"
+          post :create, params: {data: {attributes: {name: 'foo', environment: 'potato'}}}
+          dashboard = Dashboard.find_by_name('foo')
+          expect(dashboard.environment).to eq('potato')
+        end
+      end
+    end
   end
 end
