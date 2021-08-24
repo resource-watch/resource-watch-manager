@@ -53,6 +53,11 @@ describe Api::ToolsController, type: :controller do
         expect(tool_response.dig(:data, :attributes, :title)).to eql @tool.title
       end
 
+      it 'returns environment' do
+        tool_response = json_response
+        expect(tool_response.dig(:data, :attributes, :environment)).to eql @tool.environment
+      end
+
       it { should respond_with 200 }
     end
 
