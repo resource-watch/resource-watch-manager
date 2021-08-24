@@ -6,7 +6,7 @@
 #  id                     :bigint           not null, primary key
 #  content                :text
 #  description            :string
-#  environment            :text             default("production"), not null
+#  env                    :text             default("production"), not null
 #  published              :boolean
 #  slug                   :string
 #  summary                :string

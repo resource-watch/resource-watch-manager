@@ -6,8 +6,8 @@ describe Api::DashboardsController, type: :controller do
   describe 'GET #index' do
     before(:each) do
       @production_dashboard = FactoryBot.create(:dashboard_production)
-      @staging_dashboard = FactoryBot.create(:dashboard, environment: 'staging')
-      @preproduction_dashboard = FactoryBot.create(:dashboard, environment: 'preproduction')
+      @staging_dashboard = FactoryBot.create(:dashboard, env: 'staging')
+      @preproduction_dashboard = FactoryBot.create(:dashboard, env: 'preproduction')
     end
 
     it 'filters by production env when no env filter specified' do

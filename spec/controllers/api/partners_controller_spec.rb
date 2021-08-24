@@ -6,8 +6,8 @@ describe Api::PartnersController, type: :controller do
   describe 'GET #index' do
     before(:each) do
       @production_partner = FactoryBot.create(:partner_production)
-      @staging_partner = FactoryBot.create(:partner, environment: 'staging')
-      @preproduction_partner = FactoryBot.create(:partner, environment: 'preproduction')
+      @staging_partner = FactoryBot.create(:partner, env: 'staging')
+      @preproduction_partner = FactoryBot.create(:partner, env: 'preproduction')
     end
 
     it 'filters by production env when no env filter specified' do
@@ -53,9 +53,9 @@ describe Api::PartnersController, type: :controller do
         expect(partner_response.dig(:data, :attributes, :name)).to eql @partner.name
       end
 
-      it 'returns environment' do
+      it 'returns env' do
         partner_response = json_response
-        expect(partner_response.dig(:data, :attributes, :environment)).to eql @partner.environment
+        expect(partner_response.dig(:data, :attributes, :env)).to eql @partner.env
       end
 
       it { should respond_with 200 }
@@ -83,22 +83,22 @@ describe Api::PartnersController, type: :controller do
       expect(response.body).to include "Unauthorized"
     end
 
-    context 'environment' do
-      it 'sets environment to default if not specified' do
+    context 'env' do
+      it 'sets env to default if not specified' do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
           post :create, params: {data: {attributes: {name: 'foo'}}}
           partner = Partner.find_by_name('foo')
-          expect(partner.environment).to eq(Environment::PRODUCTION)
+          expect(partner.env).to eq(Environment::PRODUCTION)
         end
       end
 
-      it 'sets environment if specified' do
+      it 'sets env if specified' do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
-          post :create, params: {data: {attributes: {name: 'foo', environment: 'potato'}}}
+          post :create, params: {data: {attributes: {name: 'foo', env: 'potato'}}}
           partner = Partner.find_by_name('foo')
-          expect(partner.environment).to eq('potato')
+          expect(partner.env).to eq('potato')
         end
       end
     end
@@ -106,7 +106,7 @@ describe Api::PartnersController, type: :controller do
 
   describe 'PATCH #partner' do
     before(:each) do
-      @partner = FactoryBot.create :partner, environment: 'staging'
+      @partner = FactoryBot.create :partner, env: 'staging'
     end
 
     it 'with no user details should produce a 401 error' do
@@ -116,24 +116,24 @@ describe Api::PartnersController, type: :controller do
       expect(response.body).to include "Unauthorized"
     end
 
-    context 'environment' do
-      it "doesn't update environment if not specified" do
+    context 'env' do
+      it "doesn't update env if not specified" do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
           patch :update, params: {
             id: @partner.id, data: {attributes: {answer: 'zonk'}}
           }
-          expect(@partner.reload.environment).to eq('staging')
+          expect(@partner.reload.env).to eq('staging')
         end
       end
 
-      it "updates environment if specified" do
+      it "updates env if specified" do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
           patch :update, params: {
-            id: @partner.id, data: {attributes: {environment: Environment::PRODUCTION}}
+            id: @partner.id, data: {attributes: {env: Environment::PRODUCTION}}
           }
-          expect(@partner.reload.environment).to eq(Environment::PRODUCTION)
+          expect(@partner.reload.env).to eq(Environment::PRODUCTION)
         end
       end
     end
@@ -141,7 +141,7 @@ describe Api::PartnersController, type: :controller do
 
   describe 'DELETE #partner' do
     before(:each) do
-      @partner = FactoryBot.create :partner, environment: 'staging'
+      @partner = FactoryBot.create :partner, env: 'staging'
     end
 
     it 'with no user details should produce a 401 error' do

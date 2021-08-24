@@ -12,7 +12,7 @@
 #  author_title              :string           default("")
 #  content                   :text
 #  description               :string
-#  environment               :text             default("production"), not null
+#  env                       :text             default("production"), not null
 #  is_featured               :boolean          default(FALSE)
 #  is_highlighted            :boolean          default(FALSE)
 #  name                      :string
@@ -38,7 +38,7 @@ FactoryBot.define do
     author_title { FFaker::Name.name }
     is_highlighted { false }
     is_featured { false }
-    environment { Environment::PRODUCTION }
+    env { Environment::PRODUCTION }
 
     trait :private do
       private { true }
@@ -65,7 +65,7 @@ FactoryBot.define do
     end
 
     trait :production do
-      environment { Environment::PRODUCTION }
+      env { Environment::PRODUCTION }
     end
 
     trait :rw do

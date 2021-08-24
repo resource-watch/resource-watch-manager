@@ -12,7 +12,7 @@
 #  author_title              :string           default("")
 #  content                   :text
 #  description               :string
-#  environment               :text             default("production"), not null
+#  env                       :text             default("production"), not null
 #  is_featured               :boolean          default(FALSE)
 #  is_highlighted            :boolean          default(FALSE)
 #  name                      :string
@@ -34,7 +34,7 @@
 class DashboardSerializer < ActiveModel::Serializer
   attributes :id, :name, :slug, :summary, :description,
              :content, :published, :photo, :user_id, :private,
-             :environment, :user, :application,
+             :env, :user, :application,
              :is_highlighted, :is_featured, :author_title, :author_image
 
   def photo

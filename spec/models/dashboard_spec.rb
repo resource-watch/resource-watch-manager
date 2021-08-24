@@ -11,7 +11,7 @@
 #  author_title              :string           default("")
 #  content                   :text
 #  description               :string
-#  environment               :text             default("production"), not null
+#  env                       :text             default("production"), not null
 #  is_featured               :boolean          default(FALSE)
 #  is_highlighted            :boolean          default(FALSE)
 #  name                      :string
@@ -34,19 +34,19 @@ require 'rails_helper'
 
 RSpec.describe Dashboard, type: :model do
   describe :create do
-    context 'environment given' do
-      let(:subject) { FactoryBot.create(:dashboard, environment: 'potato') }
+    context 'env given' do
+      let(:subject) { FactoryBot.create(:dashboard, env: 'potato') }
 
-      it 'saves specified environment' do
-        expect(subject.environment).to eq('potato')
+      it 'saves specified env' do
+        expect(subject.env).to eq('potato')
       end
     end
 
-    context 'environment not given' do
-      let(:subject) { FactoryBot.create(:dashboard, environment: nil) }
+    context 'env not given' do
+      let(:subject) { FactoryBot.create(:dashboard, env: nil) }
 
-      it 'saves production environment' do
-        expect(subject.environment).to eq(Environment::PRODUCTION)
+      it 'saves production env' do
+        expect(subject.env).to eq(Environment::PRODUCTION)
       end
     end
   end

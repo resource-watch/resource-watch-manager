@@ -6,8 +6,8 @@ describe Api::StaticPagesController, type: :controller do
   describe 'GET #index' do
     before(:each) do
       @production_static_page = FactoryBot.create(:static_page_production)
-      @staging_static_page = FactoryBot.create(:static_page, environment: 'staging')
-      @preproduction_static_page = FactoryBot.create(:static_page, environment: 'preproduction')
+      @staging_static_page = FactoryBot.create(:static_page, env: 'staging')
+      @preproduction_static_page = FactoryBot.create(:static_page, env: 'preproduction')
     end
 
     it 'filters by production env when no env filter specified' do
@@ -53,9 +53,9 @@ describe Api::StaticPagesController, type: :controller do
         expect(static_page_response.dig(:data, :attributes, :title)).to eql @static_page.title
       end
 
-      it 'returns environment' do
+      it 'returns env' do
         static_page_response = json_response
-        expect(static_page_response.dig(:data, :attributes, :environment)).to eql @static_page.environment
+        expect(static_page_response.dig(:data, :attributes, :env)).to eql @static_page.env
       end
 
       it { should respond_with 200 }
@@ -91,22 +91,22 @@ describe Api::StaticPagesController, type: :controller do
       end
     end
 
-    context 'environment' do
-      it 'sets environment to default if not specified' do
+    context 'env' do
+      it 'sets env to default if not specified' do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
           post :create, params: {data: {attributes: {title: 'foo'}}}
           static_page = StaticPage.find_by_title('foo')
-          expect(static_page.environment).to eq(Environment::PRODUCTION)
+          expect(static_page.env).to eq(Environment::PRODUCTION)
         end
       end
 
-      it 'sets environment if specified' do
+      it 'sets env if specified' do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
-          post :create, params: {data: {attributes: {title: 'foo', environment: 'potato'}}}
+          post :create, params: {data: {attributes: {title: 'foo', env: 'potato'}}}
           static_page = StaticPage.find_by_title('foo')
-          expect(static_page.environment).to eq('potato')
+          expect(static_page.env).to eq('potato')
         end
       end
     end
@@ -114,7 +114,7 @@ describe Api::StaticPagesController, type: :controller do
 
   describe 'PUT #update' do
     before(:each) do
-      @static_page = FactoryBot.create(:static_page, environment: 'staging')
+      @static_page = FactoryBot.create(:static_page, env: 'staging')
     end
 
     it 'with no user details should produce a 401 error' do
@@ -134,24 +134,24 @@ describe Api::StaticPagesController, type: :controller do
       end
     end
 
-    context 'environment' do
-      it "doesn't update environment if not specified" do
+    context 'env' do
+      it "doesn't update env if not specified" do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
           put :update, params: {
             id: @static_page.id, data: {attributes: {answer: 'zonk'}}
           }
-          expect(@static_page.reload.environment).to eq('staging')
+          expect(@static_page.reload.env).to eq('staging')
         end
       end
 
-      it "updates environment if specified" do
+      it "updates env if specified" do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
           put :update, params: {
-            id: @static_page.id, data: {attributes: {environment: Environment::PRODUCTION}}
+            id: @static_page.id, data: {attributes: {env: Environment::PRODUCTION}}
           }
-          expect(@static_page.reload.environment).to eq(Environment::PRODUCTION)
+          expect(@static_page.reload.env).to eq(Environment::PRODUCTION)
         end
       end
     end

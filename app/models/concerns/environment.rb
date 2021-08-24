@@ -7,7 +7,7 @@ module Environment
 
   included do
     # default to production if environment not specified
-    before_validation(on: :create) { self.environment ||= PRODUCTION }
-    validates :environment, presence: true
+    before_validation(on: :create) { self.env ||= PRODUCTION }
+    validates :env, presence: true
   end
 end

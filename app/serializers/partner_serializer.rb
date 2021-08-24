@@ -11,7 +11,7 @@
 #  cover_file_name         :string
 #  cover_file_size         :integer
 #  cover_updated_at        :datetime
-#  environment             :text             default("production"), not null
+#  env                     :text             default("production"), not null
 #  featured                :boolean          default(FALSE)
 #  icon_content_type       :string
 #  icon_file_name          :string
@@ -44,7 +44,7 @@ class PartnerSerializer < ActiveModel::Serializer
   attributes :id, :name, :slug, :summary, :body,
              :contact_email, :contact_name, :website, :featured,
              :logo, :white_logo, :cover, :icon, :partner_type, :published,
-             :environment
+             :env
 
   link(:self) { api_partner_path(object) }
 

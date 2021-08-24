@@ -11,7 +11,7 @@
 #  cover_file_name         :string
 #  cover_file_size         :integer
 #  cover_updated_at        :datetime
-#  environment             :text             default("production"), not null
+#  env                     :text             default("production"), not null
 #  featured                :boolean          default(FALSE)
 #  icon_content_type       :string
 #  icon_file_name          :string

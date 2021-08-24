@@ -4,7 +4,7 @@ class Api::DashboardsController < ApiController
   include PaginationHelper
 
   before_action :set_dashboard, only: %i[show update destroy clone]
-  before_action :set_environment, only: [:index]
+  before_action :set_envs, only: [:index]
   before_action :ensure_is_admin_or_owner_manager, only: [:update, :destroy]
 
   before_action :ensure_user_has_requested_apps, only: [:create, :update]
@@ -43,7 +43,7 @@ class Api::DashboardsController < ApiController
       return
     end
 
-    @dashboards = Dashboard.where(environment: @environments)
+    @dashboards = Dashboard.where(env: @envs)
                    .fetch_all(dashboard_params_get)
                    .page(page_number || 1)
                    .per_page(per_page || 10)
@@ -156,21 +156,21 @@ class Api::DashboardsController < ApiController
   end
 
   def dashboard_params_create
-    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :environment,
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :env,
       :is_highlighted, :is_featured, :author_title, :author_image, application:[])
   rescue
     nil
   end
 
   def dashboard_params_update
-    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :environment,
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :env,
       :is_highlighted, :is_featured, :author_title, :author_image, application:[])
   rescue
     nil
   end
 
   def dashboard_params_clone
-    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :environment,
+    ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :env,
       :author_title, :author_image)
   rescue
     nil

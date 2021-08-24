@@ -23,10 +23,10 @@ describe Api::DashboardsController, type: :controller do
       validate_dashboard_structure(sampleDashboard)
     end
 
-    it 'returns environment' do
+    it 'returns env' do
       get :show, params: {id: @dashboard.id}
       dashboard_response = json_response
-      expect(dashboard_response.dig(:data, :attributes, :environment)).to eql @dashboard.environment
+      expect(dashboard_response.dig(:data, :attributes, :env)).to eql @dashboard.env
     end
   end
 end

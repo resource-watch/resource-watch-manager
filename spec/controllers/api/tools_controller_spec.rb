@@ -6,8 +6,8 @@ describe Api::ToolsController, type: :controller do
   describe 'GET #index' do
     before(:each) do
       @production_tool = FactoryBot.create(:tool_production)
-      @staging_tool = FactoryBot.create(:tool, environment: 'staging')
-      @preproduction_tool = FactoryBot.create(:tool, environment: 'preproduction')
+      @staging_tool = FactoryBot.create(:tool, env: 'staging')
+      @preproduction_tool = FactoryBot.create(:tool, env: 'preproduction')
     end
 
     it 'filters by production env when no env filter specified' do
@@ -53,9 +53,9 @@ describe Api::ToolsController, type: :controller do
         expect(tool_response.dig(:data, :attributes, :title)).to eql @tool.title
       end
 
-      it 'returns environment' do
+      it 'returns env' do
         tool_response = json_response
-        expect(tool_response.dig(:data, :attributes, :environment)).to eql @tool.environment
+        expect(tool_response.dig(:data, :attributes, :env)).to eql @tool.env
       end
 
       it { should respond_with 200 }
@@ -83,22 +83,22 @@ describe Api::ToolsController, type: :controller do
       expect(response.body).to include "Unauthorized"
     end
 
-    context 'environment' do
-      it 'sets environment to default if not specified' do
+    context 'env' do
+      it 'sets env to default if not specified' do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
           post :create, params: {data: {attributes: {title: 'foo'}}}
           tool = Tool.find_by_title('foo')
-          expect(tool.environment).to eq(Environment::PRODUCTION)
+          expect(tool.env).to eq(Environment::PRODUCTION)
         end
       end
 
-      it 'sets environment if specified' do
+      it 'sets env if specified' do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
-          post :create, params: {data: {attributes: {title: 'foo', environment: 'potato'}}}
+          post :create, params: {data: {attributes: {title: 'foo', env: 'potato'}}}
           tool = Tool.find_by_title('foo')
-          expect(tool.environment).to eq('potato')
+          expect(tool.env).to eq('potato')
         end
       end
     end
@@ -106,7 +106,7 @@ describe Api::ToolsController, type: :controller do
 
   describe 'PATCH #tool' do
     before(:each) do
-      @tool = FactoryBot.create :tool, environment: 'staging'
+      @tool = FactoryBot.create :tool, env: 'staging'
     end
 
     it 'with no user details should produce a 401 error' do
@@ -116,24 +116,24 @@ describe Api::ToolsController, type: :controller do
       expect(response.body).to include "Unauthorized"
     end
 
-    context 'environment' do
-      it "doesn't update environment if not specified" do
+    context 'env' do
+      it "doesn't update env if not specified" do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
           patch :update, params: {
             id: @tool.id, data: {attributes: {answer: 'zonk'}}
           }
-          expect(@tool.reload.environment).to eq('staging')
+          expect(@tool.reload.env).to eq('staging')
         end
       end
 
-      it "updates environment if specified" do
+      it "updates env if specified" do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
           patch :update, params: {
-            id: @tool.id, data: {attributes: {environment: Environment::PRODUCTION}}
+            id: @tool.id, data: {attributes: {env: Environment::PRODUCTION}}
           }
-          expect(@tool.reload.environment).to eq(Environment::PRODUCTION)
+          expect(@tool.reload.env).to eq(Environment::PRODUCTION)
         end
       end
     end
@@ -141,7 +141,7 @@ describe Api::ToolsController, type: :controller do
 
   describe 'DELETE #tool' do
     before(:each) do
-      @tool = FactoryBot.create :tool, environment: 'staging'
+      @tool = FactoryBot.create :tool, env: 'staging'
     end
 
     it 'with no user details should produce a 401 error' do

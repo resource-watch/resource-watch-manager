@@ -36,7 +36,7 @@ end
 describe Api::DashboardsController, type: :controller do
   describe 'PATCH #dashboard' do
     before(:each) do
-      @dashboard_private_manager = FactoryBot.create :dashboard_private_manager, environment: 'staging'
+      @dashboard_private_manager = FactoryBot.create :dashboard_private_manager, env: 'staging'
     end
 
     it 'with no user details should produce a 401 error' do
@@ -275,20 +275,20 @@ describe Api::DashboardsController, type: :controller do
       end
     end
 
-    context 'environment' do
-      it "doesn't update environment if not specified" do
+    context 'env' do
+      it "doesn't update env if not specified" do
         VCR.use_cassette('user_manager') do
           request.headers["Authorization"] = "abd"
           put :update, params: {id: @dashboard_private_manager.id, data: {attributes: {name: 'zonk'}}}
-          expect(@dashboard_private_manager.reload.environment).to eq('staging')
+          expect(@dashboard_private_manager.reload.env).to eq('staging')
         end
       end
 
-      it "updates environment if specified" do
+      it "updates env if specified" do
         VCR.use_cassette('user_manager') do
           request.headers["Authorization"] = "abd"
-          put :update, params: {id: @dashboard_private_manager.id, data: {attributes: {environment: Environment::PRODUCTION}}}
-          expect(@dashboard_private_manager.reload.environment).to eq(Environment::PRODUCTION)
+          put :update, params: {id: @dashboard_private_manager.id, data: {attributes: {env: Environment::PRODUCTION}}}
+          expect(@dashboard_private_manager.reload.env).to eq(Environment::PRODUCTION)
         end
       end
     end

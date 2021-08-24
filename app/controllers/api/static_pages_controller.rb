@@ -4,10 +4,10 @@ module Api
   # API class for the Static Pages Resource
   class StaticPagesController < ApiController
     before_action :set_static_page, only: %i[show update destroy]
-    before_action :set_environment, only: %i[index]
+    before_action :set_envs, only: %i[index]
 
     def index
-      @static_pages = StaticPage.where(environment: @environments).fetch_all(params)
+      @static_pages = StaticPage.where(env: @envs).fetch_all(params)
       render json: @static_pages
     end
 
@@ -48,7 +48,7 @@ module Api
     end
 
     def static_page_params
-      ParamsHelper.permit(params, :title, :summary, :description, :content, :photo, :published, :environment)
+      ParamsHelper.permit(params, :title, :summary, :description, :content, :photo, :published, :env)
     rescue
       nil
     end

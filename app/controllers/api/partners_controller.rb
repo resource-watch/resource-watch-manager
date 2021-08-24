@@ -4,10 +4,10 @@ module Api
   # API class for the Partners Resource
   class PartnersController < ApiController
     before_action :set_partner, only: %i[show update destroy]
-    before_action :set_environment, only: %i[index]
+    before_action :set_envs, only: %i[index]
 
     def index
-      @partners = Partner.where(environment: @environments).fetch_all(params)
+      @partners = Partner.where(env: @envs).fetch_all(params)
       render json: @partners
     end
 
@@ -50,7 +50,7 @@ module Api
     def partner_params
       ParamsHelper.permit(params, :name, :contact_email, :contact_name, :body, :partner_type, :summary,
         :logo, :white_logo, :icon, :cover, :published, :featured, :website, :partner_type,
-        :environment)
+        :env)
     rescue
       nil
     end

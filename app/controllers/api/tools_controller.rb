@@ -4,10 +4,10 @@ module Api
   # API class for the Partners Resource
   class ToolsController < ApiController
     before_action :set_tool, only: %i[show update destroy]
-    before_action :set_environment, only: %i[index]
+    before_action :set_envs, only: %i[index]
 
     def index
-      @tools = Tool.where(environment: @environments).fetch_all(params)
+      @tools = Tool.where(env: @envs).fetch_all(params)
       render json: @tools
     end
 
@@ -49,7 +49,7 @@ module Api
 
     def tool_params
       ParamsHelper.permit(params, :title, :slug, :summary, :description, :content,
-        :thumbnail, :url, :published, :environment)
+        :thumbnail, :url, :published, :env)
     rescue
       nil
     end
