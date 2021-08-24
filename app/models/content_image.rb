@@ -3,15 +3,19 @@
 #
 # Table name: content_images
 #
-#  id                 :bigint(8)        not null, primary key
-#  imageable_id       :integer
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  image_file_name    :string
+#  id                 :bigint           not null, primary key
 #  image_content_type :string
+#  image_file_name    :string
 #  image_file_size    :integer
 #  image_updated_at   :datetime
 #  imageable_type     :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  imageable_id       :integer
+#
+# Indexes
+#
+#  index_content_images_on_imageable_type_and_imageable_id  (imageable_type,imageable_id)
 #
 
 class ContentImage < ApplicationRecord

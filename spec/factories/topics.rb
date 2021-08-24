@@ -4,21 +4,22 @@
 #
 # Table name: topics
 #
-#  id                 :bigint(8)        not null, primary key
-#  name               :string
-#  slug               :string
-#  description        :string
+#  id                 :bigint           not null, primary key
+#  application        :string           default(["\"rw\""]), not null, is an Array
 #  content            :text
-#  published          :boolean
-#  summary            :string
-#  private            :boolean          default(TRUE)
-#  user_id            :string
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  photo_file_name    :string
+#  description        :string
+#  name               :string
 #  photo_content_type :string
+#  photo_file_name    :string
 #  photo_file_size    :integer
 #  photo_updated_at   :datetime
+#  private            :boolean          default(TRUE)
+#  published          :boolean
+#  slug               :string
+#  summary            :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  user_id            :string
 #
 
 FactoryBot.define do

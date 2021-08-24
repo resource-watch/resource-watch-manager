@@ -3,12 +3,13 @@
 #
 # Table name: faqs
 #
-#  id         :bigint(8)        not null, primary key
-#  question   :string           not null
-#  answer     :text             not null
-#  order      :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id          :bigint           not null, primary key
+#  answer      :text             not null
+#  environment :text             default("production"), not null
+#  order       :integer
+#  question    :string           not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 
 # Model for Partner
