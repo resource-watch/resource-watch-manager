@@ -41,6 +41,26 @@ describe Api::FaqsController, type: :controller do
     end
   end
 
+  describe 'GET #show' do
+    before(:each) do
+      @faq = FactoryBot.create :faq_production
+      get :show, params: {id: @faq.id}
+    end
+
+    it 'returns the information about a faq on a hash' do
+      faq_response = json_response
+      expect(faq_response.dig(:data, :attributes, :question)).to eql @faq.question
+    end
+
+    it 'returns environment' do
+      faq_response = json_response
+      expect(faq_response.dig(:data, :attributes, :environment)).to eql @faq.environment
+    end
+
+    it { should respond_with 200 }
+  end
+
+
   describe 'POST #create' do
     it 'with no user details should produce a 401 error' do
       post :create

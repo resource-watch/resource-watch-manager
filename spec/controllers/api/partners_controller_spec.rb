@@ -53,6 +53,11 @@ describe Api::PartnersController, type: :controller do
         expect(partner_response.dig(:data, :attributes, :name)).to eql @partner.name
       end
 
+      it 'returns environment' do
+        partner_response = json_response
+        expect(partner_response.dig(:data, :attributes, :environment)).to eql @partner.environment
+      end
+
       it { should respond_with 200 }
     end
 
