@@ -26,7 +26,7 @@ RUN apk update && \
     && rm -rf /var/cache/apk/*
 
 RUN bundle config build.nokogiri --use-system-libraries
-RUN gem install bundler --no-document
+RUN gem install bundler --no-document -v $BUNDLER_VERSION
 RUN mkdir -p /usr/src/app
 
 # Set app directory
