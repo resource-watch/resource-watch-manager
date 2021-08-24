@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 module Api
-  # API class for the Partners Resource
+  # API class for the Static Pages Resource
   class StaticPagesController < ApiController
-    before_action :set_static_, only: %i[show update destroy]
+    before_action :set_static_page, only: %i[show update destroy]
+    before_action :set_environment, only: %i[index]
 
     def index
-      render json: StaticPage.fetch_all(params)
+      @static_pages = StaticPage.where(environment: @environments).fetch_all(params)
+      render json: @static_pages
     end
 
     def show
@@ -37,19 +39,8 @@ module Api
 
     private
 
-    def set_static_
-      environments = params[:env].present? ? params[:env].split(',') : ['production']
-      static_page = StaticPage.friendly.find params[:id]
-
-      matches = environments.map do |env|
-        static_page.public_send(env)
-      end
-
-      if matches.include?(true)
-        @static_page = static_page
-      else
-        raise ActiveRecord::RecordNotFound
-      end
+    def set_static_page
+      @static_page = StaticPage.friendly.find params[:id]
     rescue ActiveRecord::RecordNotFound
       static_page = StaticPage.new
       static_page.errors.add(:id, 'Wrong ID provided')
@@ -57,7 +48,7 @@ module Api
     end
 
     def static_page_params
-      ParamsHelper.permit(params, :title, :summary, :description, :content, :photo, :published, :production, :preproduction, :staging)
+      ParamsHelper.permit(params, :title, :summary, :description, :content, :photo, :published, :environment)
     rescue
       nil
     end
