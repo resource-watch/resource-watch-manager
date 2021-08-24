@@ -6,7 +6,7 @@
 #  id                 :bigint           not null, primary key
 #  content            :text
 #  description        :text
-#  environment        :text             default("production"), not null
+#  env                :text             default("production"), not null
 #  photo_content_type :string
 #  photo_file_name    :string
 #  photo_file_size    :integer
@@ -27,7 +27,7 @@
 class StaticPageSerializer < ActiveModel::Serializer
   attributes :id, :title, :summary, :description, :content,
              :photo, :slug, :published, :created_at, :updated_at,
-             :environment
+             :env
 
   def photo
     {

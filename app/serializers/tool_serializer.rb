@@ -6,7 +6,7 @@
 #  id                     :bigint           not null, primary key
 #  content                :text
 #  description            :string
-#  environment            :text             default("production"), not null
+#  env                    :text             default("production"), not null
 #  published              :boolean
 #  slug                   :string
 #  summary                :string
@@ -24,7 +24,7 @@
 class ToolSerializer < ActiveModel::Serializer
   attributes :id, :title, :summary, :description, :content, :url,
              :thumbnail, :slug, :published, :created_at, :updated_at,
-             :environment
+             :env
 
   def thumbnail
     {

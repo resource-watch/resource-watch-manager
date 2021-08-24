@@ -262,22 +262,22 @@ describe Api::DashboardsController, type: :controller do
       end
     end
 
-    context 'environment' do
-      it 'sets environment to default if not specified' do
+    context 'env' do
+      it 'sets env to default if not specified' do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
           post :create, params: {data: {attributes: {name: 'foo'}}}
           dashboard = Dashboard.find_by_name('foo')
-          expect(dashboard.environment).to eq(Environment::PRODUCTION)
+          expect(dashboard.env).to eq(Environment::PRODUCTION)
         end
       end
 
-      it 'sets environment if specified' do
+      it 'sets env if specified' do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
-          post :create, params: {data: {attributes: {name: 'foo', environment: 'potato'}}}
+          post :create, params: {data: {attributes: {name: 'foo', env: 'potato'}}}
           dashboard = Dashboard.find_by_name('foo')
-          expect(dashboard.environment).to eq('potato')
+          expect(dashboard.env).to eq('potato')
         end
       end
     end

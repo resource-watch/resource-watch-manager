@@ -22,7 +22,7 @@ def compare_cloned_with_existing(cloned_dash, initial_id, user_id, override_data
   expect(cloned_dash['attributes']['description']).to eq(initial_dash[:attributes][:description])
   expect(cloned_dash['attributes']['published']).to eq(initial_dash[:attributes][:published])
   expect(cloned_dash['attributes']['private']).to eq(initial_dash[:attributes][:private])
-  expect(cloned_dash['attributes']['environment']).to eq(initial_dash[:attributes][:environment])
+  expect(cloned_dash['attributes']['env']).to eq(initial_dash[:attributes][:env])
   expect(cloned_dash['attributes']['application']).to eq(initial_dash[:attributes][:application])
   expect(cloned_dash['attributes']['is-highlighted']).to eq(false)
   expect(cloned_dash['attributes']['is-featured']).to eq(false)

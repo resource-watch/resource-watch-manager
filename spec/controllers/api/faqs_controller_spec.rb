@@ -6,8 +6,8 @@ describe Api::FaqsController, type: :controller do
   describe 'GET #index' do
     before(:each) do
       @production_faq = FactoryBot.create(:faq_production)
-      @staging_faq = FactoryBot.create(:faq, environment: 'staging')
-      @preproduction_faq = FactoryBot.create(:faq, environment: 'preproduction')
+      @staging_faq = FactoryBot.create(:faq, env: 'staging')
+      @preproduction_faq = FactoryBot.create(:faq, env: 'preproduction')
     end
 
     it 'filters by production env when no env filter specified' do
@@ -52,9 +52,9 @@ describe Api::FaqsController, type: :controller do
       expect(faq_response.dig(:data, :attributes, :question)).to eql @faq.question
     end
 
-    it 'returns environment' do
+    it 'returns env' do
       faq_response = json_response
-      expect(faq_response.dig(:data, :attributes, :environment)).to eql @faq.environment
+      expect(faq_response.dig(:data, :attributes, :env)).to eql @faq.env
     end
 
     it { should respond_with 200 }
@@ -69,22 +69,22 @@ describe Api::FaqsController, type: :controller do
       expect(response.body).to include 'Unauthorized'
     end
 
-    context 'environment' do
-      it 'sets environment to default if not specified' do
+    context 'env' do
+      it 'sets env to default if not specified' do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
           post :create, params: {data: {attributes: {question: 'foo', answer: 'bar'}}}
           faq = Faq.find_by_question('foo')
-          expect(faq.environment).to eq(Environment::PRODUCTION)
+          expect(faq.env).to eq(Environment::PRODUCTION)
         end
       end
 
-      it 'sets environment if specified' do
+      it 'sets env if specified' do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
-          post :create, params: {data: {attributes: {question: 'foo', answer: 'bar', environment: 'potato'}}}
+          post :create, params: {data: {attributes: {question: 'foo', answer: 'bar', env: 'potato'}}}
           faq = Faq.find_by_question('foo')
-          expect(faq.environment).to eq('potato')
+          expect(faq.env).to eq('potato')
         end
       end
     end
@@ -92,7 +92,7 @@ describe Api::FaqsController, type: :controller do
 
   describe 'PUT #update' do
     before(:each) do
-      @staging_faq = FactoryBot.create(:faq, environment: 'staging')
+      @staging_faq = FactoryBot.create(:faq, env: 'staging')
     end
 
     it 'with no user details should produce a 401 error' do
@@ -102,20 +102,20 @@ describe Api::FaqsController, type: :controller do
       expect(response.body).to include "Unauthorized"
     end
 
-    context 'environment' do
-      it "doesn't update environment if not specified" do
+    context 'env' do
+      it "doesn't update env if not specified" do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
           put :update, params: {id: @staging_faq.id, data: {attributes: {answer: 'zonk'}}}
-          expect(@staging_faq.reload.environment).to eq('staging')
+          expect(@staging_faq.reload.env).to eq('staging')
         end
       end
 
-      it "updates environment if specified" do
+      it "updates env if specified" do
         VCR.use_cassette('user_user') do
           request.headers["Authorization"] = "abd"
-          put :update, params: {id: @staging_faq.id, data: {attributes: {environment: Environment::PRODUCTION}}}
-          expect(@staging_faq.reload.environment).to eq(Environment::PRODUCTION)
+          put :update, params: {id: @staging_faq.id, data: {attributes: {env: Environment::PRODUCTION}}}
+          expect(@staging_faq.reload.env).to eq(Environment::PRODUCTION)
         end
       end
     end
@@ -123,7 +123,7 @@ describe Api::FaqsController, type: :controller do
 
   describe 'DELETE #faq' do
     before(:each) do
-      @faq = FactoryBot.create :faq, environment: 'staging'
+      @faq = FactoryBot.create :faq, env: 'staging'
     end
 
     it 'with no user details should produce a 401 error' do

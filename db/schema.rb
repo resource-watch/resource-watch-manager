@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210824112037) do
+ActiveRecord::Schema.define(version: 20210824160522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20210824112037) do
     t.string "author_image_content_type"
     t.integer "author_image_file_size"
     t.datetime "author_image_updated_at"
-    t.text "environment", default: "production", null: false
+    t.text "env", default: "production", null: false
   end
 
   create_table "faqs", force: :cascade do |t|
@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 20210824112037) do
     t.integer "order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "environment", default: "production", null: false
+    t.text "env", default: "production", null: false
   end
 
   create_table "partners", id: :serial, force: :cascade do |t|
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 20210824112037) do
     t.datetime "cover_updated_at"
     t.string "website"
     t.string "partner_type"
-    t.text "environment", default: "production", null: false
+    t.text "env", default: "production", null: false
     t.index ["slug"], name: "index_partners_on_slug"
   end
 
@@ -121,7 +121,7 @@ ActiveRecord::Schema.define(version: 20210824112037) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "published"
-    t.text "environment", default: "production", null: false
+    t.text "env", default: "production", null: false
     t.index ["slug"], name: "index_static_pages_on_slug"
   end
 
@@ -148,7 +148,7 @@ ActiveRecord::Schema.define(version: 20210824112037) do
     t.boolean "published"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "environment", default: "production", null: false
+    t.text "env", default: "production", null: false
   end
 
   create_table "topics", force: :cascade do |t|

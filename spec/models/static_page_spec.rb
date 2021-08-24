@@ -5,7 +5,7 @@
 #  id                 :bigint           not null, primary key
 #  content            :text
 #  description        :text
-#  environment        :text             default("production"), not null
+#  env                :text             default("production"), not null
 #  photo_content_type :string
 #  photo_file_name    :string
 #  photo_file_size    :integer
@@ -26,19 +26,19 @@ require 'rails_helper'
 
 RSpec.describe StaticPage, type: :model do
   describe :create do
-    context 'environment given' do
-      let(:subject) { FactoryBot.create(:static_page, environment: 'potato') }
+    context 'env given' do
+      let(:subject) { FactoryBot.create(:static_page, env: 'potato') }
 
-      it 'saves specified environment' do
-        expect(subject.environment).to eq('potato')
+      it 'saves specified env' do
+        expect(subject.env).to eq('potato')
       end
     end
 
-    context 'environment not given' do
-      let(:subject) { FactoryBot.create(:static_page, environment: nil) }
+    context 'env not given' do
+      let(:subject) { FactoryBot.create(:static_page, env: nil) }
 
-      it 'saves production environment' do
-        expect(subject.environment).to eq(Environment::PRODUCTION)
+      it 'saves production env' do
+        expect(subject.env).to eq(Environment::PRODUCTION)
       end
     end
   end

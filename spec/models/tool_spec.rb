@@ -5,7 +5,7 @@
 #  id                     :bigint           not null, primary key
 #  content                :text
 #  description            :string
-#  environment            :text             default("production"), not null
+#  env                    :text             default("production"), not null
 #  published              :boolean
 #  slug                   :string
 #  summary                :string
@@ -23,19 +23,19 @@ require 'rails_helper'
 
 RSpec.describe Tool, type: :model do
   describe :create do
-    context 'environment given' do
-      let(:subject) { FactoryBot.create(:tool, environment: 'potato') }
+    context 'env given' do
+      let(:subject) { FactoryBot.create(:tool, env: 'potato') }
 
-      it 'saves specified environment' do
-        expect(subject.environment).to eq('potato')
+      it 'saves specified env' do
+        expect(subject.env).to eq('potato')
       end
     end
 
-    context 'environment not given' do
-      let(:subject) { FactoryBot.create(:tool, environment: nil) }
+    context 'env not given' do
+      let(:subject) { FactoryBot.create(:tool, env: nil) }
 
-      it 'saves production environment' do
-        expect(subject.environment).to eq(Environment::PRODUCTION)
+      it 'saves production env' do
+        expect(subject.env).to eq(Environment::PRODUCTION)
       end
     end
   end

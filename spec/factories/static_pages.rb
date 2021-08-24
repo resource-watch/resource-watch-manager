@@ -6,7 +6,7 @@
 #  id                 :bigint           not null, primary key
 #  content            :text
 #  description        :text
-#  environment        :text             default("production"), not null
+#  env                :text             default("production"), not null
 #  photo_content_type :string
 #  photo_file_name    :string
 #  photo_file_size    :integer
@@ -33,7 +33,7 @@ FactoryBot.define do
 
 
     trait :production do
-      environment { Environment::PRODUCTION }
+      env { Environment::PRODUCTION }
     end
 
     factory :static_page_production, traits: [:production]

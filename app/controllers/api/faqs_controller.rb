@@ -4,11 +4,11 @@ module Api
   # API class for the Faqs Resource
   class FaqsController < ApiController
     before_action :set_faq, only: %i[show update destroy]
-    before_action :set_environment, only: [:index]
+    before_action :set_envs, only: [:index]
 
     def index
       @faqs = Faq.all
-      @faqs = @faqs.where(environment: @environments)
+      @faqs = @faqs.where(env: @envs)
       render json: @faqs
     end
 
@@ -58,7 +58,7 @@ module Api
     end
 
     def faq_params
-      ParamsHelper.permit(params, :question, :answer, :order, :environment)
+      ParamsHelper.permit(params, :question, :answer, :order, :env)
     rescue
       nil
     end
