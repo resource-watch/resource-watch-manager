@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: static_pages
@@ -23,19 +22,24 @@
 #  index_static_pages_on_slug  (slug)
 #
 
-FactoryBot.define do
-  factory :static_page do
-    sequence(:title) { |n| "#{n} #{FFaker::CheesyLingo.title}" }
-    summary { FFaker::HealthcareIpsum.paragraph }
-    description { FFaker::HealthcareIpsum.paragraph(2) }
-    content { FFaker::HTMLIpsum.body }
-    published { FFaker::Boolean.sample }
+require 'rails_helper'
 
+RSpec.describe StaticPage, type: :model do
+  describe :create do
+    context 'environment given' do
+      let(:subject) { FactoryBot.create(:static_page, environment: 'potato') }
 
-    trait :production do
-      environment { Environment::PRODUCTION }
+      it 'saves specified environment' do
+        expect(subject.environment).to eq('potato')
+      end
     end
 
-    factory :static_page_production, traits: [:production]
+    context 'environment not given' do
+      let(:subject) { FactoryBot.create(:static_page, environment: nil) }
+
+      it 'saves production environment' do
+        expect(subject.environment).to eq(Environment::PRODUCTION)
+      end
+    end
   end
 end

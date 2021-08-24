@@ -3,29 +3,31 @@
 #
 # Table name: static_pages
 #
-#  id                 :bigint(8)        not null, primary key
-#  title              :string           not null
-#  summary            :text
-#  description        :text
+#  id                 :bigint           not null, primary key
 #  content            :text
-#  photo_file_name    :string
+#  description        :text
+#  environment        :text             default("production"), not null
 #  photo_content_type :string
+#  photo_file_name    :string
 #  photo_file_size    :integer
 #  photo_updated_at   :datetime
+#  published          :boolean
 #  slug               :string
+#  summary            :text
+#  title              :string           not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  published          :boolean
-#  production         :boolean          default(TRUE)
-#  preproduction      :boolean          default(FALSE)
-#  staging            :boolean          default(FALSE)
+#
+# Indexes
+#
+#  index_static_pages_on_slug  (slug)
 #
 
 # Static page Serializer
 class StaticPageSerializer < ActiveModel::Serializer
   attributes :id, :title, :summary, :description, :content,
              :photo, :slug, :published, :created_at, :updated_at,
-             :production, :preproduction, :staging
+             :environment
 
   def photo
     {

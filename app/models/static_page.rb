@@ -3,28 +3,31 @@
 #
 # Table name: static_pages
 #
-#  id                 :bigint(8)        not null, primary key
-#  title              :string           not null
-#  summary            :text
-#  description        :text
+#  id                 :bigint           not null, primary key
 #  content            :text
-#  photo_file_name    :string
+#  description        :text
+#  environment        :text             default("production"), not null
 #  photo_content_type :string
+#  photo_file_name    :string
 #  photo_file_size    :integer
 #  photo_updated_at   :datetime
+#  published          :boolean
 #  slug               :string
+#  summary            :text
+#  title              :string           not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  published          :boolean
-#  production         :boolean          default(TRUE)
-#  preproduction      :boolean          default(FALSE)
-#  staging            :boolean          default(FALSE)
+#
+# Indexes
+#
+#  index_static_pages_on_slug  (slug)
 #
 
 # frozen_string_literal: true
 
 # Static Page Model
 class StaticPage < ApplicationRecord
+  include Environment
   extend FriendlyId
   friendly_id :title, use: %i[slugged finders]
 
@@ -37,10 +40,6 @@ class StaticPage < ApplicationRecord
 
   validates_presence_of :title
 
-  scope :production, -> { where(production: true) }
-  scope :pre_production, -> { where(pre_production: true) }
-  scope :staging, -> { where(staging: true) }
-
   def should_generate_new_friendly_id?
     new_record?
   end
@@ -50,19 +49,6 @@ class StaticPage < ApplicationRecord
     if options[:filter]
       static_pages = static_pages.by_published(options[:filter][:published]) if options[:filter][:published]
     end
-
-    if options[:env]
-      environments = options[:env].split(',')
-
-      ids = environments.map do |env|
-        StaticPage.where(env => true)
-      end.flatten.uniq.pluck(:id)
-
-      static_pages = static_pages.where(id: ids)
-    else
-      static_pages = static_pages.production
-    end
-    
     static_pages = static_pages.order(get_order(options))
   end
 
