@@ -7,7 +7,7 @@ ENV APIGATEWAY_URL $apiGatewayUrl
 
 ARG secretKey
 ENV SECRET_KEY_BASE $secretKey
-ENV BUNDLER_VERSION 2.0.2
+ENV BUNDLER_VERSION 2.2.25
 
 # Install dependencies
 RUN apk update && \
