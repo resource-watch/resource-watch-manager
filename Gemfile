@@ -15,7 +15,7 @@ gem 'aws-sdk', '~> 2.3.0'
 gem 'dotenv-rails'
 gem 'faraday', '~> 0.11.0'
 gem 'paperclip', '~> 5.2.0'
-gem 'puma', '~> 3.12'
+gem 'puma', '~> 4.3'
 gem 'rack-cors'
 
 # Active admin
