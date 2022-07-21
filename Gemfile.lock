@@ -338,7 +338,7 @@ GEM
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.8)
-    tzinfo (1.2.7)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     unicode-display_width (1.4.0)
     uniform_notifier (1.11.0)
