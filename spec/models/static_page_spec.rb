@@ -8,7 +8,7 @@
 #  env                :text             default("production"), not null
 #  photo_content_type :string
 #  photo_file_name    :string
-#  photo_file_size    :integer
+#  photo_file_size    :bigint
 #  photo_updated_at   :datetime
 #  published          :boolean
 #  slug               :string

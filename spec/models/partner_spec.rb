@@ -8,17 +8,17 @@
 #  contact_name            :string
 #  cover_content_type      :string
 #  cover_file_name         :string
-#  cover_file_size         :integer
+#  cover_file_size         :bigint
 #  cover_updated_at        :datetime
 #  env                     :text             default("production"), not null
 #  featured                :boolean          default(FALSE)
 #  icon_content_type       :string
 #  icon_file_name          :string
-#  icon_file_size          :integer
+#  icon_file_size          :bigint
 #  icon_updated_at         :datetime
 #  logo_content_type       :string
 #  logo_file_name          :string
-#  logo_file_size          :integer
+#  logo_file_size          :bigint
 #  logo_updated_at         :datetime
 #  name                    :string
 #  partner_type            :string
@@ -28,7 +28,7 @@
 #  website                 :string
 #  white_logo_content_type :string
 #  white_logo_file_name    :string
-#  white_logo_file_size    :integer
+#  white_logo_file_size    :bigint
 #  white_logo_updated_at   :datetime
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null

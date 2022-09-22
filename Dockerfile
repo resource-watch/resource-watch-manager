@@ -1,4 +1,4 @@
-FROM ruby:2.4.1-alpine
+FROM ruby:3.1.2-alpine
 
 ARG apiGatewayUrl=https://production-api.globalforestwatch.org
 

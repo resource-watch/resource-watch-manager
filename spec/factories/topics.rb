@@ -11,7 +11,7 @@
 #  name               :string
 #  photo_content_type :string
 #  photo_file_name    :string
-#  photo_file_size    :integer
+#  photo_file_size    :bigint
 #  photo_updated_at   :datetime
 #  private            :boolean          default(TRUE)
 #  published          :boolean

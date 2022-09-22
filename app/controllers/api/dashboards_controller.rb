@@ -88,7 +88,7 @@ class Api::DashboardsController < ApiController
   end
 
   def update
-    if @dashboard.update_attributes(dashboard_params_update)
+    if @dashboard.update(dashboard_params_update)
       @dashboard.manage_content(request.base_url)
       render json: @dashboard, status: :ok
     else

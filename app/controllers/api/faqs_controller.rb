@@ -26,7 +26,7 @@ module Api
     end
 
     def update
-      if @faq.update_attributes(faq_params)
+      if @faq.update(faq_params)
         render json: @faq, status: :ok
       else
         render_error(@faq, :unprocessable_entity)

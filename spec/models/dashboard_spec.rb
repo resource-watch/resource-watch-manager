@@ -6,7 +6,7 @@
 #  application               :string           default(["\"rw\""]), not null, is an Array
 #  author_image_content_type :string
 #  author_image_file_name    :string
-#  author_image_file_size    :integer
+#  author_image_file_size    :bigint
 #  author_image_updated_at   :datetime
 #  author_title              :string           default("")
 #  content                   :text
@@ -17,7 +17,7 @@
 #  name                      :string
 #  photo_content_type        :string
 #  photo_file_name           :string
-#  photo_file_size           :integer
+#  photo_file_size           :bigint
 #  photo_updated_at          :datetime
 #  private                   :boolean          default(TRUE)
 #  published                 :boolean

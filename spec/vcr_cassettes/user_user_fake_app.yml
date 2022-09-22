@@ -36,7 +36,7 @@ http_interactions:
       - timeout=5
     body:
       encoding: UTF-8
-      string: '{"provider":"local","role":"USER","_id":"1a10d7c6e0a37126611fd7a5","id":"1a10d7c6e0a37126611fd7a5","email":"user@control-tower.org","extraUserData":{"apps":["fake-app"]},"createdAt":"2019-10-31T13:00:58.191Z","updatedAt":"2019-10-31T13:00:58.191Z"}'
+      string: '{"provider":"local","role":"USER","_id":"1a10d7c6e0a37126611fd7a5","id":"1a10d7c6e0a37126611fd7a5","email":"user@rw-api.org","extraUserData":{"apps":["fake-app"]},"createdAt":"2019-10-31T13:00:58.191Z","updatedAt":"2019-10-31T13:00:58.191Z"}'
     http_version:
   recorded_at: Fri, 15 Jan 2021 09:44:38 GMT
 recorded_with: VCR 4.0.0

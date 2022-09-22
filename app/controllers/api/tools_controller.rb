@@ -25,7 +25,7 @@ module Api
     end
 
     def update
-      if @tool.update_attributes(tool_params)
+      if @tool.update(tool_params)
         render json: @tool, status: :ok
       else
         render_error(@tool, :unprocessable_entity)

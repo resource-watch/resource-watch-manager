@@ -1,5 +1,5 @@
 class ApiService
   def self.connect
-    CtRegisterMicroservice::ControlTower.new
+    RwApiMicroservice::Gateway.new
   end
 end

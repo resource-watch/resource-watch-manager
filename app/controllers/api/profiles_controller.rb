@@ -18,7 +18,7 @@ module Api
     end
 
     def update
-      if @profile.update_attributes(profile_params)
+      if @profile.update(profile_params)
         render json: @profile, status: :ok
       else
         render_error(@profile, :unprocessable_entity)
