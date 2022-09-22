@@ -6,7 +6,6 @@ require "rails"
 
 %w(
   active_record/railtie
-  active_storage/engine
   action_controller/railtie
   action_mailer/railtie
 ).each do |railtie|
