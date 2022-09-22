@@ -5,7 +5,7 @@ require 'api_constraints'
 Rails.application.routes.draw do
   get 'health', to: 'health#health'
 
-  mount CtRegisterMicroservice::Engine => '/'
+  mount RwApiMicroservice::Engine => '/'
 
   # API
   namespace :api, defaults: { format: :json } do
@@ -32,8 +32,4 @@ Rails.application.routes.draw do
     end
     post 'contact-us', to: 'contacts#create'
   end
-
-  # Auth
-  get 'authentication/login', to: 'auth#login'
-  get 'authentication/logout', to: 'auth#logout'
 end

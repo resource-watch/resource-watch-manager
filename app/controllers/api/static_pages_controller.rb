@@ -25,7 +25,7 @@ module Api
     end
 
     def update
-      if @static_page.update_attributes(static_page_params)
+      if @static_page.update(static_page_params)
         render json: @static_page, status: :ok
       else
         render_error(@static_page, :unprocessable_entity)

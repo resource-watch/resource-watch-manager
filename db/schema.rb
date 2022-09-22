@@ -2,26 +2,25 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210824160522) do
-
+ActiveRecord::Schema[7.0].define(version: 2021_08_24_160522) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "content_images", force: :cascade do |t|
     t.integer "imageable_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "image_file_name"
     t.string "image_content_type"
-    t.integer "image_file_size"
+    t.bigint "image_file_size"
     t.datetime "image_updated_at"
     t.string "imageable_type"
     t.index ["imageable_type", "imageable_id"], name: "index_content_images_on_imageable_type_and_imageable_id"
@@ -33,12 +32,12 @@ ActiveRecord::Schema.define(version: 20210824160522) do
     t.string "description"
     t.text "content"
     t.boolean "published"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "summary"
     t.string "photo_file_name"
     t.string "photo_content_type"
-    t.integer "photo_file_size"
+    t.bigint "photo_file_size"
     t.datetime "photo_updated_at"
     t.string "user_id"
     t.boolean "private", default: true
@@ -50,7 +49,7 @@ ActiveRecord::Schema.define(version: 20210824160522) do
     t.string "author_title", default: ""
     t.string "author_image_file_name"
     t.string "author_image_content_type"
-    t.integer "author_image_file_size"
+    t.bigint "author_image_file_size"
     t.datetime "author_image_updated_at"
     t.text "env", default: "production", null: false
   end
@@ -59,8 +58,8 @@ ActiveRecord::Schema.define(version: 20210824160522) do
     t.string "question", null: false
     t.text "answer", null: false
     t.integer "order"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.text "env", default: "production", null: false
   end
 
@@ -73,23 +72,23 @@ ActiveRecord::Schema.define(version: 20210824160522) do
     t.text "body"
     t.string "logo_file_name"
     t.string "logo_content_type"
-    t.integer "logo_file_size"
-    t.datetime "logo_updated_at"
+    t.bigint "logo_file_size"
+    t.datetime "logo_updated_at", precision: nil
     t.string "white_logo_file_name"
     t.string "white_logo_content_type"
-    t.integer "white_logo_file_size"
-    t.datetime "white_logo_updated_at"
+    t.bigint "white_logo_file_size"
+    t.datetime "white_logo_updated_at", precision: nil
     t.string "icon_file_name"
     t.string "icon_content_type"
-    t.integer "icon_file_size"
-    t.datetime "icon_updated_at"
+    t.bigint "icon_file_size"
+    t.datetime "icon_updated_at", precision: nil
     t.boolean "published", default: false
     t.boolean "featured", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "cover_file_name"
     t.string "cover_content_type"
-    t.integer "cover_file_size"
+    t.bigint "cover_file_size"
     t.datetime "cover_updated_at"
     t.string "website"
     t.string "partner_type"
@@ -101,10 +100,10 @@ ActiveRecord::Schema.define(version: 20210824160522) do
     t.string "user_id"
     t.string "avatar_file_name"
     t.string "avatar_content_type"
-    t.integer "avatar_file_size"
-    t.datetime "avatar_updated_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.bigint "avatar_file_size"
+    t.datetime "avatar_updated_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
@@ -115,22 +114,22 @@ ActiveRecord::Schema.define(version: 20210824160522) do
     t.text "content"
     t.string "photo_file_name"
     t.string "photo_content_type"
-    t.integer "photo_file_size"
-    t.datetime "photo_updated_at"
+    t.bigint "photo_file_size"
+    t.datetime "photo_updated_at", precision: nil
     t.string "slug"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "published"
     t.text "env", default: "production", null: false
     t.index ["slug"], name: "index_static_pages_on_slug"
   end
 
   create_table "temporary_content_images", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "image_file_name"
     t.string "image_content_type"
-    t.integer "image_file_size"
+    t.bigint "image_file_size"
     t.datetime "image_updated_at"
   end
 
@@ -143,11 +142,11 @@ ActiveRecord::Schema.define(version: 20210824160522) do
     t.string "url"
     t.string "thumbnail_file_name"
     t.string "thumbnail_content_type"
-    t.integer "thumbnail_file_size"
-    t.datetime "thumbnail_updated_at"
+    t.bigint "thumbnail_file_size"
+    t.datetime "thumbnail_updated_at", precision: nil
     t.boolean "published"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.text "env", default: "production", null: false
   end
 
@@ -160,11 +159,11 @@ ActiveRecord::Schema.define(version: 20210824160522) do
     t.string "summary"
     t.boolean "private", default: true
     t.string "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "photo_file_name"
     t.string "photo_content_type"
-    t.integer "photo_file_size"
+    t.bigint "photo_file_size"
     t.datetime "photo_updated_at"
     t.string "application", default: ["rw"], null: false, array: true
   end

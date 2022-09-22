@@ -103,7 +103,7 @@ class ApiController < ActionController::API
       "Authorization": request.headers["authorization"],
       "Content-Type": 'application/json'
     }
-    response = HTTParty.get(ENV.fetch('CT_URL') + '/auth/user/me', headers: headers, format: :json)
+    response = HTTParty.get(ENV.fetch('GATEWAY_URL') + '/auth/user/me', headers: headers, format: :json)
 
     if (response.code >= 400)
       render json: response.parsed_response, status: response.code

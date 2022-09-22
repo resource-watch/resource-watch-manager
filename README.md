@@ -14,8 +14,7 @@ If you are looking for the RW dataset API, you can find it [here](https://github
 
 ### Native execution 
 
-* [Control Tower](https://github.com/control-tower)
-* [Ruby 2.4.1+](https://www.ruby-lang.org/en/)
+* [Ruby 3.1.2+](https://www.ruby-lang.org/en/)
 * [Bundler](https://bundler.io/)
 * [Postgres](https://www.postgresql.org/)
 
@@ -27,7 +26,6 @@ If you are looking for the RW dataset API, you can find it [here](https://github
 Dependencies on other Microservices:
 
 - [Widget](https://github.com/resource-watch/widget)
-- [Control Tower](https://github.com/resource-watch/control-tower)
 
 ## Installation process:
 
@@ -43,9 +41,8 @@ Copy `.env.sample` to `.env` and fill in the necessary values:
 - POSTGRES_PASS: Password of your Postgres database server
 - POSTGRES_DATABASE: Name of your database
 - BULLET
-- CT_URL: Control Tower URL (microservice mode only)
-- LOCAL_URL: Local URL  (microservice mode only)
-- CT_TOKEN: Control Tower token (microservice mode only)
+- GATEWAY_URL: RW API gateway URL (microservice mode only)
+- MICROSERVICE_TOKEN: Microservice auth token (microservice mode only)
 
 
 Install the ruby dependencies:
@@ -58,12 +55,6 @@ To start the development application server, run:
 
 ```bash
 bundle exec rails server
-```
-
-And use the following command once the rails server is up to register the microservice in Control Tower:
-
-```bash
-bundle exec rake ct_register_microservice:register
 ```
 
 ### Docker

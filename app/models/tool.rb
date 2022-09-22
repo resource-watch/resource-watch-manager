@@ -12,7 +12,7 @@
 #  summary                :string
 #  thumbnail_content_type :string
 #  thumbnail_file_name    :string
-#  thumbnail_file_size    :integer
+#  thumbnail_file_size    :bigint
 #  thumbnail_updated_at   :datetime
 #  title                  :string
 #  url                    :string

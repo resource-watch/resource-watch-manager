@@ -2,25 +2,17 @@
 
 source 'https://rubygems.org'
 
-ruby '2.4.1'
+ruby '3.1.2'
 
-git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
-  "https://github.com/#{repo_name}.git"
-end
+gem 'rails', '~> 7.0.4'
 
-gem 'rails', '~> 5.1.6'
-
-gem 'aws-sdk', '~> 2.3.0'
-gem 'dotenv-rails'
-gem 'faraday', '~> 0.11.0'
-gem 'paperclip', '~> 5.2.0'
-gem 'puma', '~> 3.12'
-gem 'rack-cors'
-
-# Active admin
-gem 'activeadmin', github: 'activeadmin'
-gem 'devise'
+gem 'aws-sdk-s3', '~> 1.114.0'
+gem 'dotenv-rails', '~> 2.8.1'
+gem 'faraday', '~> 2.5.2'
+gem 'kt-paperclip', "~> 6.4", ">= 6.4.1"
+gem 'puma', '~> 5.6.5'
+gem 'rack-cors', '~> 1.1.1'
+gem 'sprockets-rails', '~> 3.4.2'
 
 # Mail
 gem 'sendgrid-ruby'
@@ -29,15 +21,14 @@ gem 'sendgrid-ruby'
 gem 'whenever', require: false
 
 # Active record
-gem 'active_model_serializers', '~> 0.10.6'
-# Use this gem when supported by Rails 5.1
-# gem 'activemodel-associations'
-gem 'pg', '~> 0.18'
+gem 'active_model_serializers', '~> 0.10.13'
+gem 'pg', '~> 1.4.3'
 
 # Pagination
 gem 'api-pagination'
 gem 'draper'
 gem 'will_paginate'
+gem 'kaminari'
 
 # Authentication and Authorization
 gem 'jwt'
@@ -45,18 +36,23 @@ gem 'jwt'
 # Friendly id
 gem 'friendly_id'
 
-gem 'ct-register-microservice', '>= 1.4.0'
+gem 'rw-api-microservice', '~> 2.0.0'
 
 group :development, :test do
   gem 'annotate'
   gem 'byebug', platform: :mri
   gem 'rubocop'
+  gem 'simplecov'
+  gem 'bullet'
+  gem 'factory_bot_rails'
+  gem 'ffaker'
+  gem 'rack-reverse-proxy', require: 'rack/reverse_proxy'
 end
 
 group :development do
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'listen'
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-watcher-listen', '~> 2.0.1'
 end
 
 group :test do
@@ -66,14 +62,6 @@ group :test do
   gem 'shoulda-matchers'
   gem 'vcr'
   gem 'webmock'
-end
-
-group :test, :development do
-  gem 'simplecov'
-  gem 'bullet' # Testing query performance
-  gem 'factory_bot_rails'
-  gem 'ffaker'
-  gem 'rack-reverse-proxy', require: 'rack/reverse_proxy'
 end
 
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

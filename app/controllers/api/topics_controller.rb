@@ -43,7 +43,7 @@ class Api::TopicsController < ApiController
   end
 
   def update
-    if @topic.update_attributes(topic_params_update)
+    if @topic.update(topic_params_update)
       @topic.manage_content(request.base_url)
       render json: @topic, status: :ok
     else

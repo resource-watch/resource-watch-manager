@@ -25,7 +25,7 @@ module Api
     end
 
     def update
-      if @partner.update_attributes(partner_params)
+      if @partner.update(partner_params)
         render json: @partner, status: :ok
       else
         render_error(@partner, :unprocessable_entity)

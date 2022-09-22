@@ -16,7 +16,7 @@ class UserService < ApiService
           })
 
       users = JSON.parse(res)['data']
-    rescue CtRegisterMicroservice::NotFoundError
+    rescue RwApiMicroservice::NotFoundError
       Rails.logger.info "User #{user_ids.inspect} doesn't exist and can't be cloned"
     rescue => e
       Rails.logger.error "Error fetching users from the API: #{e}"
@@ -35,7 +35,7 @@ class UserService < ApiService
       )
 
       users = JSON.parse(res)['data']
-    rescue CtRegisterMicroservice::NotFoundError
+    rescue RwApiMicroservice::NotFoundError
       Rails.logger.info "User by #{role} could not be retrieved"
     rescue => e
       Rails.logger.error "Error fetching users by role from the API: #{e}"
