@@ -55,7 +55,7 @@ FactoryBot.define do
     private { true }
   end
 
-  factory :topic_not_private_user_2, class: Topic do
+  factory :topic_not_private_user_3, class: Topic do
     name { FFaker::Name.name }
     published { true }
     user_id { '5c069855ccc46a6660a4be68' }

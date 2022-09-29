@@ -8,7 +8,7 @@ describe Api::TopicsController, type: :controller do
       FactoryBot.create :topic_private_user_1
       FactoryBot.create :topic_not_private_user_1
       FactoryBot.create :topic_private_user_2
-      FactoryBot.create :topic_not_private_user_2
+      FactoryBot.create :topic_not_private_user_3
     end
 
     it 'should return all topics' do
@@ -346,7 +346,7 @@ describe Api::TopicsController, type: :controller do
       FactoryBot.create :topic_private_user_1
       FactoryBot.create :topic_not_private_user_1
       FactoryBot.create :topic_private_user_2
-      FactoryBot.create :topic_not_private_user_2
+      FactoryBot.create :topic_not_private_user_3
     end
 
     it 'with filter[private]=false filter should return only non-private topics' do
