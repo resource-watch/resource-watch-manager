@@ -68,6 +68,11 @@ class ApiController < ActionController::API
     @envs = [Environment::PRODUCTION]
     return true unless params[:env]
 
+    if params[:env].eql?('all')
+      @envs = nil
+      return
+    end
+
     envs = params[:env].split(',').map(&:downcase).map(&:strip)
     return true unless envs.compact.any?
 

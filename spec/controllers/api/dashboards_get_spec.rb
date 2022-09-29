@@ -118,7 +118,7 @@ describe Api::DashboardsController, type: :controller do
       data = json_response[:data]
       expect(response.status).to eq(200)
 
-      # dashborads table should not have been deleted, so 5 dashboards should be returned
+      # dashboards table should not have been deleted, so 5 dashboards should be returned
       get :index
       data = json_response[:data]
       expect(response.status).to eq(200)
@@ -155,6 +155,18 @@ describe Api::DashboardsController, type: :controller do
       expect(data.size).to eq(1)
       expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }).to eq(['57a1ff091ebc1ad91d089bdc'])
       expect(data.map { |dashboard| dashboard[:attributes][:private] }).to eq([false])
+    end
+
+    it 'with user=<userId> and env=all filters should return all dashboards associated with that user' do
+      FactoryBot.create :dashboard_private_user_1, env: :potato
+
+      get :index, params: { user: '57a1ff091ebc1ad91d089bdc', env: 'all' }
+
+      data = json_response[:data]
+
+      expect(response.status).to eq(200)
+      expect(data.size).to eq(3)
+      expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(['57a1ff091ebc1ad91d089bdc'])
     end
 
     it 'with published=true and private=false filters should return only non-private, published dashboards' do
