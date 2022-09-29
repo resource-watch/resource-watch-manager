@@ -25,7 +25,7 @@ class Api::DashboardsController < ApiController
     end
 
     if params.include?('sort') and (params['sort'].include?('user.role') or params['sort'].include?('user.name'))
-      return render json: {errors: [{status: '403', title: 'Sorting by user name or role not authorized.'}]}, status: 403 unless @user&.dig('role').eql?('ADMIN')
+      return render json: { errors: [{ status: '403', title: 'Sorting by user name or role not authorized.' }] }, status: 403 unless @user&.dig('role').eql?('ADMIN')
       ids = Dashboard.select("user_id").fetch_all().pluck(:user_id).reduce([], :<<)
       users = UserService.users(ids.compact.uniq)
       users.each do |user|
@@ -39,14 +39,15 @@ class Api::DashboardsController < ApiController
     end
 
     if per_page and per_page > 100
-      render json: {errors: [{status: 400, title: "Invalid page size"}]}, status: 400
+      render json: { errors: [{ status: 400, title: "Invalid page size" }] }, status: 400
       return
     end
 
-    @dashboards = Dashboard.where(env: @envs)
-                   .fetch_all(dashboard_params_get)
-                   .page(page_number || 1)
-                   .per_page(per_page || 10)
+    @dashboards = Dashboard
+    @dashboards = @dashboards.where(env: @envs) unless @envs.nil?
+    @dashboards = @dashboards.fetch_all(dashboard_params_get)
+                             .page(page_number || 1)
+                             .per_page(per_page || 10)
 
     dashboards_json =
       if params['includes']&.include?('user')
@@ -131,14 +132,14 @@ class Api::DashboardsController < ApiController
     return false if @user.nil?
     return true if @user['role'].eql? "ADMIN"
     return true if @user['role'].eql? "MANAGER" and @dashboard[:user_id].eql? @user['id']
-    render json: {errors: [{status: '403', title: 'You need to be either ADMIN or MANAGER and own the dashboard to update/delete it'}]}, status: 403
+    render json: { errors: [{ status: '403', title: 'You need to be either ADMIN or MANAGER and own the dashboard to update/delete it' }] }, status: 403
   end
 
   def ensure_user_can_delete_dashboard
     user_apps = @user.dig('extraUserData', 'apps')
     dashboard_apps = @dashboard.application
     unless (dashboard_apps - user_apps).empty?
-      render json: {errors: [{status: '403', title: 'Your user account does not have permissions to delete this dashboard'}]}, status: 403
+      render json: { errors: [{ status: '403', title: 'Your user account does not have permissions to delete this dashboard' }] }, status: 403
     end
   end
 
@@ -147,31 +148,31 @@ class Api::DashboardsController < ApiController
     featured_present = request.params.dig('data', 'attributes', 'is-featured').present?
     return true unless highlighted_present or featured_present
     return true if (highlighted_present or featured_present) and @user['role'].eql? "ADMIN"
-    render json: {errors: [{status: '403', title: 'You need to be an ADMIN to create/update the provided attribute of the dashboard'}]}, status: 403
+    render json: { errors: [{ status: '403', title: 'You need to be an ADMIN to create/update the provided attribute of the dashboard' }] }, status: 403
   end
 
   def dashboard_params_get
     params.permit(:name, :published, :private, :user, :application, 'is-highlighted'.to_sym, :sort, 'author-title'.to_sym,
-      'is-featured'.to_sym, user: [], :filter => [:published, :private, :user])
+                  'is-featured'.to_sym, user: [], :filter => [:published, :private, :user])
   end
 
   def dashboard_params_create
     ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :env,
-      :is_highlighted, :is_featured, :author_title, :author_image, application:[])
+                        :is_highlighted, :is_featured, :author_title, :author_image, application: [])
   rescue
     nil
   end
 
   def dashboard_params_update
     ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :env,
-      :is_highlighted, :is_featured, :author_title, :author_image, application:[])
+                        :is_highlighted, :is_featured, :author_title, :author_image, application: [])
   rescue
     nil
   end
 
   def dashboard_params_clone
     ParamsHelper.permit(params, :name, :description, :content, :published, :summary, :photo, :private, :env,
-      :author_title, :author_image)
+                        :author_title, :author_image)
   rescue
     nil
   end
