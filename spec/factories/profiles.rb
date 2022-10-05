@@ -20,6 +20,14 @@
 FactoryBot.define do
   factory :profile do
     user_id { 'MyString' }
-    avatar { '' }
+    avatar { File.new(Rails.root.join('spec', 'photos', 'test.png')) }
+
+    trait :manager do
+      user_id { '1a10d7c6e0a37126611fd7a6' }
+    end
+
+    factory :profile_manager, traits: [:manager]
   end
 end
+
+
