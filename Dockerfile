@@ -21,7 +21,7 @@ RUN apk update && \
       libxml2-dev \
       libxslt-dev \
       postgresql-dev \
-      imagemagick-dev \
+      imagemagick \
       shared-mime-info \
     && rm -rf /var/cache/apk/*
 
