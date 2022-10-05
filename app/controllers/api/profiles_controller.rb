@@ -33,7 +33,7 @@ module Api
     private
 
     def set_profile
-      @profile = Profile.find_by(user_id: params[:id])
+      @profile = Profile.find_by!(user_id: params[:id])
     rescue ActiveRecord::RecordNotFound
       profile = Profile.new
       profile.errors.add(:id, 'Wrong ID provided')
