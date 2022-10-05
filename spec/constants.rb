@@ -1,6 +1,6 @@
 USERS = {
   USER: {
-    id: '1a10d7c6e0a37126611fd7a5',
+    id: '57a1ff091ebc1ad91d089bdc',
     role: 'USER',
     provider: 'local',
     email: 'user@rw-api.org',

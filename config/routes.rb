@@ -12,6 +12,9 @@ Rails.application.routes.draw do
     resources :partners
     resources :static_pages
     resources :dashboards do
+      collection do
+        delete '/by-user/:userId', to: 'dashboards#destroy_by_user'
+      end
       member do
         post :clone
       end
