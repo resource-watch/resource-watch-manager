@@ -20,6 +20,9 @@ Rails.application.routes.draw do
       end
     end
     resources :topics do
+      collection do
+        delete '/by-user/:userId', to: 'topics#destroy_by_user'
+      end
       member do
         post :clone
         post 'clone-dashboard', to: :clone_dashboard

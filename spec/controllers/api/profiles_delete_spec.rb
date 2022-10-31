@@ -73,5 +73,19 @@ describe Api::ProfilesController, type: :controller do
         expect(database_profiles.size).to eq(0)
       end
     end
+
+    it 'with microservice token should return 204 and delete the profile from the database' do
+      VCR.use_cassette('user_microservice') do
+        request.headers["Authorization"] = "abd"
+        delete :destroy, params: {
+          id: @profile_manager[:user_id],
+        }
+
+        expect(response.status).to eq(204)
+
+        database_profiles = Profile.all
+        expect(database_profiles.size).to eq(0)
+      end
+    end
   end
 end

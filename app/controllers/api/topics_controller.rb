@@ -3,6 +3,7 @@
 class Api::TopicsController < ApiController
   before_action :set_topic, only: %i[show update destroy clone clone_dashboard]
   before_action :ensure_is_admin_or_owner_manager, only: :update
+  before_action :ensure_is_admin_microservice_or_same_as_request_param, only: [:destroy_by_user]
 
   before_action :ensure_user_has_requested_apps, only: [:create, :update]
   before_action :ensure_is_manager_or_admin, only: :update
@@ -84,6 +85,12 @@ class Api::TopicsController < ApiController
     head 204
   end
 
+  def destroy_by_user
+    @topics = Topic.destroy_by(user_id: params.require(:userId))
+
+    render json: @topics
+  end
+
   private
 
   def set_topic
@@ -99,6 +106,14 @@ class Api::TopicsController < ApiController
     return true if @user['role'].eql? "ADMIN"
     return true if @user['role'].eql? "MANAGER" and @topic[:user_id].eql? @user['id']
     render json: {errors: [{status: '403', title: 'You need to be either ADMIN or MANAGER and own the topic to update it'}]}, status: 403
+  end
+
+  def ensure_is_admin_microservice_or_same_as_request_param
+    return false if @user.nil?
+    return true if @user['role'].eql? "ADMIN"
+    return true if @user['id'].eql? params[:userId]
+    return true if @user['id'].eql? 'microservice'
+    render json: { errors: [{ status: '403', title: 'You need to be either ADMIN or owner of the topics you\'re trying to delete.' }] }, status: 403
   end
 
   def topic_params_get

@@ -4,17 +4,17 @@ require 'spec_helper'
 require 'json'
 require 'constants'
 
-describe Api::DashboardsController, type: :controller do
-  describe 'Delete dashboard by user id' do
+describe Api::TopicsController, type: :controller do
+  describe 'Delete topic by user id' do
     before(:each) do
-      @dashboard_private_manager = FactoryBot.create :dashboard_private_manager
-      @dashboard_private_manager = FactoryBot.create :dashboard_private_user_1
-      @dashboard_private_manager = FactoryBot.create :dashboard_not_private_user_1
+      @topic_private_manager = FactoryBot.create :topic_private_manager
+      @topic_private_manager = FactoryBot.create :topic_private_user_1
+      @topic_private_manager = FactoryBot.create :topic_not_private_user_1
     end
 
     it 'with no user details should produce a 401 error' do
       delete :destroy_by_user, params: {
-        userId: @dashboard_private_manager[:id]
+        userId: @topic_private_manager[:id]
       }
 
       expect(response.status).to eq(401)
@@ -29,7 +29,7 @@ describe Api::DashboardsController, type: :controller do
         }
 
         expect(response.status).to eq(403)
-        expect(response.body).to include "You need to be either ADMIN or owner of the dashboards you're trying to delete."
+        expect(response.body).to include "You need to be either ADMIN or owner of the topics you're trying to delete."
       end
     end
 
@@ -41,11 +41,11 @@ describe Api::DashboardsController, type: :controller do
         }
 
         expect(response.status).to eq(403)
-        expect(response.body).to include "You need to be either ADMIN or owner of the dashboards you're trying to delete."
+        expect(response.body).to include "You need to be either ADMIN or owner of the topics you're trying to delete."
       end
     end
 
-    it 'with role USER should produce an 200 result and delete the user\'s dashboards' do
+    it 'with role USER should produce an 200 result and delete the user\'s topics' do
       VCR.use_cassette('user_user') do
         request.headers["Authorization"] = "abd"
         delete :destroy_by_user, params: {
@@ -56,15 +56,15 @@ describe Api::DashboardsController, type: :controller do
 
         expect(response.status).to eq(200)
         expect(data.size).to eq(2)
-        expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(["57a1ff091ebc1ad91d089bdc"])
+        expect(data.map { |topic| topic[:attributes][:"user-id"] }.uniq).to eq(["57a1ff091ebc1ad91d089bdc"])
 
-        database_dashboards = Dashboard.all
-        expect(database_dashboards.size).to eq(1)
-        expect(database_dashboards.map { |dashboard| dashboard[:user_id] }).not_to eq(["57a1ff091ebc1ad91d089bdc"])
+        database_topics = Topic.all
+        expect(database_topics.size).to eq(1)
+        expect(database_topics.map { |topic| topic[:user_id] }).not_to eq(["57a1ff091ebc1ad91d089bdc"])
       end
     end
 
-    it 'with role ADMIN should produce an 200 result and delete the user\'s dashboards' do
+    it 'with role ADMIN should produce an 200 result and delete the user\'s topics' do
       VCR.use_cassette('user_admin') do
         request.headers["Authorization"] = "abd"
         delete :destroy_by_user, params: {
@@ -75,15 +75,15 @@ describe Api::DashboardsController, type: :controller do
 
         expect(response.status).to eq(200)
         expect(data.size).to eq(2)
-        expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(["57a1ff091ebc1ad91d089bdc"])
+        expect(data.map { |topic| topic[:attributes][:"user-id"] }.uniq).to eq(["57a1ff091ebc1ad91d089bdc"])
 
-        database_dashboards = Dashboard.all
-        expect(database_dashboards.size).to eq(1)
-        expect(database_dashboards.map { |dashboard| dashboard[:user_id] }).not_to eq(["57a1ff091ebc1ad91d089bdc"])
+        database_topics = Topic.all
+        expect(database_topics.size).to eq(1)
+        expect(database_topics.map { |topic| topic[:user_id] }).not_to eq(["57a1ff091ebc1ad91d089bdc"])
       end
     end
 
-    it 'with microservice token should produce an 200 result and delete the user\'s dashboards' do
+    it 'with microservice token should produce an 200 result and delete the user\'s topics' do
       VCR.use_cassette('user_microservice') do
         request.headers["Authorization"] = "abd"
         delete :destroy_by_user, params: {
@@ -94,11 +94,11 @@ describe Api::DashboardsController, type: :controller do
 
         expect(response.status).to eq(200)
         expect(data.size).to eq(2)
-        expect(data.map { |dashboard| dashboard[:attributes][:"user-id"] }.uniq).to eq(["57a1ff091ebc1ad91d089bdc"])
+        expect(data.map { |topic| topic[:attributes][:"user-id"] }.uniq).to eq(["57a1ff091ebc1ad91d089bdc"])
 
-        database_dashboards = Dashboard.all
-        expect(database_dashboards.size).to eq(1)
-        expect(database_dashboards.map { |dashboard| dashboard[:user_id] }).not_to eq(["57a1ff091ebc1ad91d089bdc"])
+        database_topics = Topic.all
+        expect(database_topics.size).to eq(1)
+        expect(database_topics.map { |topic| topic[:user_id] }).not_to eq(["57a1ff091ebc1ad91d089bdc"])
       end
     end
   end

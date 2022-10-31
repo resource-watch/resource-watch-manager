@@ -13,6 +13,7 @@ class ApiController < ActionController::API
     @user = get_user_from_request(request)
 
     return false unless @user
+    return true if @user['id'].eql? 'microservice'
 
     has_valid_role = (@user.empty? or %w(ADMIN MANAGER USER).include? @user['role'])
     if (!has_valid_role)

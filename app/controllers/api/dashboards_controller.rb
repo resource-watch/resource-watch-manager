@@ -6,7 +6,7 @@ class Api::DashboardsController < ApiController
   before_action :set_dashboard, only: %i[show update destroy clone]
   before_action :set_envs, only: [:index]
   before_action :ensure_is_admin_or_owner_manager, only: [:update, :destroy]
-  before_action :ensure_is_admin_same_as_request_param, only: [:destroy_by_user]
+  before_action :ensure_is_admin_microservice_or_same_as_request_param, only: [:destroy_by_user]
 
   before_action :ensure_user_has_requested_apps, only: [:create, :update]
   before_action :ensure_user_can_delete_dashboard, only: :destroy
@@ -142,10 +142,11 @@ class Api::DashboardsController < ApiController
     render json: { errors: [{ status: '403', title: 'You need to be either ADMIN or MANAGER and own the dashboard to update/delete it' }] }, status: 403
   end
 
-  def ensure_is_admin_same_as_request_param
+  def ensure_is_admin_microservice_or_same_as_request_param
     return false if @user.nil?
     return true if @user['role'].eql? "ADMIN"
     return true if @user['id'].eql? params[:userId]
+    return true if @user['id'].eql? 'microservice'
     render json: { errors: [{ status: '403', title: 'You need to be either ADMIN or owner of the dashboards you\'re trying to delete.' }] }, status: 403
   end
 

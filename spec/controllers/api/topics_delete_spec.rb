@@ -29,5 +29,16 @@ describe Api::TopicsController, type: :controller do
         expect(response.status).to eq(204)
       end
     end
+
+    it 'with microservice token token should delete the topic and return 204 No Content' do
+      VCR.use_cassette('user_microservice') do
+        request.headers["Authorization"] = "abd"
+        delete :destroy, params: {
+          id: @topic_private_manager[:id],
+        }
+
+        expect(response.status).to eq(204)
+      end
+    end
   end
 end
