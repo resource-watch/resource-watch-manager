@@ -77,16 +77,4 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  gem 'bullet' # Testing query performance
-
-  if ENV['BULLET'] == 'enabled'
-    config.after_initialize do
-      Bullet.enable = true
-      Bullet.bullet_logger = true
-      Bullet.raise = true
-      Bullet.alert = true
-      Bullet.console = true
-      Bullet.rails_logger = true
-    end
-  end
 end

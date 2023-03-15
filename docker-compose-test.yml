@@ -12,7 +12,6 @@ services:
       POSTGRES_PASS: postgres
       POSTGRES_DATABASE: postgres
       SECRET: keyboard cat
-      BULLET: enabled
       RAILS_ENV: test
       RACK_ENV: test
       WAIT_HOSTS: postgres:5432

@@ -43,7 +43,6 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rubocop'
   gem 'simplecov'
-  gem 'bullet'
   gem 'factory_bot_rails'
   gem 'ffaker'
   gem 'rack-reverse-proxy', require: 'rack/reverse_proxy'

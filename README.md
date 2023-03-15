@@ -40,7 +40,6 @@ Copy `.env.sample` to `.env` and fill in the necessary values:
 - POSTGRES_USER: Username of your Postgres database server
 - POSTGRES_PASS: Password of your Postgres database server
 - POSTGRES_DATABASE: Name of your database
-- BULLET
 - GATEWAY_URL: RW API gateway URL (microservice mode only)
 - MICROSERVICE_TOKEN: Microservice auth token (microservice mode only)
 
