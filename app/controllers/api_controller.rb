@@ -129,7 +129,13 @@ class ApiController < ActionController::API
         'Authorization' => "Bearer #{ENV.fetch('MICROSERVICE_TOKEN')}"
       }
 
-      response = HTTParty.post("#{ENV.fetch('GATEWAY_URL')}/v1/request/validate", body: body, headers: headers)
+      begin
+        response = HTTParty.post("#{ENV.fetch('GATEWAY_URL')}/v1/request/validate", body: body, headers: headers)
+      rescue => e
+        logger.error "Error validating request: #{e.message}"
+        render json: { 'errors': [{ detail: "Error validating request", status: 500 }] }, status: 500
+        return false
+      end
 
       logger.debug "Retrieved microserviceToken data, response status: #{response.code}"
 
