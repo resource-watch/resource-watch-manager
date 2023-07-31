@@ -2,7 +2,7 @@ class WidgetService < ApiService
 
   @conn ||= connect
 
-  def self.clone(widget_id, dataset_id, user_id = nil)
+  def self.clone(widget_id, dataset_id, api_key, user_id = nil)
     begin
       Rails.logger.info 'Cloning Widget in the API.'
       Rails.logger.info "Widget: #{widget_id}"
@@ -12,11 +12,11 @@ class WidgetService < ApiService
       res = @conn.microservice_request(
           "/v1/dataset/#{dataset_id}/widget/#{widget_id}/clone",
           :post,
-          {},
+          { 'x-api-key': api_key },
           user)
 
       widget_id = JSON.parse(res)['data']['id']
-    rescue CtRegisterMicroservice::NotFoundError
+    rescue RwApiMicroservice::NotFoundError
       Rails.logger.info "Widget #{widget_id} doesn't exist and can't be cloned"
     rescue => e
       Rails.logger.error "Error creating new widget in the API: #{e}"

@@ -26,5 +26,25 @@ USERS = {
     extraUserData: {
       apps: %w(rw gfw gfw-climate prep aqueduct forest-atlas data4sdgs)
     }
+  },
+  MICROSERVICE: {
+    id: 'microservice',
+    createdAt: '2019-10-31T13:00:58.191Z',
+    updatedAt: '2019-10-31T13:00:58.191Z',
   }
 }
+
+APPLICATION = {
+  data: {
+    type: "applications",
+    id: "649c4b204967792f3a4e52c9",
+    attributes: {
+      name: "grouchy-armpit",
+      organization: nil,
+      user: nil,
+      apiKeyValue: "api-key-test",
+      createdAt: "2023-06-28T15:00:48.149Z",
+      updatedAt: "2023-06-28T15:00:48.149Z"
+    }
+  }
+};

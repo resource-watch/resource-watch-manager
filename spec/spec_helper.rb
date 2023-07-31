@@ -20,6 +20,8 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 require 'simplecov'
+require 'constants'
+
 SimpleCov.start 'rails' do
   add_filter 'app/channels/'
   add_filter 'app/jobs/'
@@ -30,9 +32,35 @@ end
 
 require 'vcr'
 
+def body_without_timestamp = lambda do |request_1, request_2|
+  begin
+    request_1_json_body = JSON.parse(request_1.body)
+    request_2_json_body = JSON.parse(request_2.body)
+    if request_1_json_body.key?('logEvents') &&
+      request_1_json_body['logEvents'][0].present? &&
+      request_1_json_body['logEvents'][0].key?('timestamp') &&
+      request_2_json_body.key?('logEvents') &&
+      request_2_json_body['logEvents'][0].present? &&
+      request_2_json_body['logEvents'][0].key?('timestamp')
+      request_1_json_body['logEvents'][0].delete('timestamp')
+      request_2_json_body['logEvents'][0].delete('timestamp')
+    end
+
+    request_1_json_body == request_2_json_body
+  rescue JSON::ParserError
+    false
+  end
+end
+
+def rw_api_auth_headers = lambda do |request_1, request_2|
+  return true if request_1.uri.include? 'amazonaws.com'
+  request_1.headers.transform_keys(&:downcase).slice('Authorization', 'x-api-key') == request_2.headers.transform_keys(&:downcase).slice('Authorization', 'x-api-key')
+end
+
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/vcr_cassettes'
-  config.allow_http_connections_when_no_cassette = true
+  config.allow_http_connections_when_no_cassette = false
+  config.default_cassette_options = { :erb => true, update_content_length_header: true, match_requests_on: [rw_api_auth_headers, :method, :uri, :query, :body] }
   config.hook_into :webmock
 end
 
@@ -148,4 +176,56 @@ RSpec.configure do |config|
   #   # test failures related to randomization by passing the same `--seed` value
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
+end
+
+def mock_aws_request_log_message(method, path, params, user, application)
+  log_content = {
+    request: {
+      method: method,
+      path: path,
+      query: params,
+    }
+  }
+
+  if user
+    if user[:id] == 'microservice'
+      log_content[:loggedUser] = { id: user[:id] }
+    else
+      log_content[:loggedUser] = {
+        id: user[:id],
+        name: user[:name],
+        role: user[:role],
+        provider: user[:provider]
+      }
+    end
+  else
+    log_content[:loggedUser] = {
+      id: 'anonymous',
+      name: 'anonymous',
+      role: 'anonymous',
+      provider: 'anonymous'
+    }
+  end
+
+  if application
+    application_data = application[:data]
+    application_attributes = application_data[:attributes]
+    log_content[:requestApplication] = {
+      id: application_data[:id],
+      name: application_attributes[:name],
+      organization: application_attributes[:organization],
+      user: application_attributes[:user],
+      apiKeyValue: application_attributes[:apiKeyValue]
+    }
+  else
+    log_content[:requestApplication] = {
+      id: 'anonymous',
+      name: 'anonymous',
+      organization: nil,
+      user: nil,
+      apiKeyValue: nil
+    }
+  end
+
+  log_content.to_json.gsub(/"/, '\"')
 end

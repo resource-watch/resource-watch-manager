@@ -1,34 +1,36 @@
 ---
 http_interactions:
-- request:
-    method: post
-    uri: http://localhost:9000/auth/user/find-by-ids
-    body:
-      encoding: UTF-8
-      string: ids[]=57a1ff091ebc1ad91d089bdc&ids[]=5c143429f8d19932db9d06ea&ids[]=5c069855ccc46a6660a4be68
-    headers:
-      Authentication:
-      - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Vary:
-      - Origin
-      Content-Type:
-      - application/json; charset=utf-8
-      X-Response-Time:
-      - 6 ms
-      Content-Length:
-      - '459'
-      Date:
-      - Tue, 08 Oct 2019 09:42:45 GMT
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"data":[{"provider":"local","role":"ADMIN","_id":"57a1ff091ebc1ad91d089bdc","name":"aaa","email":"john.doe@vizzuality.com","createdAt":"2016-08-03T14:26:17.014Z","extraUserData":{"apps":["rw","gfw","prep","aqueduct","forest-atlas","data4sdgs","aqueduct-water-risk"]},"photo":"https://www.w3schools.com/howto/img_avatar.png"},{"provider":"local","role":"USER","_id":"5c143429f8d19932db9d06ea","email":"jane.poe@vizzuality.com","extraUserData":{"apps":[]},"createdAt":"2018-12-14T22:52:25.418Z","name":"aaa","photo":"https://www.w3schools.com/howto/img_avatar.png"},{"provider":"local","role":"USER","_id":"5c069855ccc46a6660a4be68","email":"mark.twain@vizzuality.com","extraUserData":{"apps":[]},"createdAt":"2018-12-14T22:52:25.418Z","name":"aaa","photo":"https://www.w3schools.com/howto/img_avatar.png"}]}'
-    http_version:
-  recorded_at: Tue, 08 Oct 2019 09:42:45 GMT
+  - request:
+      method: post
+      uri: http://localhost:9000/auth/user/find-by-ids
+      body:
+        encoding: UTF-8
+        string: ids%5B%5D=57a1ff091ebc1ad91d089bdc&ids%5B%5D=5c069855ccc46a6660a4be68&ids%5B%5D=5c143429f8d19932db9d06ea
+      headers:
+        Authorization:
+          - Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
+        x-api-key:
+          - api-key-test
+    response:
+      status:
+        code: 200
+        message: OK
+      headers:
+        Vary:
+          - Origin
+        Content-Type:
+          - application/json; charset=utf-8
+        X-Response-Time:
+          - 6 ms
+        Content-Length:
+          - '459'
+        Date:
+          - Tue, 08 Oct 2019 09:42:45 GMT
+        Connection:
+          - keep-alive
+      body:
+        encoding: UTF-8
+        string: '{"data":[{"provider":"local","role":"ADMIN","_id":"57a1ff091ebc1ad91d089bdc","name":"aaa","email":"john.doe@vizzuality.com","createdAt":"2016-08-03T14:26:17.014Z","extraUserData":{"apps":["rw","gfw","prep","aqueduct","forest-atlas","data4sdgs","aqueduct-water-risk"]},"photo":"https://www.w3schools.com/howto/img_avatar.png"},{"provider":"local","role":"USER","_id":"5c143429f8d19932db9d06ea","email":"jane.poe@vizzuality.com","extraUserData":{"apps":[]},"createdAt":"2018-12-14T22:52:25.418Z","name":"aaa","photo":"https://www.w3schools.com/howto/img_avatar.png"},{"provider":"local","role":"USER","_id":"5c069855ccc46a6660a4be68","email":"mark.twain@vizzuality.com","extraUserData":{"apps":[]},"createdAt":"2018-12-14T22:52:25.418Z","name":"aaa","photo":"https://www.w3schools.com/howto/img_avatar.png"}]}'
+      http_version:
+    recorded_at: Tue, 08 Oct 2019 09:42:45 GMT
 recorded_with: VCR 4.0.0

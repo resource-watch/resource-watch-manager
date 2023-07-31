@@ -1,0 +1,107 @@
+---
+http_interactions:
+  - request:
+      method: post
+      uri: https://logs.us-east-1.amazonaws.com/
+      body:
+        encoding: UTF-8
+        string: '{"logGroupName":"api-keys-usage"}'
+      headers:
+        Accept-Encoding:
+          - ''
+        User-Agent:
+          - aws-sdk-ruby3/3.152.0 ruby/3.1.2 x86_64-linux aws-sdk-cloudwatchlogs/1.53.0
+        Content-Type:
+          - application/x-amz-json-1.1
+        Host:
+          - logs.us-east-1.amazonaws.com
+        Content-Length:
+          - '33'
+        Accept:
+          - "*/*"
+    response:
+      status:
+        code: 400
+        message: Bad Request
+      headers:
+        Content-Type:
+          - application/x-amz-json-1.1
+        Content-Length:
+          - '94'
+        Date:
+          - Tue, 25 Jul 2023 15:08:36 GMT
+        Connection:
+          - close
+      body:
+        encoding: UTF-8
+        string: '{"__type":"ResourceAlreadyExistsException","message":"The specified
+        log group already exists"}'
+    recorded_at: Tue, 25 Jul 2023 15:08:36 GMT
+  - request:
+      method: post
+      uri: https://logs.us-east-1.amazonaws.com/
+      body:
+        encoding: UTF-8
+        string: '{"logGroupName":"api-keys-usage","logStreamName":"resource-watch-manager"}'
+      headers:
+        Accept-Encoding:
+          - ''
+        User-Agent:
+          - aws-sdk-ruby3/3.152.0 ruby/3.1.2 x86_64-linux aws-sdk-cloudwatchlogs/1.53.0
+        Content-Type:
+          - application/x-amz-json-1.1
+        Host:
+          - logs.us-east-1.amazonaws.com
+        Content-Length:
+          - '74'
+        Accept:
+          - "*/*"
+    response:
+      status:
+        code: 400
+        message: Bad Request
+      headers:
+        Content-Type:
+          - application/x-amz-json-1.1
+        Content-Length:
+          - '95'
+        Date:
+          - Tue, 25 Jul 2023 15:08:36 GMT
+        Connection:
+          - close
+      body:
+        encoding: UTF-8
+        string: '{"__type":"ResourceAlreadyExistsException","message":"The specified
+        log stream already exists"}'
+    recorded_at: Tue, 25 Jul 2023 15:08:37 GMT
+  - request:
+      method: post
+      uri: https://logs.us-east-1.amazonaws.com/
+      body:
+        encoding: UTF-8
+        string: '{"logGroupName":"api-keys-usage","logStreamName":"resource-watch-manager","logEvents":[{"message":"<%= message %>","timestamp":1690297717000}]}'
+      headers:
+        Accept-Encoding:
+          - ''
+        User-Agent:
+          - aws-sdk-ruby3/3.152.0 ruby/3.1.2 x86_64-linux aws-sdk-cloudwatchlogs/1.53.0
+        Content-Type:
+          - application/x-amz-json-1.1
+        Host:
+          - logs.us-east-1.amazonaws.com
+        Accept:
+          - "*/*"
+    response:
+      status:
+        code: 200
+        message: OK
+      headers:
+        Content-Type:
+          - application/x-amz-json-1.1
+        Date:
+          - Tue, 25 Jul 2023 15:08:37 GMT
+      body:
+        encoding: UTF-8
+        string: '{"nextSequenceToken":"49641553906633038216157035862791613171261708535213328162"}'
+    recorded_at: Tue, 25 Jul 2023 15:08:37 GMT
+recorded_with: VCR 6.1.0

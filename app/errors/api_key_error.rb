@@ -1,0 +1,2 @@
+class ApiKeyError < StandardError
+end

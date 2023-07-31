@@ -98,13 +98,13 @@ class Topic < ApplicationRecord
     update_column(:content, contents.to_json)
   end
 
-  def duplicate(user_id = nil)
-    widgets = clone_widgets(user_id)
+  def duplicate(user_id = nil, api_key)
+    widgets = clone_widgets(user_id, api_key)
     clone_model(widgets)
   end
 
-  def duplicate_dashboard(user_id = nil)
-    widgets = clone_widgets(user_id)
+  def duplicate_dashboard(user_id = nil, api_key)
+    widgets = clone_widgets(user_id, api_key)
     clone_to Dashboard, widgets, user_id
   end
 
