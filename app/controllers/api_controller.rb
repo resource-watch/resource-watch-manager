@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ApiController < ActionController::API
-  include ApiHelper
-
   before_action :set_private_cache_header
   before_action :validate_user_and_application, except: %i[health]
   before_action :authenticate, except: %i[index show health]
