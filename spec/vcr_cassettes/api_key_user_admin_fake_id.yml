@@ -1,0 +1,33 @@
+---
+http_interactions:
+  - request:
+      method: post
+      uri: http://localhost:9000/v1/request/validate
+      body:
+        encoding: UTF-8
+        string: userToken=abd&apiKey=api-key-test
+      headers:
+        Authorization:
+          - Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
+    response:
+      status:
+        code: 200
+        message: OK
+      headers:
+        Vary:
+          - Origin
+        Access-Control-Allow-Origin:
+          - ''
+        Content-Type:
+          - application/json; charset=utf-8
+        Date:
+          - Tue, 25 Jul 2023 15:26:39 GMT
+        Connection:
+          - keep-alive
+        Keep-Alive:
+          - timeout=5
+      body:
+        encoding: UTF-8
+        string: '{"user": {"provider": "local","role": "ADMIN","name": "John Admin","id": "123","email": "user@rw-api.org","extraUserData": {"apps": ["rw","gfw","prep","aqueduct","forest-atlas","data4sdgs","gfw-climate","gfw-pro","ghg-gdp"]}},"application": {"data":{"type":"applications","id":"649c4b204967792f3a4e52c9","attributes":{"name":"grouchy-armpit","organization":null,"user":null,"apiKeyValue":"api-key-test","createdAt":"2023-06-28T15:00:48.149Z","updatedAt":"2023-06-28T15:00:48.149Z"}}}}'
+    recorded_at: Tue, 25 Jul 2023 15:26:39 GMT
+recorded_with: VCR 6.1.0

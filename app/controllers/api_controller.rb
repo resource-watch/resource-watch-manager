@@ -4,13 +4,21 @@ class ApiController < ActionController::API
   include ApiHelper
 
   before_action :set_private_cache_header
-  before_action :load_user_from_request
+  before_action :validate_user_and_application, except: %i[health]
   before_action :authenticate, except: %i[index show health]
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ApiKeyError, with: :no_api_key
 
-  def load_user_from_request
-    @user = get_user_from_request(request)
+  def validate_user_and_application
+    validation_response = validate_request(request)
+
+    return false unless validation_response
+
+    log_request_to_cloud_watch(validation_response, request)
+
+    @user = validation_response.dig('user') || {}
+    request.params[:loggedUser] = @user
 
     return false unless @user
     return true if @user['id'].eql? 'microservice'
@@ -65,6 +73,10 @@ class ApiController < ActionController::API
     render json: { errors: [{ status: '404', title: 'Record not found' }] }, status: 404
   end
 
+  def no_api_key
+    render json: { errors: [{ status: '403', title: 'Required API key not found' }] }, status: 403
+  end
+
   def set_envs
     @envs = [Environment::PRODUCTION]
     return true unless params[:env]
@@ -91,32 +103,97 @@ class ApiController < ActionController::API
            serializer: ActiveModel::Serializer::ErrorSerializer
   end
 
-  def get_user_from_request(request)
-    # TODO: this block can be removed once CT is fully removed
-    if request.params[:loggedUser].present?
-      if request.params[:loggedUser].is_a? String
-        return JSON.parse(request.params[:loggedUser]) || {}
-      else
-        return request.params[:loggedUser] || {}
+  def validate_request(request)
+    logger.debug 'Validating request'
+
+    if request.headers['Authorization'].nil?
+      logger.debug 'No authorization header found'
+    end
+
+    if request.headers['x-api-key'].nil? && ENV.fetch('REQUIRE_API_KEY', true)
+      raise ApiKeyError.new()
+    end
+
+    body = {}
+
+    if request.headers['Authorization']
+      body['userToken'] = request.headers['Authorization']
+    end
+
+    if request.headers['x-api-key']
+      body['apiKey'] = request.headers['x-api-key']
+    end
+
+    if body.present?
+      headers = {
+        'Authorization' => "Bearer #{ENV.fetch('MICROSERVICE_TOKEN')}"
+      }
+
+      response = HTTParty.post("#{ENV.fetch('GATEWAY_URL')}/v1/request/validate", body: body, headers: headers)
+
+      logger.debug "Retrieved microserviceToken data, response status: #{response.code}"
+
+      if (response.code >= 400)
+        render json: response.parsed_response, status: response.code
+        return false
       end
+
+      response.parsed_response
+    else
+      {}
     end
-
-    if request.headers["authorization"].nil?
-      return {}
-    end
-
-    headers = {
-      "Authorization": request.headers["authorization"],
-      "Content-Type": 'application/json'
-    }
-    response = HTTParty.get(ENV.fetch('GATEWAY_URL') + '/auth/user/me', headers: headers, format: :json)
-
-    if (response.code >= 400)
-      render json: response.parsed_response, status: response.code
-      return false
-    end
-
-    request.params[:loggedUser] = response.parsed_response
-    response.parsed_response
   end
+
+  def log_request_to_cloud_watch(validation_response, request)
+    logger.debug 'Logging request to CloudWatch'
+
+    log_query = request.query_parameters.except(:loggedUser)
+
+    log_content = {
+      request: {
+        method: request.method,
+        path: request.path,
+        query: log_query
+      }
+    }
+
+    if validation_response['user']
+      user = validation_response['user']
+      if user['id'] == 'microservice'
+        log_content[:loggedUser] = { id: user['id'] }
+      else
+        log_content[:loggedUser] = {
+          id: user['id'],
+          name: user['name'],
+          role: user['role'],
+          provider: user['provider']
+        }
+      end
+    else
+      log_content[:loggedUser] = {
+        id: 'anonymous',
+        name: 'anonymous',
+        role: 'anonymous',
+        provider: 'anonymous'
+      }
+    end
+
+    if validation_response['application']
+      application_data = validation_response['application']['data']
+      attributes = application_data['attributes']
+      log_content[:requestApplication] = application_data.merge(attributes)
+      log_content[:requestApplication].except!('attributes', 'type', 'createdAt', 'updatedAt')
+    else
+      log_content[:requestApplication] = {
+        id: 'anonymous',
+        name: 'anonymous',
+        organization: nil,
+        user: nil,
+        apiKeyValue: nil
+      }
+    end
+
+    CloudWatchService.instance.log_to_cloud_watch(log_content.to_json)
+  end
+
 end

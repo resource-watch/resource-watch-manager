@@ -5,10 +5,12 @@ http_interactions:
     uri: http://localhost:9000/auth/user/find-by-ids
     body:
       encoding: UTF-8
-      string: ids[]=57a1ff091ebc1ad91d089bdc&ids[]=5c143429f8d19932db9d06ea&ids[]=5c069855ccc46a6660a4be68
+      string: ids%5B%5D=57a1ff091ebc1ad91d089bdc&ids%5B%5D=5c069855ccc46a6660a4be68&ids%5B%5D=5c143429f8d19932db9d06ea
     headers:
-      Authentication:
-      - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
+      Authorization:
+        - Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
+      x-api-key:
+        - api-key-test
   response:
     status:
       code: 200

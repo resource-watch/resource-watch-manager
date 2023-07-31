@@ -127,8 +127,8 @@ class Dashboard < ApplicationRecord
     update_column(:content, contents.to_json)
   end
 
-  def duplicate(user_id = nil, override = {})
-    widgets = clone_widgets(user_id)
+  def duplicate(user_id = nil, override = {}, api_key)
+    widgets = clone_widgets(user_id, api_key)
     override[:is_highlighted] = false
     override[:is_featured] = false
     clone_model(widgets, override)

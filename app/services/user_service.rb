@@ -2,18 +2,18 @@ class UserService < ApiService
 
   @conn ||= connect
 
-  def self.users(user_ids= [])
+  def self.users(user_ids = [], api_key)
     users = []
     begin
       Rails.logger.info "Fetching user for id: #{user_ids.join(', ')}"
 
       res = @conn.microservice_request(
-          "/auth/user/find-by-ids",
-          :post,
-          {},
-          {
-              ids: user_ids
-          })
+        "/auth/user/find-by-ids",
+        :post,
+        { 'x-api-key': api_key },
+        {
+          ids: user_ids.sort
+        })
 
       users = JSON.parse(res)['data']
     rescue RwApiMicroservice::NotFoundError
@@ -24,14 +24,15 @@ class UserService < ApiService
     users
   end
 
-  def self.usersByRole(role)
+  def self.usersByRole(role, api_key)
     users = []
     begin
       Rails.logger.info "Fetching user for role: #{role}"
 
       res = @conn.microservice_request(
         "/auth/user/ids/#{role}",
-        :get
+        :get,
+        { 'x-api-key': api_key }
       )
 
       users = JSON.parse(res)['data']

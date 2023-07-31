@@ -5,10 +5,12 @@ http_interactions:
     uri: http://localhost:9000/v1/dataset/9aa17362-2a4f-4a4f-9e4e-97ebb60ce76b/widget/841a6544-e8c9-411d-9987-83e81b58fd6f/clone
     body:
       encoding: UTF-8
-      string: ''
+      string: 'userId=1a10d7c6e0a37126611fd7a7'
     headers:
-      Authentication:
-      - auth
+      Authorization:
+      - Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
+      x-api-key:
+      - api-key-test
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:

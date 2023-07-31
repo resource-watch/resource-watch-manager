@@ -38,6 +38,8 @@ gem 'friendly_id'
 
 gem 'rw-api-microservice', '~> 2.0.0'
 
+gem 'aws-sdk-cloudwatchlogs'
+
 group :development, :test do
   gem 'annotate'
   gem 'byebug', platform: :mri

@@ -16,7 +16,7 @@ class Api::DashboardsController < ApiController
 
   def index
     if params.include?('user.role') && @user&.dig('role').eql?('ADMIN')
-      usersIdsByRole = UserService.usersByRole params['user.role']
+      usersIdsByRole = UserService.usersByRole(params['user.role'], request.headers['x-api-key'])
       if (params.include?('user'))
         params['user'].concat usersIdsByRole if params['user'].kind_of?(Array)
         params['user'] = usersIdsByRole & [params['user']] if params['user'].kind_of?(String)
@@ -28,7 +28,7 @@ class Api::DashboardsController < ApiController
     if params.include?('sort') and (params['sort'].include?('user.role') or params['sort'].include?('user.name'))
       return render json: { errors: [{ status: '403', title: 'Sorting by user name or role not authorized.' }] }, status: 403 unless @user&.dig('role').eql?('ADMIN')
       ids = Dashboard.select("user_id").fetch_all().pluck(:user_id).reduce([], :<<)
-      users = UserService.users(ids.compact.uniq)
+      users = UserService.users(ids.compact.uniq, request.headers['x-api-key'])
       users.each do |user|
         Dashboard.where(:user_id => user['_id']).update_all(user_name: user['name']&.downcase, user_role: user['role']&.downcase)
       end
@@ -53,7 +53,7 @@ class Api::DashboardsController < ApiController
     dashboards_json =
       if params['includes']&.include?('user')
         user_ids = @dashboards.pluck(:user_id).reduce([], :<<)
-        users = UserService.users(user_ids.compact.uniq)
+        users = UserService.users(user_ids.compact.uniq, request.headers['x-api-key'])
         UserSerializerHelper.list @dashboards, users, @user&.dig('role').eql?('ADMIN')
       else
         @dashboards
@@ -70,7 +70,7 @@ class Api::DashboardsController < ApiController
   def show
     dashboard_json =
       if params['includes']&.include?('user')
-        users = UserService.users([@dashboard.user_id])
+        users = UserService.users([@dashboard.user_id], request.headers['x-api-key'])
         UserSerializerHelper.element @dashboard, users
       else
         @dashboard
@@ -102,7 +102,7 @@ class Api::DashboardsController < ApiController
     begin
       override = dashboard_params_clone.to_h
       override[:user_id] = @user.dig('id')
-      if duplicated_dashboard = @dashboard.duplicate(@user.dig('id'), override)
+      if duplicated_dashboard = @dashboard.duplicate(@user.dig('id'), override, request.headers['x-api-key'])
         @dashboard = duplicated_dashboard
         render json: @dashboard, status: :ok
       else

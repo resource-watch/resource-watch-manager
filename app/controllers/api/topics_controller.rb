@@ -14,7 +14,7 @@ class Api::TopicsController < ApiController
     topics_json =
       if params['includes']&.include?('user')
         user_ids = topics.pluck(:user_id).reduce([], :<<)
-        users = UserService.users(user_ids.compact.uniq)
+        users = UserService.users(user_ids.compact.uniq, request.headers['x-api-key'])
         UserSerializerHelper.list topics, users, @user&.dig('role').eql?('ADMIN')
       else
         topics
@@ -25,7 +25,7 @@ class Api::TopicsController < ApiController
   def show
     topic_json =
       if params['includes']&.include?('user')
-        users = UserService.users([@topic.user_id])
+        users = UserService.users([@topic.user_id], request.headers['x-api-key'])
         UserSerializerHelper.element @topic, users
       else
         @topic
@@ -54,7 +54,7 @@ class Api::TopicsController < ApiController
 
   def clone
     begin
-      if duplicated_topic = @topic.duplicate(@user.dig('id'))
+      if duplicated_topic = @topic.duplicate(@user.dig('id'), request.headers['x-api-key'])
         @topic = duplicated_topic
         render json: @topic, status: :ok
       else
@@ -68,7 +68,7 @@ class Api::TopicsController < ApiController
 
   def clone_dashboard
     begin
-      if dashboard = @topic.duplicate_dashboard(@user.dig('id'))
+      if dashboard = @topic.duplicate_dashboard(@user.dig('id'), request.headers['x-api-key'])
         @dashboard = dashboard
         render json: @dashboard, status: :ok
       else
