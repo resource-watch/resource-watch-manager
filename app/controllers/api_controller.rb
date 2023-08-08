@@ -13,9 +13,9 @@ class ApiController < ActionController::API
 
     return false unless validation_response
 
-    log_request_to_cloud_watch(validation_response, request)
+    log_request_to_cloud_watch(validation_response, request) if ActiveModel::Type::Boolean.new.cast(ENV.fetch('REQUIRE_API_KEY', true))
 
-    @user = validation_response.dig('user') || {}
+    @user = validation_response.dig('user', 'data') || {}
     request.params[:loggedUser] = @user
 
     return false unless @user
@@ -161,8 +161,8 @@ class ApiController < ActionController::API
       }
     }
 
-    if validation_response['user']
-      user = validation_response['user']
+    if validation_response['user'] && validation_response['user']['data']
+      user = validation_response['user']['data']
       if user['id'] == 'microservice'
         log_content[:loggedUser] = { id: user['id'] }
       else

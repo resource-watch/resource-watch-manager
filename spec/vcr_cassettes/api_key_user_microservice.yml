@@ -28,6 +28,6 @@ http_interactions:
           - timeout=5
       body:
         encoding: UTF-8
-        string: '{"user": {"id":"microservice","createdAt":"2019-10-31T13:00:58.191Z","updatedAt":"2019-10-31T13:00:58.191Z"},"application": {"data":{"type":"applications","id":"649c4b204967792f3a4e52c9","attributes":{"name":"grouchy-armpit","organization":null,"user":null,"apiKeyValue":"api-key-test","createdAt":"2023-06-28T15:00:48.149Z","updatedAt":"2023-06-28T15:00:48.149Z"}}}}'
+        string: '{"user": {"data": {"id":"microservice","createdAt":"2019-10-31T13:00:58.191Z","updatedAt":"2019-10-31T13:00:58.191Z"}},"application": {"data":{"type":"applications","id":"649c4b204967792f3a4e52c9","attributes":{"name":"grouchy-armpit","organization":null,"user":null,"apiKeyValue":"api-key-test","createdAt":"2023-06-28T15:00:48.149Z","updatedAt":"2023-06-28T15:00:48.149Z"}}}}'
     recorded_at: Tue, 25 Jul 2023 15:26:39 GMT
 recorded_with: VCR 6.1.0

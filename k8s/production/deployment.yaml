@@ -83,7 +83,15 @@ spec:
             - name: S3_PATH
               value: resourcewatch/staging
             - name: AWS_REGION
-              value: us-east-1
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_REGION
+                  name: mssecrets
+            - name: REQUIRE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: REQUIRE_API_KEY
+                  name: mssecrets
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
