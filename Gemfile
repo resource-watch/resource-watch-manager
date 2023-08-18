@@ -9,7 +9,7 @@ gem 'rails', '~> 7.0.6'
 gem 'aws-sdk-s3', '~> 1.132.0'
 gem 'dotenv-rails', '~> 2.8.1'
 gem 'kt-paperclip', "~> 7.2.0"
-gem 'puma', '~> 6.3.0'
+gem 'puma', '~> 6.3.1'
 gem 'rack-cors', '~> 2.0.1'
 gem 'sprockets-rails', '~> 3.4.2'
 
