@@ -97,7 +97,7 @@ Rails.application.configure do
     preserve_files: true,
     s3_protocol: :https,
     path: "#{ENV.fetch('S3_PATH')}/:class/:attachment/:id_partition/:style/:filename",
-    s3_region: ENV.fetch('AWS_REGION'),
+    s3_region: ENV.fetch('S3_AWS_REGION'),
     s3_credentials: {
       bucket: ENV.fetch('S3_BUCKET_NAME'),
       access_key_id: ENV.fetch('S3_AWS_ACCESS_KEY_ID'),

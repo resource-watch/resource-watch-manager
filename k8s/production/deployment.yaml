@@ -82,7 +82,7 @@ spec:
               value: wri-api-backups
             - name: S3_PATH
               value: resourcewatch/staging
-            - name: AWS_REGION
+            - name: S3_AWS_REGION
               valueFrom:
                 secretKeyRef:
                   key: AWS_REGION
