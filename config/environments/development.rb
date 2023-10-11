@@ -55,9 +55,16 @@ Rails.application.configure do
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
+  LOG_LEVELS = %w[DEBUG INFO WARN ERROR FATAL UNKNOWN].freeze
+  level ||= LOG_LEVELS.index ENV.fetch("LOGGER_LEVEL", "DEBUG") # default to WARN index: 2
+  level ||= Logger::WARN  # FIX default in case of environment LOG_LEVEL value is present but not correct
+
   logger           = ActiveSupport::Logger.new(STDOUT)
   logger.formatter = config.log_formatter
+  logger.level = level
   config.logger = ActiveSupport::TaggedLogging.new(logger)
+
+  config.log_level = LOG_LEVELS[level]
 
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load

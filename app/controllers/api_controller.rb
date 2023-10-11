@@ -10,6 +10,7 @@ class ApiController < ActionController::API
 
   def validate_user_and_application
     validation_response = validate_request(request)
+    logger.debug 'validation response: ' + validation_response.to_json
 
     return false unless validation_response
 
@@ -124,6 +125,7 @@ class ApiController < ActionController::API
 
     if body.present?
       headers = {
+        'Content-Type' => 'application/json',
         'Authorization' => "Bearer #{ENV.fetch('MICROSERVICE_TOKEN')}"
       }
 

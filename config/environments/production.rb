@@ -48,10 +48,6 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
-  # Use the lowest log level to ensure availability of diagnostic information
-  # when problems arise.
-  config.log_level = :debug
-
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
 
@@ -81,9 +77,16 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
+  LOG_LEVELS = %w[DEBUG INFO WARN ERROR FATAL UNKNOWN].freeze
+  level ||= LOG_LEVELS.index ENV.fetch("LOGGER_LEVEL", "WARN") # default to WARN index: 2
+  level ||= Logger::WARN  # FIX default in case of environment LOG_LEVEL value is present but not correct
+
   logger           = ActiveSupport::Logger.new(STDOUT)
   logger.formatter = config.log_formatter
+  logger.level = level
   config.logger = ActiveSupport::TaggedLogging.new(logger)
+
+  config.log_level = LOG_LEVELS[level]
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
