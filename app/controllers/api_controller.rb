@@ -130,7 +130,7 @@ class ApiController < ActionController::API
       }
 
       begin
-        response = HTTParty.post("#{ENV.fetch('GATEWAY_URL')}/v1/request/validate", body: body, headers: headers)
+        response = HTTParty.post("#{ENV.fetch('GATEWAY_URL')}/v1/request/validate", body: body.to_json, headers: headers)
       rescue => e
         logger.error "Error validating request: #{e.message}"
         render json: { 'errors': [{ detail: "Error validating request", status: 500 }] }, status: 500
