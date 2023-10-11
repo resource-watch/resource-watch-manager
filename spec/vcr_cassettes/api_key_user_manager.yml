@@ -5,7 +5,7 @@ http_interactions:
     uri: http://localhost:9000/v1/request/validate
     body:
       encoding: UTF-8
-      string: userToken=abd&apiKey=api-key-test
+      string: '{"userToken":"abd","apiKey":"api-key-test"}'
     headers:
       Authorization:
       - Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
