@@ -93,12 +93,12 @@ spec:
                 secretKeyRef:
                   key: REQUIRE_API_KEY
                   name: mssecrets
-            - name: AWS_ACCESS_KEY_ID
+            - name: S3_AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
                   key: S3_ACCESS_KEY_ID
                   name: mssecrets
-            - name: AWS_SECRET_ACCESS_KEY
+            - name: S3_AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
                   key: S3_SECRET_ACCESS_KEY
