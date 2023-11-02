@@ -115,6 +115,8 @@ spec:
                   name: mssecrets
             - name: RAILS_ENV
               value: production
+            - name: LOGGER_LEVEL
+              value: INFO
           image: gfwdockerhub/resource-watch-manager
           imagePullPolicy: Always
           livenessProbe:

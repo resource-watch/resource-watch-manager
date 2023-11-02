@@ -120,7 +120,7 @@ class ApiController < ActionController::API
       body['userToken'] = request.headers['Authorization']
     end
 
-    if request.headers['x-api-key']
+    if request.headers['x-api-key'] && !request.headers['x-api-key'].blank?
       body['apiKey'] = request.headers['x-api-key']
     end
 
