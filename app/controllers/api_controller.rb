@@ -14,7 +14,7 @@ class ApiController < ActionController::API
 
     return false unless validation_response
 
-    log_request_to_cloud_watch(validation_response, request) if ActiveModel::Type::Boolean.new.cast(ENV.fetch('REQUIRE_API_KEY', true))
+    log_request_to_cloud_watch(validation_response, request) if ActiveModel::Type::Boolean.new.cast(ENV.fetch('AWS_CLOUD_WATCH_LOGGING_ENABLED', true))
 
     @user = validation_response.dig('user', 'data') || {}
     request.params[:loggedUser] = @user
@@ -109,7 +109,8 @@ class ApiController < ActionController::API
       logger.debug 'No authorization header found'
     end
 
-    if request.headers['x-api-key'].nil? && ENV.fetch('REQUIRE_API_KEY', true)
+
+    if request.headers['x-api-key'].nil? && ActiveModel::Type::Boolean.new.cast(ENV.fetch('REQUIRE_API_KEY', true))
       raise ApiKeyError.new()
     end
 
